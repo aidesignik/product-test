@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivan Kisin — Product Designer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">IK</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">Portfolio</a>
+        <a href="coaching.html" class="nav-link">Coaching</a>
+        <a href="resume.pdf" class="nav-link" target="_blank" rel="noopener">Resume</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="social-fixed">
+    <a href="mailto:hello@ivanoisin.com" class="social-fixed-icon" aria-label="Email">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13L2 4"/></svg>
+    </a>
+    <a href="https://linkedin.com" class="social-fixed-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+  </div>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Ivan Kisin</h1>
+        <p class="hero-tagline">Product Designer crafting thoughtful, human-centered experiences for enterprise teams, with a focus on AI-driven workflows, design systems, and vibe coding.</p>
+      </div>
+      <a href="#projects" class="hero-scroll" aria-label="Scroll to projects">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+    </section>
+
+    <div class="projects" id="projects">
+      <div class="project-section">
+        <article class="project">
+          <div class="project-text">
+            <div class="project-text-inner">
+              <h2>Smarter Feedback Collection</h2>
+              <p class="project-desc">AI-driven insights for enterprise teams. Redesigned the feedback pipeline for a Fortune 500 client, integrating AI-powered analysis to surface actionable insights from thousands of user responses.</p>
+            </div>
+            <a href="project1.html" class="project-btn">See Case Study</a>
+          </div>
+          <a href="project1.html" class="project-image-link">
+            <img src="https://picsum.photos/seed/feedback/1400/940" alt="Smarter Feedback Collection" class="project-image" loading="lazy">
+          </a>
+        </article>
+      </div>
+
+      <div class="project-section">
+        <article class="project project--reverse">
+          <div class="project-text">
+            <div class="project-text-inner">
+              <h2>AI-Assisted Submissions</h2>
+              <p class="project-desc">Helping non-technical users complete complex forms without friction. Designed an intelligent form assistant that guides users through multi-step regulatory submissions, improving completion rates by 35%.</p>
+            </div>
+            <a href="project2.html" class="project-btn">See Case Study</a>
+          </div>
+          <a href="project2.html" class="project-image-link">
+            <img src="https://picsum.photos/seed/submissions/1400/940" alt="AI-Assisted Submissions" class="project-image" loading="lazy">
+          </a>
+        </article>
+      </div>
+
+      <div class="project-section">
+        <article class="project">
+          <div class="project-text">
+            <div class="project-text-inner">
+              <h2>Analytics Dashboard Redesign</h2>
+              <p class="project-desc">Making complex data accessible to every stakeholder. Led the end-to-end redesign of an enterprise analytics platform, transforming dense data tables into clear, interactive visualizations.</p>
+            </div>
+            <a href="project3.html" class="project-btn">See Case Study</a>
+          </div>
+          <a href="project3.html" class="project-image-link">
+            <img src="https://picsum.photos/seed/dashboard/1400/940" alt="Analytics Dashboard Redesign" class="project-image" loading="lazy">
+          </a>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Ivan Kisin. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
