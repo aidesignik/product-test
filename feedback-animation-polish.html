@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Feedback Form — Interaction Demo</title>
+  <title>AI Polish — Interaction Demo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,6 +22,7 @@
     .scene {
       position: relative;
       width: 560px;
+      max-width: 560px;
     }
 
     /* ---- Feedback Form ---- */
@@ -46,6 +47,7 @@
       font-weight: 500;
       color: #0d0d0d;
       line-height: 1;
+      padding-left: 2px;
     }
 
     .feedback-form__close-btn {
@@ -98,9 +100,16 @@
     .feedback-form__textarea {
       background: #fcfcfc;
       padding: 12px 14px;
-      min-height: 120px;
+      height: 120px;
       position: relative;
       border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .feedback-form__textarea::-webkit-scrollbar {
+      display: none;
     }
 
     .feedback-form__textarea-text {
@@ -109,6 +118,7 @@
       line-height: 24px;
       min-height: 24px;
       position: relative;
+      white-space: pre-wrap;
     }
 
     .feedback-form__textarea-text--placeholder {
@@ -158,6 +168,13 @@
       padding: 8px;
       position: relative;
       border-radius: 0 0 12px 12px;
+      overflow: visible;
+    }
+
+    .feedback-form__toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .feedback-form__attach-btn {
@@ -172,10 +189,71 @@
       flex-shrink: 0;
     }
 
+    /* ---- Polishing status (centered in toolbar) ---- */
+    .feedback-form__polish-status {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .feedback-form__polish-status--visible {
+      display: flex;
+    }
+
+    .feedback-form__polish-status-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: #6b6b6b;
+      line-height: 16px;
+    }
+
+    /* ---- Undo bar (centered in toolbar) ---- */
+    .feedback-form__undo-bar {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .feedback-form__undo-bar--visible {
+      display: flex;
+    }
+
+    .feedback-form__undo-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: #0d0d0d;
+      line-height: 16px;
+    }
+
+    .feedback-form__undo-btn {
+      font-size: 12px;
+      font-weight: 500;
+      color: #4257ff;
+      line-height: 16px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      padding: 0;
+    }
+
+    /* ---- Pills / Chips ---- */
     .feedback-form__pills {
       display: flex;
       gap: 8px;
       transition: opacity 0.3s ease, transform 0.3s ease;
+      flex-shrink: 1;
+      min-width: 0;
+      overflow: hidden;
+      margin-left: auto;
     }
 
     .feedback-form__pills--hidden {
@@ -183,7 +261,6 @@
       transform: translateY(4px);
       pointer-events: none;
       position: absolute;
-      right: 8px;
     }
 
     .feedback-form__pill {
@@ -198,14 +275,93 @@
       transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
     }
 
-    .feedback-form__pill--hovered {
-      background: rgba(84, 139, 223, 0.25);
-      box-shadow: 0 1px 3px rgba(84, 139, 223, 0.2);
+    /* ---- AI Polish button ---- */
+    .feedback-form__ai-polish {
+      position: relative;
+      display: none;
+      align-items: center;
+      z-index: 2;
     }
 
-    .feedback-form__pill--clicked {
-      background: rgba(84, 139, 223, 0.35);
-      transform: scale(0.96);
+    .feedback-form__ai-polish--visible {
+      display: flex;
+    }
+
+    .feedback-form__ai-polish-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #eff2f9;
+      border: 1px solid #e4e4e4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(127, 121, 121, 0.25);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .feedback-form__ai-polish-btn--hovered {
+      background: #e4e9f5;
+      box-shadow: 0 3px 8px rgba(66, 87, 255, 0.25);
+    }
+
+    .feedback-form__ai-polish-btn img {
+      display: block;
+    }
+
+    /* Spinner replacing AI icon */
+    .feedback-form__ai-spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(66, 87, 255, 0.2);
+      border-top-color: #4257ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    .feedback-form__ai-spinner--active {
+      display: block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ---- Tooltip ---- */
+    .feedback-form__ai-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .feedback-form__ai-tooltip--visible {
+      opacity: 1;
+    }
+
+    .feedback-form__ai-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: #1a1a1a;
+      border-radius: 1px;
+      transform: translateX(-50%) rotate(45deg);
     }
 
     /* ---- Severity ---- */
@@ -350,6 +506,13 @@
     .anim-cursor--visible {
       opacity: 1;
     }
+
+    /* ---- Wave-uncover AI text rendering ---- */
+    .ai-word {
+      display: inline;
+      color: #0d0d0d;
+      opacity: 0;
+    }
   </style>
 </head>
 <body>
@@ -377,15 +540,37 @@
               <img src="assets/gradient-line.svg" alt="" class="feedback-form__gradient-line-img">
             </div>
             <div class="feedback-form__toolbar">
-              <div class="feedback-form__attach-btn">
-                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
-                </svg>
+              <div class="feedback-form__toolbar-left">
+                <div class="feedback-form__attach-btn">
+                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
+                  </svg>
+                </div>
+                <!-- Polishing status text (appears during AI generation) -->
+                <div class="feedback-form__polish-status" id="polishStatus">
+                  <span class="feedback-form__polish-status-text" id="polishStatusText">Polishing...</span>
+                </div>
+                <!-- Undo bar (appears after generation) -->
+                <div class="feedback-form__undo-bar" id="undoBar">
+                  <span class="feedback-form__undo-label">Not what you meant?</span>
+                  <button class="feedback-form__undo-btn">Undo</button>
+                </div>
               </div>
+
+              <!-- Chips -->
               <div class="feedback-form__pills" id="pills">
                 <span class="feedback-form__pill" id="pill-0">General thoughts</span>
                 <span class="feedback-form__pill" id="pill-1">Improve workflow</span>
                 <span class="feedback-form__pill" id="pill-2">Report a bug</span>
+              </div>
+
+              <!-- AI Polish button -->
+              <div class="feedback-form__ai-polish" id="aiPolish">
+                <div class="feedback-form__ai-tooltip" id="aiTooltip">Polish with AI</div>
+                <div class="feedback-form__ai-polish-btn" id="aiPolishBtn">
+                  <img src="assets/sparkle-ai.svg" alt="" width="14" height="14" id="aiIcon">
+                  <div class="feedback-form__ai-spinner" id="aiSpinner"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -451,22 +636,21 @@
     const textareaText = document.getElementById('textareaText');
     const textareaWrap = document.getElementById('textareaWrap');
     const pills = document.getElementById('pills');
-    const pill0 = document.getElementById('pill-0');
-    const pill1 = document.getElementById('pill-1');
-    const pill2 = document.getElementById('pill-2');
+    const aiPolish = document.getElementById('aiPolish');
+    const aiPolishBtn = document.getElementById('aiPolishBtn');
+    const aiIcon = document.getElementById('aiIcon');
+    const aiSpinner = document.getElementById('aiSpinner');
+    const aiTooltip = document.getElementById('aiTooltip');
+    const polishStatus = document.getElementById('polishStatus');
+    const undoBar = document.getElementById('undoBar');
     const btnDraft = document.getElementById('btnDraft');
     const btnSubmit = document.getElementById('btnSubmit');
     const scene = document.querySelector('.scene');
 
     const PLACEHOLDER = "What's on your mind? Share a thought, suggestion, or issue.";
-    const CHIP_PREVIEWS = [
-      "I'd like to share some general thoughts about...",
-      "It would be great if the workflow could...",
-      "I encountered an issue while"
-    ];
-    const TYPED_TEXT = "I encountered an issue while";
+    const USER_TEXT = "The export feature breaks when I try to download reports with charts included";
+    const AI_POLISHED_TEXT = "When attempting to export reports that contain embedded charts, the export process fails silently — no file is generated and no error message is displayed. This occurs consistently across Chrome and Firefox when using the 'Download as PDF' option from the Reports dashboard. Reports without charts export normally, suggesting the issue is specifically related to chart rendering during the export pipeline.";
 
-    let animFrame;
     let running = true;
 
     function wait(ms) {
@@ -483,26 +667,25 @@
         function step(now) {
           const elapsed = now - startTime;
           const t = Math.min(elapsed / duration, 1);
-          // Ease out cubic
           const ease = 1 - Math.pow(1 - t, 3);
           cursor.style.left = (startX + (x - startX) * ease) + 'px';
           cursor.style.top = (startY + (y - startY) * ease) + 'px';
           if (t < 1) {
-            animFrame = requestAnimationFrame(step);
+            requestAnimationFrame(step);
           } else {
             resolve();
           }
         }
-        animFrame = requestAnimationFrame(step);
+        requestAnimationFrame(step);
       });
     }
 
-    function getPillCenter(pill) {
+    function getElementCenter(el) {
       const sceneRect = scene.getBoundingClientRect();
-      const pillRect = pill.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
       return {
-        x: pillRect.left - sceneRect.left + pillRect.width / 2,
-        y: pillRect.top - sceneRect.top + pillRect.height / 2 + 6
+        x: elRect.left - sceneRect.left + elRect.width / 2,
+        y: elRect.top - sceneRect.top + elRect.height / 2 + 6
       };
     }
 
@@ -527,16 +710,6 @@
       }
     }
 
-    function hoverPill(index) {
-      [pill0, pill1, pill2].forEach((p, i) => {
-        p.classList.toggle('feedback-form__pill--hovered', i === index);
-      });
-    }
-
-    function clearHovers() {
-      [pill0, pill1, pill2].forEach(p => p.classList.remove('feedback-form__pill--hovered', 'feedback-form__pill--clicked'));
-    }
-
     function showPills() {
       pills.classList.remove('feedback-form__pills--hidden');
     }
@@ -545,12 +718,28 @@
       pills.classList.add('feedback-form__pills--hidden');
     }
 
-    function typeText(fullText, startFrom, charDelay = 55) {
+    function showAiPolish() {
+      aiPolish.classList.add('feedback-form__ai-polish--visible');
+    }
+
+    function hideAiPolish() {
+      aiPolish.classList.remove('feedback-form__ai-polish--visible');
+    }
+
+    // Type text char by char; calls onWordCallback(wordIndex) after each space
+    function typeText(fullText, startFrom, charDelay = 40, onWordCallback) {
       return new Promise(resolve => {
         let i = startFrom;
+        let wordCount = 0;
         function nextChar() {
           if (i <= fullText.length) {
-            setTypedText(fullText.slice(0, i), true);
+            const slice = fullText.slice(0, i);
+            setTypedText(slice, true);
+            // Count word when we just typed a space
+            if (fullText[i - 1] === ' ') {
+              wordCount++;
+              if (onWordCallback) onWordCallback(wordCount);
+            }
             i++;
             setTimeout(nextChar, charDelay);
           } else {
@@ -558,6 +747,67 @@
           }
         }
         nextChar();
+      });
+    }
+
+    // Wave-uncover: all text laid out instantly (invisible), then a smooth
+    // wave sweeps through revealing it — like the text was always there
+    function renderAiText(text) {
+      return new Promise(resolve => {
+        const textarea = document.querySelector('.feedback-form__textarea');
+        textarea.scrollTop = 0;
+        textareaText.textContent = '';
+        textareaText.className = 'feedback-form__textarea-text feedback-form__textarea-text--typed';
+
+        const words = text.split(' ');
+
+        // Place ALL words immediately — they occupy space but are invisible
+        const spans = words.map((word, idx) => {
+          const span = document.createElement('span');
+          span.className = 'ai-word';
+          span.textContent = (idx > 0 ? ' ' : '') + word;
+          textareaText.appendChild(span);
+          return span;
+        });
+
+        // Animate with requestAnimationFrame for buttery smoothness
+        // Each word gets its own start time; many overlap, creating a wave
+        const STAGGER = 65;      // ms between each word's reveal start
+        const FADE_DURATION = 750; // ms for each word to go 0→1
+        const totalWords = spans.length;
+        const startTime = performance.now();
+
+        function animate(now) {
+          const elapsed = now - startTime;
+          let allDone = true;
+
+          for (let i = 0; i < totalWords; i++) {
+            const wordStart = i * STAGGER;
+            const wordProgress = (elapsed - wordStart) / FADE_DURATION;
+
+            if (wordProgress >= 1) {
+              if (spans[i].style.opacity !== '1') {
+                spans[i].style.opacity = '1';
+              }
+            } else if (wordProgress > 0) {
+              // Smooth ease-out curve
+              const eased = 1 - Math.pow(1 - wordProgress, 2.5);
+              spans[i].style.opacity = eased;
+              allDone = false;
+            } else {
+              allDone = false;
+            }
+          }
+
+          if (!allDone) {
+            requestAnimationFrame(animate);
+          } else {
+            resolve();
+          }
+        }
+
+        // Tiny delay then start the wave
+        setTimeout(() => requestAnimationFrame(animate), 150);
       });
     }
 
@@ -569,62 +819,116 @@
       setPlaceholder(PLACEHOLDER);
       setButtonsDisabled(true);
       showPills();
-      clearHovers();
+      hideAiPolish();
+
+      // Reset textarea scroll position
+      document.querySelector('.feedback-form__textarea').scrollTop = 0;
       textareaWrap.classList.remove('feedback-form__textarea-wrap--focused');
+
+      // Reset AI polish button
+      aiIcon.style.display = 'block';
+      aiSpinner.classList.remove('feedback-form__ai-spinner--active');
+      aiPolishBtn.classList.remove('feedback-form__ai-polish-btn--hovered');
+      aiTooltip.classList.remove('feedback-form__ai-tooltip--visible');
+
+      // Reset status areas
+      polishStatus.classList.remove('feedback-form__polish-status--visible');
+      undoBar.classList.remove('feedback-form__undo-bar--visible');
     }
 
     async function runAnimation() {
       while (running) {
-        // 1. Reset to initial state
+        // 1. Reset to initial state — default form with placeholder & chips
         resetState();
         await wait(1500);
 
-        // 2. Cursor appears and enters from the right
+        // 2. Cursor appears from right and moves toward the textarea
         cursor.classList.add('anim-cursor--visible');
         await wait(200);
+        const textareaRect = textareaText.getBoundingClientRect();
+        const sceneRect = scene.getBoundingClientRect();
+        const textareaClickX = textareaRect.left - sceneRect.left + 40;
+        const textareaClickY = textareaRect.top - sceneRect.top + 20;
+        await moveCursorTo(textareaClickX, textareaClickY, 800);
+        await wait(300);
 
-        // 3. Move cursor to "General thoughts" chip
-        const pos0 = getPillCenter(pill0);
-        await moveCursorTo(pos0.x, pos0.y, 700);
-        hoverPill(0);
-        setPlaceholder(CHIP_PREVIEWS[0]);
-        await wait(900);
+        // 3. Click the textarea — border turns blue, cursor appears
+        textareaWrap.classList.add('feedback-form__textarea-wrap--focused');
+        setTypedText('', true);
+        await wait(400);
 
-        // 4. Move cursor to "Improve workflow" chip
-        const pos1 = getPillCenter(pill1);
-        await moveCursorTo(pos1.x, pos1.y, 500);
-        hoverPill(1);
-        setPlaceholder(CHIP_PREVIEWS[1]);
-        await wait(900);
+        // 4. Hide mouse cursor, user starts typing — chips fade out, buttons active
+        cursor.classList.remove('anim-cursor--visible');
+        await wait(300);
+        hidePills();
+        setButtonsDisabled(false);
+        await wait(200);
 
-        // 5. Move cursor to "Report a bug" chip
-        const pos2 = getPillCenter(pill2);
-        await moveCursorTo(pos2.x, pos2.y, 500);
-        hoverPill(2);
-        setPlaceholder(CHIP_PREVIEWS[2]);
+        // 5. Type user text (slightly slower) — AI button appears after 5 words
+        let aiShown = false;
+        await typeText(USER_TEXT, 1, 55, (wordCount) => {
+          if (wordCount >= 5 && !aiShown) {
+            aiShown = true;
+            showAiPolish();
+          }
+        });
+
         await wait(800);
 
-        // 6. Click "Report a bug"
-        pill2.classList.add('feedback-form__pill--clicked');
-        await wait(150);
-        pill2.classList.remove('feedback-form__pill--clicked');
+        // 6. Cursor reappears and moves toward AI button
+        cursor.classList.add('anim-cursor--visible');
+        await wait(200);
+        const aiPos = getElementCenter(aiPolishBtn);
+        await moveCursorTo(aiPos.x, aiPos.y + 2, 700);
 
-        // Chip text goes into input, chips disappear, typing cursor shows
-        setTypedText(TYPED_TEXT, true);
-        textareaWrap.classList.add('feedback-form__textarea-wrap--focused');
-        hidePills();
-
-        // Enable buttons
-        setButtonsDisabled(false);
-
-        // Hide the mouse cursor after click
+        // 7. Hover state on AI button — tooltip appears
+        aiPolishBtn.classList.add('feedback-form__ai-polish-btn--hovered');
         await wait(300);
+        aiTooltip.classList.add('feedback-form__ai-tooltip--visible');
+        await wait(1200);
+
+        // 8. Click the AI button
+        // Brief scale-down effect via transform
+        aiPolishBtn.style.transform = 'scale(0.92)';
+        await wait(100);
+        aiPolishBtn.style.transform = '';
+        await wait(100);
+
+        // 9. Loading state — icon becomes spinner, tooltip hides
+        aiTooltip.classList.remove('feedback-form__ai-tooltip--visible');
+        aiIcon.style.display = 'none';
+        aiSpinner.classList.add('feedback-form__ai-spinner--active');
+        aiPolishBtn.classList.remove('feedback-form__ai-polish-btn--hovered');
+
+        // Hide cursor after click
+        await wait(200);
         cursor.classList.remove('anim-cursor--visible');
 
-        // 7. Show blinking cursor for a moment
-        await wait(2500);
+        // 10. Show "Polishing..." status text next to attach icon
+        polishStatus.classList.add('feedback-form__polish-status--visible');
 
-        // 8. Pause before loop restart
+        // Clear textarea text to show it's being processed
+        textareaText.textContent = '';
+        textareaText.className = 'feedback-form__textarea-text feedback-form__textarea-text--typed';
+        await wait(1200);
+
+        // 11. AI text renders character by character with blue cursor
+        await renderAiText(AI_POLISHED_TEXT);
+        await wait(400);
+
+        // 12. Generation done — spinner stops, icon returns
+        aiSpinner.classList.remove('feedback-form__ai-spinner--active');
+        aiIcon.style.display = 'block';
+
+        // Hide polishing status, show undo bar
+        polishStatus.classList.remove('feedback-form__polish-status--visible');
+        await wait(200);
+        undoBar.classList.add('feedback-form__undo-bar--visible');
+
+        // 13. Hold final state
+        await wait(3500);
+
+        // 14. Pause before loop restart
         await wait(1500);
       }
     }
