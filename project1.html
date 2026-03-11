@@ -3,18 +3,410 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smarter Feedback Collection — Ivan Kisin</title>
+  <title>AI-Powered Feedback — Ivan Kisin</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- Case study overrides ---- */
+    .case-study h2:first-of-type { margin-top: 0; }
+
+    .case-study-section { margin-bottom: 48px; }
+
+    .case-study-design-decisions {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px;
+    }
+    .case-study-design-decisions li {
+      font-size: 15px;
+      color: var(--color-gray-mid);
+      line-height: 1.8;
+      padding-left: 20px;
+      position: relative;
+    }
+    .case-study-design-decisions li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-gray-mid);
+    }
+
+    .case-study-callout {
+      font-size: 14px;
+      color: var(--color-gray-mid);
+      line-height: 1.8;
+      padding: 16px 20px;
+      background: var(--color-gray-light);
+      border-left: 3px solid var(--color-gray-border);
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0 18px;
+    }
+
+    /* ---- Inline animation embed ---- */
+    .anim-embed {
+      background: linear-gradient(145deg, #f0f1f8 0%, #eef4fb 30%, #f7f0f5 60%, #f4f2fa 100%);
+      border-radius: 16px;
+      padding: 48px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 28px 0 32px;
+      overflow: hidden;
+      /* Break out of the narrow case-study column */
+      width: calc(100% + 96px);
+      margin-left: -48px;
+    }
+
+    /* ---- Feedback form styles (scoped inside .anim-embed) ---- */
+    .anim-embed .scene {
+      position: relative;
+      width: 520px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .anim-embed .fb {
+      background: #fff;
+      border-radius: 24px;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .anim-embed .fb__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anim-embed .fb__title {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 1;
+    }
+
+    .anim-embed .fb__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: none;
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    .anim-embed .fb__body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .anim-embed .fb__field {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .anim-embed .fb__label {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #0d0d0d;
+      text-align: center;
+      line-height: 21px;
+    }
+
+    .anim-embed .fb__required { color: #b3261e; }
+
+    .anim-embed .fb__textarea-wrap {
+      border: 1px solid #d9d9d9;
+      border-radius: 12px;
+      overflow: visible;
+      transition: border-color 0.3s ease;
+    }
+
+    .anim-embed .fb__textarea-wrap--focused {
+      border-color: #76a4ee;
+    }
+
+    .anim-embed .fb__textarea {
+      background: #fcfcfc;
+      padding: 12px 14px;
+      min-height: 120px;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .anim-embed .fb__text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      min-height: 24px;
+    }
+
+    .anim-embed .fb__text--placeholder { color: #9ca3af; }
+    .anim-embed .fb__text--typed { color: #0d0d0d; }
+
+    .anim-embed .fb__text--typing::after {
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+      background: #0d0d0d;
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      animation: blink-caret 0.7s step-end infinite;
+    }
+
+    @keyframes blink-caret {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .anim-embed .fb__gradient {
+      height: 2px;
+      line-height: 0;
+      overflow: hidden;
+    }
+
+    .anim-embed .fb__gradient img {
+      width: 100%;
+      height: 2px;
+      display: block;
+    }
+
+    .anim-embed .fb__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px;
+      position: relative;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .anim-embed .fb__attach {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #d9d9d9;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .anim-embed .fb__pills {
+      display: flex;
+      gap: 8px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .anim-embed .fb__pills--hidden {
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+      position: absolute;
+      right: 8px;
+    }
+
+    .anim-embed .fb__pill {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      background: rgba(84, 139, 223, 0.12);
+      padding: 4px 10px;
+      border-radius: 17px;
+      line-height: 16px;
+      white-space: nowrap;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    .anim-embed .fb__pill--hovered {
+      background: rgba(84, 139, 223, 0.25);
+      box-shadow: 0 1px 3px rgba(84, 139, 223, 0.2);
+    }
+
+    .anim-embed .fb__pill--clicked {
+      background: rgba(84, 139, 223, 0.35);
+      transform: scale(0.96);
+    }
+
+    .anim-embed .fb__severity-cards {
+      display: flex;
+      gap: 14px;
+    }
+
+    .anim-embed .fb__severity-card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid rgba(166,162,180,0.4);
+      border-radius: 12px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 3px 8px rgba(78,44,110,0.07);
+      min-height: 118px;
+      justify-content: center;
+    }
+
+    .anim-embed .fb__severity-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #222422;
+    }
+
+    .anim-embed .fb__severity-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #6c677f;
+    }
+
+    .anim-embed .fb__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anim-embed .fb__sender {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .anim-embed .fb__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #f6f7f8;
+      flex-shrink: 0;
+      border: 1.5px solid #d9d9d9;
+    }
+
+    .anim-embed .fb__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .anim-embed .fb__sender-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .anim-embed .fb__sender-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #6b6b6b;
+      line-height: 11px;
+    }
+
+    .anim-embed .fb__sender-email {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 11px;
+    }
+
+    .anim-embed .fb__actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .anim-embed .fb__btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      height: 40px;
+      border-radius: 9999px;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 21px;
+      transition: opacity 0.3s ease, background 0.3s ease;
+    }
+
+    .anim-embed .fb__btn--cancel {
+      font-weight: 400;
+      color: #4257ff;
+      background: transparent;
+      border: 1px solid #d9d9d9;
+      padding: 0 24px;
+      min-width: 103px;
+    }
+
+    .anim-embed .fb__btn--submit {
+      font-weight: 400;
+      color: #fff;
+      background: #4257ff;
+      border: none;
+      padding: 0 24px;
+      min-width: 144px;
+    }
+
+    .anim-embed .fb__btn--disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .anim-embed .anim-cursor {
+      position: absolute;
+      width: 29px;
+      height: 31px;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      transform: scale(1.1);
+      transform-origin: top left;
+    }
+
+    .anim-embed .anim-cursor--visible {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .anim-embed {
+        width: calc(100% + 48px);
+        margin-left: -24px;
+        padding: 32px 12px;
+      }
+      .anim-embed .scene {
+        width: 100%;
+        max-width: 420px;
+      }
+    }
+  </style>
 </head>
 <body>
   <nav class="nav scrolled">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">IK</a>
       <div class="nav-links">
-        <a href="index.html" class="nav-link">Portfolio</a>
+        <a href="index.html" class="nav-link active">Portfolio</a>
         <a href="coaching.html" class="nav-link">Coaching</a>
         <a href="resume.pdf" class="nav-link" target="_blank" rel="noopener">Resume</a>
       </div>
@@ -27,24 +419,139 @@
 
   <main>
     <section class="page-header">
-      <h1>Smarter Feedback Collection</h1>
-      <p>AI-driven insights for enterprise teams</p>
+      <h1>AI-Powered Feedback</h1>
+      <p>Using AI to help users articulate feedback with smart categorization and severity tagging</p>
     </section>
 
     <section class="case-study">
-      <img src="images/feedback-cover.png" alt="Smarter Feedback Collection hero" class="case-study-hero-img" loading="lazy">
 
-      <h2>Overview</h2>
-      <p>Enterprise teams collect thousands of feedback responses each quarter, but most of that data goes unanalyzed. This project reimagined how product teams collect, process, and act on user feedback by integrating AI-powered analysis into the existing workflow.</p>
+      <!-- Context -->
+      <div class="case-study-section">
+        <h2>Context</h2>
+        <p>We launched our platform to a small group of enterprise users and needed a way to collect meaningful feedback. The challenge? We had no idea what kind of feedback they'd share &mdash; it could be anything from a minor UI suggestion to a critical workflow blocker.</p>
+        <p>We needed a feedback experience that was fast, low-friction, and helped users articulate their thoughts clearly &mdash; even when they didn't know where to start.</p>
+      </div>
 
-      <h2>The Challenge</h2>
-      <p>The existing feedback system was fragmented — responses lived in spreadsheets, survey tools, and support tickets. Product managers spent weeks manually tagging and categorizing feedback before they could identify patterns. By the time insights surfaced, they were often outdated.</p>
+      <!-- The Problem -->
+      <div class="case-study-section">
+        <h2>The Problem</h2>
+        <p>Users struggle to write useful feedback. They either leave vague comments ("it's confusing"), over-explain with walls of text, or abandon the form entirely. For our team, this meant low-quality signal that was hard to act on.</p>
+        <p>We asked ourselves: <em>How might we reduce the effort of giving feedback while increasing its clarity?</em></p>
+      </div>
 
-      <h2>The Approach</h2>
-      <p>I led the design of a unified feedback hub that automatically ingests responses from multiple sources, uses natural language processing to cluster themes, and surfaces prioritized insights in real time. The design focused on progressive disclosure — keeping the interface simple for quick scanning while enabling deep dives for thorough analysis.</p>
+      <!-- The Solution -->
+      <div class="case-study-section">
+        <h2>The Solution</h2>
+        <p>A feedback modal enhanced with AI-powered features that guide users from a blank page to a well-structured submission &mdash; in seconds.</p>
+        <p>Three key design decisions:</p>
+        <ul class="case-study-design-decisions">
+          <li>Smart category chips to eliminate the blank-page problem</li>
+          <li>AI text polishing to turn rough thoughts into clear feedback</li>
+          <li>Impact severity cards to help prioritize without complicated forms</li>
+        </ul>
+      </div>
 
-      <h2>The Outcome</h2>
-      <p>Time-to-insight dropped by 40%. Product teams could now identify emerging themes within days instead of weeks. The tool was adopted across 12 teams within the first month of launch. Placeholder for additional metrics and testimonials you'd like to add.</p>
+      <!-- Walkthrough -->
+      <div class="case-study-section">
+        <h2>Walkthrough</h2>
+        <h3 style="margin-bottom:8px;">1. Starting Point &mdash; Eliminating the Blank Page</h3>
+
+        <!-- Embedded animation -->
+        <div class="anim-embed">
+          <div class="scene" id="animScene">
+            <div class="fb">
+              <div class="fb__header">
+                <h2 class="fb__title">Share your feedback</h2>
+                <button class="fb__close" aria-label="Close">
+                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 1L13 13M13 1L1 13" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="fb__body">
+                <div class="fb__field">
+                  <label class="fb__label">
+                    Tell us about your experience<span class="fb__required">*</span>
+                  </label>
+                  <div class="fb__textarea-wrap" id="aTextareaWrap">
+                    <div class="fb__textarea">
+                      <p class="fb__text fb__text--placeholder" id="aText">What's on your mind? Share a thought, suggestion, or issue.</p>
+                    </div>
+                    <div class="fb__gradient">
+                      <img src="assets/gradient-line.svg" alt="">
+                    </div>
+                    <div class="fb__toolbar">
+                      <div class="fb__attach">
+                        <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
+                        </svg>
+                      </div>
+                      <div class="fb__pills" id="aPills">
+                        <span class="fb__pill" id="aPill0">General thoughts</span>
+                        <span class="fb__pill" id="aPill1">Improve workflow</span>
+                        <span class="fb__pill" id="aPill2">Report a bug</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="fb__field">
+                  <label class="fb__label">How much is this issue impacting you?</label>
+                  <div class="fb__severity-cards">
+                    <div class="fb__severity-card">
+                      <svg width="25" height="25" viewBox="0 0 33 33" fill="none">
+                        <path d="M24.3066 4.14562C22.0275 1.98516 19.042 0.881719 15.8864 1.05187C9.97219 1.36641 5.15625 6.44531 5.15625 12.375C5.15625 15.9895 6.82172 19.305 9.72984 21.4655C10.4208 21.9811 10.8281 22.8216 10.8281 23.7188C10.8281 24.2859 11.2922 24.75 11.8594 24.75H21.1406C21.7078 24.75 22.1719 24.2859 22.1719 23.7188C22.1719 22.8216 22.5844 21.9759 23.2702 21.4655C26.1783 19.2998 27.8438 15.9895 27.8438 12.375C27.8438 9.22969 26.5856 6.30609 24.3066 4.14562Z" fill="#C2EDD2"/>
+                        <path d="M22.1719 23.7188H10.8281V27.3281C10.8281 28.7512 11.9831 29.9062 13.4062 29.9062H13.5816C14.0095 31.1077 15.1542 31.9688 16.5 31.9688C17.8458 31.9688 18.9905 31.1077 19.4184 29.9062H19.5938C21.0169 29.9062 22.1719 28.7512 22.1719 27.3281V23.7188ZM22.6875 13.4062C22.1203 13.4062 21.6562 12.9422 21.6562 12.375C21.6562 9.53391 19.3411 7.21875 16.5 7.21875C15.9328 7.21875 15.4688 6.75469 15.4688 6.1875C15.4688 5.62031 15.9328 5.15625 16.5 5.15625C20.4806 5.15625 23.7188 8.39438 23.7188 12.375C23.7188 12.9422 23.2547 13.4062 22.6875 13.4062Z" fill="#25A458"/>
+                      </svg>
+                      <span class="fb__severity-name">Minor</span>
+                      <span class="fb__severity-desc">Polished suggestion</span>
+                    </div>
+                    <div class="fb__severity-card">
+                      <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                        <path d="M30.2878 22.507L20.7745 5.60484C19.8877 4.03219 18.2892 3.09375 16.5 3.09375C14.7056 3.09375 13.1072 4.03219 12.2255 5.60484L2.71219 22.507C1.83563 24.0642 1.85109 25.9205 2.75344 27.4673C3.64547 28.9936 5.22844 29.9062 6.99188 29.9062H26.0184C27.7767 29.9062 29.3597 28.9936 30.2569 27.4673C31.1592 25.9205 31.1747 24.0694 30.2981 22.507H30.2878Z" fill="#F7E9AD"/>
+                        <path d="M16.5 19.5938C15.9328 19.5938 15.4688 19.1297 15.4688 18.5625V10.3125C15.4688 9.74531 15.9328 9.28125 16.5 9.28125C17.0672 9.28125 17.5312 9.74531 17.5312 10.3125V18.5625C17.5312 19.1297 17.0672 19.5938 16.5 19.5938Z" fill="#C07C16"/>
+                        <path d="M16.5 23.7188C17.0695 23.7188 17.5312 23.257 17.5312 22.6875C17.5312 22.118 17.0695 21.6562 16.5 21.6562C15.9305 21.6562 15.4688 22.118 15.4688 22.6875C15.4688 23.257 15.9305 23.7188 16.5 23.7188Z" fill="#C07C16"/>
+                      </svg>
+                      <span class="fb__severity-name">Moderate</span>
+                      <span class="fb__severity-desc">Annoying workflow</span>
+                    </div>
+                    <div class="fb__severity-card">
+                      <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                        <path d="M28.5 11.5L21.5 4.5H11.5L4.5 11.5V21.5L11.5 28.5H21.5L28.5 21.5Z" fill="#FFE1E2" stroke="#FFE1E2" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M21.39 11.61C20.99 11.21 20.34 11.21 19.94 11.61L16.5 15.05L13.06 11.61C12.66 11.21 12.01 11.21 11.61 11.61C11.21 12.01 11.21 12.66 11.61 13.06L15.05 16.5L11.61 19.94C11.21 20.34 11.21 20.99 11.61 21.39C11.81 21.59 12.07 21.69 12.34 21.69C12.6 21.69 12.86 21.59 13.06 21.39L16.5 17.95L19.94 21.39C20.14 21.59 20.4 21.69 20.66 21.69C20.93 21.69 21.19 21.59 21.39 21.39C21.79 20.99 21.79 20.34 21.39 19.94L17.95 16.5L21.39 13.06C21.79 12.66 21.79 12.01 21.39 11.61Z" fill="#AA0E19"/>
+                      </svg>
+                      <span class="fb__severity-name">Critical</span>
+                      <span class="fb__severity-desc">Blocking my work</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fb__footer">
+                <div class="fb__sender">
+                  <div class="fb__avatar">
+                    <img src="assets/avatar-woman.jpg" alt="User avatar" width="32" height="32">
+                  </div>
+                  <div class="fb__sender-info">
+                    <span class="fb__sender-label">Sending as</span>
+                    <span class="fb__sender-email">orhye@prescouter.com</span>
+                  </div>
+                </div>
+                <div class="fb__actions">
+                  <button class="fb__btn fb__btn--cancel fb__btn--disabled" id="aBtnDraft">Save as draft</button>
+                  <button class="fb__btn fb__btn--submit fb__btn--disabled" id="aBtnSubmit">Send feedback</button>
+                </div>
+              </div>
+            </div>
+
+            <img src="assets/pointing.svg" alt="" class="anim-cursor" id="aCursor" width="29" height="31">
+          </div>
+        </div>
+
+        <p>When the modal opens, users see three chips: <strong>General thoughts</strong>, <strong>Improve workflow</strong>, and <strong>Report a bug</strong>. These aren't just labels &mdash; hovering over a chip previews suggested text directly in the textarea. Nothing is committed until the user clicks.</p>
+        <p class="case-study-callout"><strong>Why this matters:</strong> It removes the anxiety of a blank textarea. Users can explore categories before committing, lowering the barrier to start writing.</p>
+      </div>
 
       <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
     </section>
@@ -55,5 +562,135 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    // ---- Inline animation (same logic as feedback-animation.html) ----
+    (function() {
+      const cursor = document.getElementById('aCursor');
+      const textEl = document.getElementById('aText');
+      const wrap = document.getElementById('aTextareaWrap');
+      const pills = document.getElementById('aPills');
+      const pill0 = document.getElementById('aPill0');
+      const pill1 = document.getElementById('aPill1');
+      const pill2 = document.getElementById('aPill2');
+      const btnDraft = document.getElementById('aBtnDraft');
+      const btnSubmit = document.getElementById('aBtnSubmit');
+      const scene = document.getElementById('animScene');
+
+      const PLACEHOLDER = "What\u2019s on your mind? Share a thought, suggestion, or issue.";
+      const PREVIEWS = [
+        "I\u2019d like to share some general thoughts about\u2026",
+        "It would be great if the workflow could\u2026",
+        "I encountered an issue while"
+      ];
+      const TYPED = "I encountered an issue while";
+
+      function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+      function moveTo(x, y, dur = 600) {
+        return new Promise(resolve => {
+          const sx = parseFloat(cursor.style.left) || 0;
+          const sy = parseFloat(cursor.style.top) || 0;
+          const t0 = performance.now();
+          function step(now) {
+            const t = Math.min((now - t0) / dur, 1);
+            const e = 1 - Math.pow(1 - t, 3);
+            cursor.style.left = (sx + (x - sx) * e) + 'px';
+            cursor.style.top = (sy + (y - sy) * e) + 'px';
+            t < 1 ? requestAnimationFrame(step) : resolve();
+          }
+          requestAnimationFrame(step);
+        });
+      }
+
+      function center(el) {
+        const sr = scene.getBoundingClientRect();
+        const pr = el.getBoundingClientRect();
+        return { x: pr.left - sr.left + pr.width / 2, y: pr.top - sr.top + pr.height / 2 + 6 };
+      }
+
+      function placeholder(t) {
+        textEl.textContent = t;
+        textEl.className = 'fb__text fb__text--placeholder';
+      }
+
+      function typed(t, caret) {
+        textEl.textContent = t;
+        textEl.className = 'fb__text fb__text--typed' + (caret ? ' fb__text--typing' : '');
+      }
+
+      function btns(disabled) {
+        btnDraft.classList.toggle('fb__btn--disabled', disabled);
+        btnSubmit.classList.toggle('fb__btn--disabled', disabled);
+      }
+
+      function hover(i) {
+        [pill0, pill1, pill2].forEach((p, j) => p.classList.toggle('fb__pill--hovered', j === i));
+      }
+
+      function clearHovers() {
+        [pill0, pill1, pill2].forEach(p => { p.classList.remove('fb__pill--hovered', 'fb__pill--clicked'); });
+      }
+
+      function reset() {
+        cursor.classList.remove('anim-cursor--visible');
+        cursor.style.left = '540px';
+        cursor.style.top = '240px';
+        placeholder(PLACEHOLDER);
+        btns(true);
+        pills.classList.remove('fb__pills--hidden');
+        clearHovers();
+        wrap.classList.remove('fb__textarea-wrap--focused');
+      }
+
+      async function loop() {
+        while (true) {
+          reset();
+          await wait(1500);
+
+          cursor.classList.add('anim-cursor--visible');
+          await wait(200);
+
+          // Hover General thoughts
+          const p0 = center(pill0);
+          await moveTo(p0.x, p0.y, 700);
+          hover(0);
+          placeholder(PREVIEWS[0]);
+          await wait(900);
+
+          // Hover Improve workflow
+          const p1 = center(pill1);
+          await moveTo(p1.x, p1.y, 500);
+          hover(1);
+          placeholder(PREVIEWS[1]);
+          await wait(900);
+
+          // Hover Report a bug
+          const p2 = center(pill2);
+          await moveTo(p2.x, p2.y, 500);
+          hover(2);
+          placeholder(PREVIEWS[2]);
+          await wait(800);
+
+          // Click
+          pill2.classList.add('fb__pill--clicked');
+          await wait(150);
+          pill2.classList.remove('fb__pill--clicked');
+
+          typed(TYPED, true);
+          wrap.classList.add('fb__textarea-wrap--focused');
+          pills.classList.add('fb__pills--hidden');
+          btns(false);
+
+          await wait(300);
+          cursor.classList.remove('anim-cursor--visible');
+
+          await wait(2500);
+          await wait(1500);
+        }
+      }
+
+      loop();
+    })();
+  </script>
 </body>
 </html>
