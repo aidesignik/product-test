@@ -474,19 +474,23 @@
     }
 
     // Smoothly animate cursor to a position (relative to .scene)
-    function moveCursorTo(x, y, duration = 600) {
+    function moveCursorTo(x, y, duration = 600, onApproach) {
       return new Promise(resolve => {
         const startX = parseFloat(cursor.style.left) || 0;
         const startY = parseFloat(cursor.style.top) || 0;
         const startTime = performance.now();
+        let approached = false;
 
         function step(now) {
           const elapsed = now - startTime;
           const t = Math.min(elapsed / duration, 1);
-          // Ease out cubic
           const ease = 1 - Math.pow(1 - t, 3);
           cursor.style.left = (startX + (x - startX) * ease) + 'px';
           cursor.style.top = (startY + (y - startY) * ease) + 'px';
+          if (!approached && t >= 0.5 && onApproach) {
+            approached = true;
+            onApproach();
+          }
           if (t < 1) {
             animFrame = requestAnimationFrame(step);
           } else {
@@ -585,23 +589,17 @@
 
         // 3. Move cursor to "General thoughts" chip
         const pos0 = getPillCenter(pill0);
-        await moveCursorTo(pos0.x, pos0.y, 700);
-        hoverPill(0);
-        setPlaceholder(CHIP_PREVIEWS[0]);
+        await moveCursorTo(pos0.x, pos0.y, 700, () => { hoverPill(0); setPlaceholder(CHIP_PREVIEWS[0]); });
         await wait(900);
 
         // 4. Move cursor to "Improve workflow" chip
         const pos1 = getPillCenter(pill1);
-        await moveCursorTo(pos1.x, pos1.y, 500);
-        hoverPill(1);
-        setPlaceholder(CHIP_PREVIEWS[1]);
+        await moveCursorTo(pos1.x, pos1.y, 500, () => { hoverPill(1); setPlaceholder(CHIP_PREVIEWS[1]); });
         await wait(900);
 
         // 5. Move cursor to "Report a bug" chip
         const pos2 = getPillCenter(pill2);
-        await moveCursorTo(pos2.x, pos2.y, 500);
-        hoverPill(2);
-        setPlaceholder(CHIP_PREVIEWS[2]);
+        await moveCursorTo(pos2.x, pos2.y, 500, () => { hoverPill(2); setPlaceholder(CHIP_PREVIEWS[2]); });
         await wait(800);
 
         // 6. Click "Report a bug"

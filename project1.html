@@ -10,6 +10,19 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* ---- Case study overrides ---- */
+    .case-study,
+    .case-study p,
+    .case-study h2,
+    .case-study h3,
+    .case-study li,
+    .case-study em,
+    .case-study strong,
+    .case-study-back,
+    .case-study-callout,
+    .page-header p {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
     .case-study h2:first-of-type { margin-top: 0; }
 
     .case-study-section { margin-bottom: 48px; }
@@ -255,7 +268,7 @@
       background: #fff;
       border: 1px solid rgba(166,162,180,0.4);
       border-radius: 12px;
-      padding: 24px 20px;
+      padding: 24px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -277,6 +290,7 @@
       font-size: 12px;
       font-weight: 400;
       color: #6c677f;
+      white-space: nowrap;
     }
 
     .anim-embed .fb__footer {
@@ -388,15 +402,31 @@
       opacity: 1;
     }
 
+    /* Scale the entire scene on smaller viewports to avoid layout breaks */
     @media (max-width: 768px) {
       .anim-embed {
         width: calc(100% + 48px);
         margin-left: -24px;
-        padding: 32px 12px;
+        padding: 32px 0;
       }
       .anim-embed .scene {
-        width: 100%;
-        max-width: 420px;
+        width: 520px;
+        transform: scale(0.75);
+        transform-origin: top center;
+      }
+      /* Collapse the space taken by the scaled-down scene */
+      .anim-embed {
+        height: calc((520px * 1.2) * 0.75 + 64px);
+        overflow: hidden;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .anim-embed .scene {
+        transform: scale(0.58);
+      }
+      .anim-embed {
+        height: calc((520px * 1.2) * 0.58 + 64px);
       }
     }
   </style>
@@ -586,16 +616,21 @@
 
       function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-      function moveTo(x, y, dur = 600) {
+      function moveTo(x, y, dur = 600, onApproach) {
         return new Promise(resolve => {
           const sx = parseFloat(cursor.style.left) || 0;
           const sy = parseFloat(cursor.style.top) || 0;
           const t0 = performance.now();
+          let approached = false;
           function step(now) {
             const t = Math.min((now - t0) / dur, 1);
             const e = 1 - Math.pow(1 - t, 3);
             cursor.style.left = (sx + (x - sx) * e) + 'px';
             cursor.style.top = (sy + (y - sy) * e) + 'px';
+            if (!approached && t >= 0.5 && onApproach) {
+              approached = true;
+              onApproach();
+            }
             t < 1 ? requestAnimationFrame(step) : resolve();
           }
           requestAnimationFrame(step);
@@ -652,23 +687,17 @@
 
           // Hover General thoughts
           const p0 = center(pill0);
-          await moveTo(p0.x, p0.y, 700);
-          hover(0);
-          placeholder(PREVIEWS[0]);
+          await moveTo(p0.x, p0.y, 700, () => { hover(0); placeholder(PREVIEWS[0]); });
           await wait(900);
 
           // Hover Improve workflow
           const p1 = center(pill1);
-          await moveTo(p1.x, p1.y, 500);
-          hover(1);
-          placeholder(PREVIEWS[1]);
+          await moveTo(p1.x, p1.y, 500, () => { hover(1); placeholder(PREVIEWS[1]); });
           await wait(900);
 
           // Hover Report a bug
           const p2 = center(pill2);
-          await moveTo(p2.x, p2.y, 500);
-          hover(2);
-          placeholder(PREVIEWS[2]);
+          await moveTo(p2.x, p2.y, 500, () => { hover(2); placeholder(PREVIEWS[2]); });
           await wait(800);
 
           // Click
