@@ -583,7 +583,10 @@
         resetState();
         await wait(1500);
 
-        // 2. Cursor appears and enters from the right
+        // 2. Pause before cursor appears
+        await wait(4000);
+
+        // 3. Cursor appears and enters from the right
         cursor.classList.add('anim-cursor--visible');
         await wait(200);
 
