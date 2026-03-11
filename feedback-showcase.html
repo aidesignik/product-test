@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Feedback Form — Ivan Kisin</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="feedback-showcase.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700&family=Julius+Sans+One&family=Nunito:wght@400;600&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">IK</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">Portfolio</a>
+        <a href="coaching.html" class="nav-link">Coaching</a>
+        <a href="resume.pdf" class="nav-link" target="_blank" rel="noopener">Resume</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="showcase">
+      <div class="showcase-header">
+        <h1>AI-Powered Feedback</h1>
+        <p>Using AI to help users articulate feedback with smart categorization and severity tagging</p>
+      </div>
+
+      <div class="showcase-canvas">
+        <!-- Desktop Version -->
+        <div class="device device--desktop">
+          <div class="feedback-form">
+            <div class="feedback-form__header">
+              <h2 class="feedback-form__title">Share your feedback</h2>
+              <button class="feedback-form__close-btn" aria-label="Close">
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+                  <path d="M1 1L13 13M13 1L1 13" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="feedback-form__body">
+              <!-- Text area section -->
+              <div class="feedback-form__field">
+                <label class="feedback-form__label">
+                  Tell us about your experience<span class="feedback-form__required">*</span>
+                </label>
+                <div class="feedback-form__textarea-wrap">
+                  <div class="feedback-form__textarea">
+                    <p class="feedback-form__textarea-text">I encountered an issue while</p>
+                  </div>
+                  <div class="feedback-form__gradient-line">
+                    <img src="assets/gradient-line.svg" alt="" class="feedback-form__gradient-line-img">
+                  </div>
+                  <div class="feedback-form__toolbar">
+                    <div class="feedback-form__attach-btn">
+                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
+                      </svg>
+                    </div>
+                    <div class="feedback-form__pills">
+                      <span class="feedback-form__pill">General thoughts</span>
+                      <span class="feedback-form__pill">Improve workflow</span>
+                      <span class="feedback-form__pill feedback-form__pill--active">Report a bug</span>
+                    </div>
+                    <div class="feedback-form__cursor">
+                      <img src="assets/pointing.svg" alt="" width="29" height="31">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Severity section -->
+              <div class="feedback-form__field">
+                <label class="feedback-form__label">
+                  How much is this issue impacting you right now?
+                </label>
+                <div class="feedback-form__severity-cards">
+                  <div class="feedback-form__severity-card">
+                    <svg class="feedback-form__severity-img" width="25" height="25" viewBox="0 0 33 33" fill="none">
+                      <path d="M24.3066 4.14562C22.0275 1.98516 19.042 0.881719 15.8864 1.05187C9.97219 1.36641 5.15625 6.44531 5.15625 12.375C5.15625 15.9895 6.82172 19.305 9.72984 21.4655C10.4208 21.9811 10.8281 22.8216 10.8281 23.7188C10.8281 24.2859 11.2922 24.75 11.8594 24.75H21.1406C21.7078 24.75 22.1719 24.2859 22.1719 23.7188C22.1719 22.8216 22.5844 21.9759 23.2702 21.4655C26.1783 19.2998 27.8438 15.9895 27.8438 12.375C27.8438 9.22969 26.5856 6.30609 24.3066 4.14562Z" fill="#C2EDD2"/>
+                      <path d="M22.1719 23.7188H10.8281V27.3281C10.8281 28.7512 11.9831 29.9062 13.4062 29.9062H13.5816C14.0095 31.1077 15.1542 31.9688 16.5 31.9688C17.8458 31.9688 18.9905 31.1077 19.4184 29.9062H19.5938C21.0169 29.9062 22.1719 28.7512 22.1719 27.3281V23.7188ZM22.6875 13.4062C22.1203 13.4062 21.6562 12.9422 21.6562 12.375C21.6562 9.53391 19.3411 7.21875 16.5 7.21875C15.9328 7.21875 15.4688 6.75469 15.4688 6.1875C15.4688 5.62031 15.9328 5.15625 16.5 5.15625C20.4806 5.15625 23.7188 8.39438 23.7188 12.375C23.7188 12.9422 23.2547 13.4062 22.6875 13.4062Z" fill="#25A458"/>
+                    </svg>
+                    <span class="feedback-form__severity-name">Minor</span>
+                    <span class="feedback-form__severity-desc">Polished suggestion</span>
+                  </div>
+                  <div class="feedback-form__severity-card">
+                    <svg class="feedback-form__severity-img" width="28" height="28" viewBox="0 0 33 33" fill="none">
+                      <path d="M30.2878 22.507L20.7745 5.60484C19.8877 4.03219 18.2892 3.09375 16.5 3.09375C14.7056 3.09375 13.1072 4.03219 12.2255 5.60484L2.71219 22.507C1.83563 24.0642 1.85109 25.9205 2.75344 27.4673C3.64547 28.9936 5.22844 29.9062 6.99188 29.9062H26.0184C27.7767 29.9062 29.3597 28.9936 30.2569 27.4673C31.1592 25.9205 31.1747 24.0694 30.2981 22.507H30.2878Z" fill="#F7E9AD"/>
+                      <path d="M16.5 19.5938C15.9328 19.5938 15.4688 19.1297 15.4688 18.5625V10.3125C15.4688 9.74531 15.9328 9.28125 16.5 9.28125C17.0672 9.28125 17.5312 9.74531 17.5312 10.3125V18.5625C17.5312 19.1297 17.0672 19.5938 16.5 19.5938Z" fill="#C07C16"/>
+                      <path d="M16.5 23.7188C17.0695 23.7188 17.5312 23.257 17.5312 22.6875C17.5312 22.118 17.0695 21.6562 16.5 21.6562C15.9305 21.6562 15.4688 22.118 15.4688 22.6875C15.4688 23.257 15.9305 23.7188 16.5 23.7188Z" fill="#C07C16"/>
+                    </svg>
+                    <span class="feedback-form__severity-name">Moderate</span>
+                    <span class="feedback-form__severity-desc">Annoying workflow</span>
+                  </div>
+                  <div class="feedback-form__severity-card">
+                    <svg class="feedback-form__severity-img" width="28" height="28" viewBox="0 0 33 33" fill="none">
+                      <path d="M28.5 11.5L21.5 4.5H11.5L4.5 11.5V21.5L11.5 28.5H21.5L28.5 21.5Z" fill="#FFE1E2" stroke="#FFE1E2" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M21.39 11.61C20.99 11.21 20.34 11.21 19.94 11.61L16.5 15.05L13.06 11.61C12.66 11.21 12.01 11.21 11.61 11.61C11.21 12.01 11.21 12.66 11.61 13.06L15.05 16.5L11.61 19.94C11.21 20.34 11.21 20.99 11.61 21.39C11.81 21.59 12.07 21.69 12.34 21.69C12.6 21.69 12.86 21.59 13.06 21.39L16.5 17.95L19.94 21.39C20.14 21.59 20.4 21.69 20.66 21.69C20.93 21.69 21.19 21.59 21.39 21.39C21.79 20.99 21.79 20.34 21.39 19.94L17.95 16.5L21.39 13.06C21.79 12.66 21.79 12.01 21.39 11.61Z" fill="#AA0E19"/>
+                    </svg>
+                    <span class="feedback-form__severity-name">Critical</span>
+                    <span class="feedback-form__severity-desc">Blocking my work</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="feedback-form__footer">
+              <div class="feedback-form__sender">
+                <div class="feedback-form__avatar">
+                  <img src="assets/avatar.png" alt="User avatar" width="32" height="32">
+                </div>
+                <div class="feedback-form__sender-info">
+                  <span class="feedback-form__sender-label">Sending as</span>
+                  <span class="feedback-form__sender-email">orhye@prescouter.com</span>
+                </div>
+              </div>
+              <div class="feedback-form__actions">
+                <button class="feedback-form__btn feedback-form__btn--cancel">Save as draft</button>
+                <button class="feedback-form__btn feedback-form__btn--submit">Send feedback</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Version -->
+        <div class="device device--mobile">
+            <div class="feedback-form feedback-form--mobile">
+              <div class="feedback-form__header">
+                <button class="feedback-form__close-btn" aria-label="Close">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 1L13 13M13 1L1 13" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+                <h2 class="feedback-form__title">Share your feedback</h2>
+                <div class="feedback-form__header-spacer"></div>
+              </div>
+
+              <div class="feedback-form__body">
+                <div class="feedback-form__field">
+                  <label class="feedback-form__label">
+                    Tell us about your experience<span class="feedback-form__required">*</span>
+                  </label>
+                  <div class="feedback-form__textarea-wrap">
+                    <div class="feedback-form__textarea">
+                      <p class="feedback-form__textarea-text">I encountered an issue while</p>
+                    </div>
+                    <div class="feedback-form__gradient-line">
+                      <img src="assets/gradient-line.svg" alt="" class="feedback-form__gradient-line-img">
+                    </div>
+                    <div class="feedback-form__toolbar">
+                      <div class="feedback-form__attach-btn">
+                        <svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
+                        </svg>
+                      </div>
+                      <div class="feedback-form__pills">
+                        <span class="feedback-form__pill">Improve workflow</span>
+                        <span class="feedback-form__pill feedback-form__pill--confirm">Tap again to confirm</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="feedback-form__field">
+                  <label class="feedback-form__label">
+                    How much is this issue impacting you right now?
+                  </label>
+                  <div class="feedback-form__severity-cards">
+                    <div class="feedback-form__severity-card">
+                      <svg class="feedback-form__severity-img" width="19" height="19" viewBox="0 0 33 33" fill="none">
+                        <path d="M24.3066 4.14562C22.0275 1.98516 19.042 0.881719 15.8864 1.05187C9.97219 1.36641 5.15625 6.44531 5.15625 12.375C5.15625 15.9895 6.82172 19.305 9.72984 21.4655C10.4208 21.9811 10.8281 22.8216 10.8281 23.7188C10.8281 24.2859 11.2922 24.75 11.8594 24.75H21.1406C21.7078 24.75 22.1719 24.2859 22.1719 23.7188C22.1719 22.8216 22.5844 21.9759 23.2702 21.4655C26.1783 19.2998 27.8438 15.9895 27.8438 12.375C27.8438 9.22969 26.5856 6.30609 24.3066 4.14562Z" fill="#C2EDD2"/>
+                        <path d="M22.1719 23.7188H10.8281V27.3281C10.8281 28.7512 11.9831 29.9062 13.4062 29.9062H13.5816C14.0095 31.1077 15.1542 31.9688 16.5 31.9688C17.8458 31.9688 18.9905 31.1077 19.4184 29.9062H19.5938C21.0169 29.9062 22.1719 28.7512 22.1719 27.3281V23.7188ZM22.6875 13.4062C22.1203 13.4062 21.6562 12.9422 21.6562 12.375C21.6562 9.53391 19.3411 7.21875 16.5 7.21875C15.9328 7.21875 15.4688 6.75469 15.4688 6.1875C15.4688 5.62031 15.9328 5.15625 16.5 5.15625C20.4806 5.15625 23.7188 8.39438 23.7188 12.375C23.7188 12.9422 23.2547 13.4062 22.6875 13.4062Z" fill="#25A458"/>
+                      </svg>
+                      <span class="feedback-form__severity-name">Minor</span>
+                      <span class="feedback-form__severity-desc">Polished suggestion</span>
+                    </div>
+                    <div class="feedback-form__severity-card">
+                      <svg class="feedback-form__severity-img" width="22" height="22" viewBox="0 0 33 33" fill="none">
+                        <path d="M30.2878 22.507L20.7745 5.60484C19.8877 4.03219 18.2892 3.09375 16.5 3.09375C14.7056 3.09375 13.1072 4.03219 12.2255 5.60484L2.71219 22.507C1.83563 24.0642 1.85109 25.9205 2.75344 27.4673C3.64547 28.9936 5.22844 29.9062 6.99188 29.9062H26.0184C27.7767 29.9062 29.3597 28.9936 30.2569 27.4673C31.1592 25.9205 31.1747 24.0694 30.2981 22.507H30.2878Z" fill="#F7E9AD"/>
+                        <path d="M16.5 19.5938C15.9328 19.5938 15.4688 19.1297 15.4688 18.5625V10.3125C15.4688 9.74531 15.9328 9.28125 16.5 9.28125C17.0672 9.28125 17.5312 9.74531 17.5312 10.3125V18.5625C17.5312 19.1297 17.0672 19.5938 16.5 19.5938Z" fill="#C07C16"/>
+                        <path d="M16.5 23.7188C17.0695 23.7188 17.5312 23.257 17.5312 22.6875C17.5312 22.118 17.0695 21.6562 16.5 21.6562C15.9305 21.6562 15.4688 22.118 15.4688 22.6875C15.4688 23.257 15.9305 23.7188 16.5 23.7188Z" fill="#C07C16"/>
+                      </svg>
+                      <span class="feedback-form__severity-name">Moderate</span>
+                      <span class="feedback-form__severity-desc">Annoying workflow</span>
+                    </div>
+                    <div class="feedback-form__severity-card">
+                      <svg class="feedback-form__severity-img" width="22" height="22" viewBox="0 0 33 33" fill="none">
+                        <path d="M28.5 11.5L21.5 4.5H11.5L4.5 11.5V21.5L11.5 28.5H21.5L28.5 21.5Z" fill="#FFE1E2" stroke="#FFE1E2" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M21.39 11.61C20.99 11.21 20.34 11.21 19.94 11.61L16.5 15.05L13.06 11.61C12.66 11.21 12.01 11.21 11.61 11.61C11.21 12.01 11.21 12.66 11.61 13.06L15.05 16.5L11.61 19.94C11.21 20.34 11.21 20.99 11.61 21.39C11.81 21.59 12.07 21.69 12.34 21.69C12.6 21.69 12.86 21.59 13.06 21.39L16.5 17.95L19.94 21.39C20.14 21.59 20.4 21.69 20.66 21.69C20.93 21.69 21.19 21.59 21.39 21.39C21.79 20.99 21.79 20.34 21.39 19.94L17.95 16.5L21.39 13.06C21.79 12.66 21.79 12.01 21.39 11.61Z" fill="#AA0E19"/>
+                      </svg>
+                      <span class="feedback-form__severity-name">Critical</span>
+                      <span class="feedback-form__severity-desc">Blocking my work</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="feedback-form__footer">
+                <div class="feedback-form__sender">
+                  <div class="feedback-form__avatar">
+                    <img src="assets/avatar.png" alt="User avatar" width="26" height="26">
+                  </div>
+                  <div class="feedback-form__sender-info">
+                    <span class="feedback-form__sender-label">Sending as</span>
+                    <span class="feedback-form__sender-email">orhye@prescouter.com</span>
+                  </div>
+                </div>
+                <div class="feedback-form__actions">
+                  <button class="feedback-form__btn feedback-form__btn--cancel">Save as draft</button>
+                  <button class="feedback-form__btn feedback-form__btn--submit">Send feedback</button>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Ivan Kisin. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
