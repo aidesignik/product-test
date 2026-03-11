@@ -682,6 +682,9 @@
           reset();
           await wait(1500);
 
+          // Extra pause before cursor appears
+          await wait(4000);
+
           cursor.classList.add('anim-cursor--visible');
           await wait(200);
 
