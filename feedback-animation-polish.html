@@ -187,6 +187,127 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      position: relative;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .feedback-form__attach-btn--hovered {
+      background: #f0f1f8;
+      box-shadow: 0 2px 6px rgba(66, 87, 255, 0.15);
+    }
+
+    /* ---- Attach tooltip ---- */
+    .feedback-form__attach-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 10;
+    }
+
+    .feedback-form__attach-tooltip--visible {
+      opacity: 1;
+    }
+
+    .feedback-form__attach-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: #1a1a1a;
+      border-radius: 1px;
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    /* ---- Supporting documents ---- */
+    .feedback-form__documents {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feedback-form__documents--visible {
+      display: flex;
+    }
+
+    .feedback-form__documents-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: #0d0d0d;
+      line-height: 16px;
+    }
+
+    .feedback-form__file-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: 1px solid #e8e8ec;
+      border-radius: 10px;
+      padding: 6px 8px;
+    }
+
+    .feedback-form__file-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #fee2e2;
+      color: #dc2626;
+      font-size: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: 0.3px;
+    }
+
+    .feedback-form__file-name {
+      font-size: 12px;
+      font-weight: 400;
+      color: #0d0d0d;
+      line-height: 16px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .feedback-form__file-spinner {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid #e8e8ec;
+      border-top-color: #4257ff;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .feedback-form__file-check {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    .feedback-form__file-check--visible {
+      display: block;
+    }
+
+    .feedback-form__file-spinner--hidden {
+      display: none;
     }
 
     /* ---- Polishing status (centered in toolbar) ---- */
@@ -383,6 +504,19 @@
       box-shadow: 0 3px 8px rgba(78,44,110,0.07);
       min-height: 118px;
       justify-content: center;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feedback-form__severity-card--hovered {
+      border-color: rgba(66, 87, 255, 0.4);
+      box-shadow: 0 3px 10px rgba(66, 87, 255, 0.1);
+    }
+
+    .feedback-form__severity-card--selected {
+      border: 2px solid #4257ff;
+      padding: 23px 19px;
+      background: rgba(66, 87, 255, 0.04);
+      box-shadow: 0 3px 12px rgba(66, 87, 255, 0.15);
     }
 
     .feedback-form__severity-name {
@@ -484,6 +618,14 @@
       min-width: 144px;
     }
 
+    .feedback-form__btn--submit--hovered {
+      background: #3345d9;
+    }
+
+    .feedback-form__btn--submit--pressed {
+      background: #2a38b8;
+    }
+
     /* Disabled state */
     .feedback-form__btn--disabled {
       opacity: 0.4;
@@ -505,6 +647,42 @@
 
     .anim-cursor--visible {
       opacity: 1;
+    }
+
+    /* ---- Snackbar confirmation ---- */
+    .feedback-form__snackbar {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateY(8px);
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .feedback-form__snackbar--visible {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    .feedback-form__snackbar-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .feedback-form__snackbar-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.3;
     }
 
     /* ---- Wave-uncover AI text rendering ---- */
@@ -541,7 +719,8 @@
             </div>
             <div class="feedback-form__toolbar">
               <div class="feedback-form__toolbar-left">
-                <div class="feedback-form__attach-btn">
+                <div class="feedback-form__attach-btn" id="attachBtn">
+                  <div class="feedback-form__attach-tooltip" id="attachTooltip">Add supporting documents</div>
                   <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
                   </svg>
@@ -576,6 +755,20 @@
           </div>
         </div>
 
+        <!-- Supporting documents (hidden initially) -->
+        <div class="feedback-form__documents" id="documents">
+          <span class="feedback-form__documents-label">Supporting documents</span>
+          <div class="feedback-form__file-row">
+            <div class="feedback-form__file-icon" style="background: #dbeafe; color: #2563eb;">PNG</div>
+            <span class="feedback-form__file-name">Screenshot 12. 02. 26</span>
+            <div class="feedback-form__file-spinner" id="fileSpinner"></div>
+            <svg class="feedback-form__file-check" id="fileCheck" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="9" stroke="#25A458" stroke-width="1.5"/>
+              <path d="M6 10.5L8.5 13L14 7.5" stroke="#25A458" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
         <div class="feedback-form__field">
           <label class="feedback-form__label">
             How much is this issue impacting you right now?
@@ -589,7 +782,7 @@
               <span class="feedback-form__severity-name">Minor</span>
               <span class="feedback-form__severity-desc">Polished suggestion</span>
             </div>
-            <div class="feedback-form__severity-card">
+            <div class="feedback-form__severity-card" id="severityModerate">
               <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
                 <path d="M30.2878 22.507L20.7745 5.60484C19.8877 4.03219 18.2892 3.09375 16.5 3.09375C14.7056 3.09375 13.1072 4.03219 12.2255 5.60484L2.71219 22.507C1.83563 24.0642 1.85109 25.9205 2.75344 27.4673C3.64547 28.9936 5.22844 29.9062 6.99188 29.9062H26.0184C27.7767 29.9062 29.3597 28.9936 30.2569 27.4673C31.1592 25.9205 31.1747 24.0694 30.2981 22.507H30.2878Z" fill="#F7E9AD"/>
                 <path d="M16.5 19.5938C15.9328 19.5938 15.4688 19.1297 15.4688 18.5625V10.3125C15.4688 9.74531 15.9328 9.28125 16.5 9.28125C17.0672 9.28125 17.5312 9.74531 17.5312 10.3125V18.5625C17.5312 19.1297 17.0672 19.5938 16.5 19.5938Z" fill="#C07C16"/>
@@ -627,6 +820,15 @@
       </div>
     </div>
 
+    <!-- Snackbar confirmation -->
+    <div class="feedback-form__snackbar" id="snackbar">
+      <svg class="feedback-form__snackbar-icon" width="16" height="16" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="9" stroke="#4ade80" stroke-width="1.5"/>
+        <path d="M6 10.5L8.5 13L14 7.5" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="feedback-form__snackbar-text">Feedback submitted! We'll get back to you soon.</span>
+    </div>
+
     <!-- Animated cursor -->
     <img src="assets/pointing.svg" alt="" class="anim-cursor" id="cursor" width="29" height="31">
   </div>
@@ -645,6 +847,14 @@
     const undoBar = document.getElementById('undoBar');
     const btnDraft = document.getElementById('btnDraft');
     const btnSubmit = document.getElementById('btnSubmit');
+    const severityModerate = document.getElementById('severityModerate');
+    const attachBtn = document.getElementById('attachBtn');
+    const attachTooltip = document.getElementById('attachTooltip');
+    const documents = document.getElementById('documents');
+    const fileSpinner = document.getElementById('fileSpinner');
+    const fileCheck = document.getElementById('fileCheck');
+    const snackbar = document.getElementById('snackbar');
+    const feedbackForm = document.querySelector('.feedback-form');
     const scene = document.querySelector('.scene');
 
     const PLACEHOLDER = "What's on your mind? Share a thought, suggestion, or issue.";
@@ -811,125 +1021,188 @@
       });
     }
 
-    // Reset everything to initial state
-    function resetState() {
+    // Set the post-generation state: AI text rendered, undo bar visible
+    function setPostGenerationState() {
+      // Hide cursor off-screen
       cursor.classList.remove('anim-cursor--visible');
       cursor.style.left = '580px';
-      cursor.style.top = '260px';
-      setPlaceholder(PLACEHOLDER);
-      setButtonsDisabled(true);
-      showPills();
-      hideAiPolish();
+      cursor.style.top = '400px';
 
-      // Reset textarea scroll position
-      document.querySelector('.feedback-form__textarea').scrollTop = 0;
+      // Textarea unfocused with AI-polished text (fully visible)
       textareaWrap.classList.remove('feedback-form__textarea-wrap--focused');
+      textareaText.textContent = '';
+      textareaText.className = 'feedback-form__textarea-text feedback-form__textarea-text--typed';
+      const words = AI_POLISHED_TEXT.split(' ');
+      words.forEach((word, idx) => {
+        const span = document.createElement('span');
+        span.className = 'ai-word';
+        span.textContent = (idx > 0 ? ' ' : '') + word;
+        span.style.opacity = '1';
+        textareaText.appendChild(span);
+      });
+      document.querySelector('.feedback-form__textarea').scrollTop = 0;
 
-      // Reset AI polish button
+      // Buttons active, chips hidden, AI polish button visible
+      setButtonsDisabled(false);
+      hidePills();
+      showAiPolish();
+
+      // AI button in normal state (not spinning)
       aiIcon.style.display = 'block';
       aiSpinner.classList.remove('feedback-form__ai-spinner--active');
       aiPolishBtn.classList.remove('feedback-form__ai-polish-btn--hovered');
       aiTooltip.classList.remove('feedback-form__ai-tooltip--visible');
 
-      // Reset status areas
+      // Polishing done — undo bar visible
       polishStatus.classList.remove('feedback-form__polish-status--visible');
-      undoBar.classList.remove('feedback-form__undo-bar--visible');
+      undoBar.classList.add('feedback-form__undo-bar--visible');
+
+      // Severity not selected yet
+      severityModerate.classList.remove('feedback-form__severity-card--hovered');
+      severityModerate.classList.remove('feedback-form__severity-card--selected');
+
+      // Reset submit button states
+      btnSubmit.classList.remove('feedback-form__btn--submit--hovered');
+      btnSubmit.classList.remove('feedback-form__btn--submit--pressed');
+
+      // Reset attach button and supporting documents
+      attachBtn.classList.remove('feedback-form__attach-btn--hovered');
+      attachTooltip.classList.remove('feedback-form__attach-tooltip--visible');
+      documents.classList.remove('feedback-form__documents--visible');
+      fileSpinner.classList.remove('feedback-form__file-spinner--hidden');
+      fileCheck.classList.remove('feedback-form__file-check--visible');
+
+      // Reset snackbar and form visibility
+      snackbar.classList.remove('feedback-form__snackbar--visible');
+      snackbar.style.transition = '';
+      snackbar.style.opacity = '';
+      snackbar.style.transform = '';
+      feedbackForm.style.opacity = '';
+      feedbackForm.style.transform = '';
+      feedbackForm.style.transition = '';
     }
 
     async function runAnimation() {
       while (running) {
-        // 1. Reset to initial state — default form with placeholder & chips
-        resetState();
+        // 1. Start from post-generation state (text rendered, undo bar showing)
+        setPostGenerationState();
         await wait(1500);
 
-        // 2. Cursor appears from right and moves toward the textarea
+        // 2. Cursor appears and moves toward the attach button
         cursor.classList.add('anim-cursor--visible');
         await wait(200);
-        const textareaRect = textareaText.getBoundingClientRect();
-        const sceneRect = scene.getBoundingClientRect();
-        const textareaClickX = textareaRect.left - sceneRect.left + 40;
-        const textareaClickY = textareaRect.top - sceneRect.top + 20;
-        await moveCursorTo(textareaClickX, textareaClickY, 800);
+        const attachPos = getElementCenter(attachBtn);
+        await moveCursorTo(attachPos.x, attachPos.y, 700);
+
+        // 3. Hover the attach button — tooltip appears
+        attachBtn.classList.add('feedback-form__attach-btn--hovered');
         await wait(300);
-
-        // 3. Click the textarea — border turns blue, cursor appears
-        textareaWrap.classList.add('feedback-form__textarea-wrap--focused');
-        setTypedText('', true);
-        await wait(400);
-
-        // 4. Hide mouse cursor, user starts typing — chips fade out, buttons active
-        cursor.classList.remove('anim-cursor--visible');
-        await wait(300);
-        hidePills();
-        setButtonsDisabled(false);
-        await wait(200);
-
-        // 5. Type user text (slightly slower) — AI button appears after 5 words
-        let aiShown = false;
-        await typeText(USER_TEXT, 1, 55, (wordCount) => {
-          if (wordCount >= 5 && !aiShown) {
-            aiShown = true;
-            showAiPolish();
-          }
-        });
-
-        await wait(800);
-
-        // 6. Cursor reappears and moves toward AI button
-        cursor.classList.add('anim-cursor--visible');
-        await wait(200);
-        const aiPos = getElementCenter(aiPolishBtn);
-        await moveCursorTo(aiPos.x, aiPos.y + 2, 700);
-
-        // 7. Hover state on AI button — tooltip appears
-        aiPolishBtn.classList.add('feedback-form__ai-polish-btn--hovered');
-        await wait(300);
-        aiTooltip.classList.add('feedback-form__ai-tooltip--visible');
+        attachTooltip.classList.add('feedback-form__attach-tooltip--visible');
         await wait(1200);
 
-        // 8. Click the AI button
-        // Brief scale-down effect via transform
-        aiPolishBtn.style.transform = 'scale(0.92)';
+        // 4. Click the attach button (scale the icon only, not the container with tooltip)
+        const attachIcon = attachBtn.querySelector('svg');
+        attachIcon.style.transition = 'transform 0.1s ease';
+        attachIcon.style.transform = 'scale(0.85)';
         await wait(100);
-        aiPolishBtn.style.transform = '';
+        attachIcon.style.transform = '';
+        await wait(100);
+        attachIcon.style.transition = '';
         await wait(100);
 
-        // 9. Loading state — icon becomes spinner, tooltip hides
-        aiTooltip.classList.remove('feedback-form__ai-tooltip--visible');
-        aiIcon.style.display = 'none';
-        aiSpinner.classList.add('feedback-form__ai-spinner--active');
-        aiPolishBtn.classList.remove('feedback-form__ai-polish-btn--hovered');
+        // 5. Now hide tooltip and hover after click
+        await wait(200);
+        attachTooltip.classList.remove('feedback-form__attach-tooltip--visible');
+        attachBtn.classList.remove('feedback-form__attach-btn--hovered');
 
-        // Hide cursor after click
+        // 6. Hide cursor after click
         await wait(200);
         cursor.classList.remove('anim-cursor--visible');
 
-        // 10. Show "Polishing..." status text next to attach icon
-        polishStatus.classList.add('feedback-form__polish-status--visible');
+        // 7. Supporting documents section appears with file loading
+        await wait(300);
+        documents.classList.add('feedback-form__documents--visible');
+        await wait(2000);
 
-        // Clear textarea text to show it's being processed
-        textareaText.textContent = '';
-        textareaText.className = 'feedback-form__textarea-text feedback-form__textarea-text--typed';
-        await wait(1200);
+        // 8. File upload completes — spinner replaced by checkmark
+        fileSpinner.classList.add('feedback-form__file-spinner--hidden');
+        fileCheck.classList.add('feedback-form__file-check--visible');
+        await wait(1000);
 
-        // 11. AI text renders character by character with blue cursor
-        await renderAiText(AI_POLISHED_TEXT);
+        // 9. Cursor reappears and moves toward "Moderate" severity card
+        cursor.classList.add('anim-cursor--visible');
+        await wait(200);
+        const moderatePos = getElementCenter(severityModerate);
+        // Add hover state while cursor is still approaching (after 400ms of 800ms movement)
+        setTimeout(() => {
+          severityModerate.classList.add('feedback-form__severity-card--hovered');
+        }, 400);
+        await moveCursorTo(moderatePos.x, moderatePos.y, 800);
+
+        // 10. Brief pause on hover before clicking
         await wait(400);
 
-        // 12. Generation done — spinner stops, icon returns
-        aiSpinner.classList.remove('feedback-form__ai-spinner--active');
-        aiIcon.style.display = 'block';
+        // 11. Click the "Moderate" card — selection stroke (no scale)
+        severityModerate.classList.remove('feedback-form__severity-card--hovered');
+        severityModerate.classList.add('feedback-form__severity-card--selected');
 
-        // Hide polishing status, show undo bar
-        polishStatus.classList.remove('feedback-form__polish-status--visible');
+        // 11. Hide cursor after click
+        await wait(300);
+        cursor.classList.remove('anim-cursor--visible');
+
+        // 12. Hold state with Moderate selected
+        await wait(1500);
+
+        // 13. Cursor reappears and moves toward "Send feedback" button
+        cursor.classList.add('anim-cursor--visible');
         await wait(200);
-        undoBar.classList.add('feedback-form__undo-bar--visible');
+        const submitPos = getElementCenter(btnSubmit);
+        // Add hover partway through cursor movement
+        setTimeout(() => {
+          btnSubmit.classList.add('feedback-form__btn--submit--hovered');
+        }, 350);
+        await moveCursorTo(submitPos.x, submitPos.y, 700);
+        await wait(400);
 
-        // 13. Hold final state
+        // 14. Click "Send feedback" — darken color for pressed state
+        btnSubmit.classList.remove('feedback-form__btn--submit--hovered');
+        btnSubmit.classList.add('feedback-form__btn--submit--pressed');
+        await wait(150);
+        btnSubmit.classList.remove('feedback-form__btn--submit--pressed');
+        await wait(100);
+
+        // 15. Hide cursor
+        cursor.classList.remove('anim-cursor--visible');
+        await wait(200);
+
+        // 16. Form shrinks and morphs into snackbar — single smooth animation
+        feedbackForm.style.transition = 'opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+        feedbackForm.style.transform = 'scale(0.35)';
+        feedbackForm.style.opacity = '0';
+        // Prep snackbar while form is collapsing (hidden, scaled down)
+        snackbar.style.transition = 'none';
+        snackbar.style.opacity = '0';
+        snackbar.style.transform = 'translate(-50%, -50%) scale(0.5)';
+        snackbar.classList.add('feedback-form__snackbar--visible');
+        // Wait for form collapse to finish
+        await wait(450);
+        // Snackbar emerges right after
+        snackbar.offsetHeight;
+        snackbar.style.transition = 'opacity 0.3s cubic-bezier(0, 0, 0.2, 1), transform 0.3s cubic-bezier(0, 0, 0.2, 1)';
+        snackbar.style.opacity = '1';
+        snackbar.style.transform = 'translate(-50%, -50%) scale(1)';
+
+        // 17. Hold snackbar state
         await wait(3500);
 
-        // 14. Pause before loop restart
-        await wait(1500);
+        // 18. Fade out snackbar before loop restart
+        snackbar.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        snackbar.style.opacity = '0';
+        snackbar.style.transform = 'translate(-50%, -50%) scale(0.85)';
+        await wait(500);
+
+        // 19. Pause before loop restart
+        await wait(1000);
       }
     }
 
