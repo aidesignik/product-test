@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Polish — Interaction Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #f0f1f8 0%, #eef4fb 30%, #f7f0f5 60%, #f4f2fa 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .scene {
+      position: relative;
+      width: 560px;
+      max-width: 560px;
+    }
+
+    /* ---- Feedback Form ---- */
+    .feedback-form {
+      background: #fff;
+      border-radius: 24px;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .feedback-form__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .feedback-form__title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 1;
+      padding-left: 2px;
+    }
+
+    .feedback-form__close-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ---- Body ---- */
+    .feedback-form__body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .feedback-form__field {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feedback-form__label {
+      font-size: 14px;
+      font-weight: 400;
+      color: #0d0d0d;
+      text-align: center;
+      line-height: 21px;
+    }
+
+    .feedback-form__required { color: #b3261e; }
+
+    /* ---- Textarea ---- */
+    .feedback-form__textarea-wrap {
+      border: 1px solid #d9d9d9;
+      border-radius: 12px;
+      overflow: visible;
+      transition: border-color 0.3s ease;
+    }
+
+    .feedback-form__textarea-wrap--focused {
+      border-color: #76a4ee;
+    }
+
+    .feedback-form__textarea {
+      background: #fcfcfc;
+      padding: 12px 14px;
+      height: 120px;
+      position: relative;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .feedback-form__textarea::-webkit-scrollbar {
+      display: none;
+    }
+
+    .feedback-form__textarea-text {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      min-height: 24px;
+      position: relative;
+      white-space: pre-wrap;
+    }
+
+    .feedback-form__textarea-text--placeholder {
+      color: #9ca3af;
+    }
+
+    .feedback-form__textarea-text--typed {
+      color: #0d0d0d;
+    }
+
+    /* Blinking typing cursor */
+    .feedback-form__textarea-text--typing::after {
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+      background: #0d0d0d;
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      animation: blink-caret 0.7s step-end infinite;
+    }
+
+    @keyframes blink-caret {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Gradient line */
+    .feedback-form__gradient-line {
+      height: 2px;
+      line-height: 0;
+      overflow: hidden;
+    }
+
+    .feedback-form__gradient-line-img {
+      width: 100%;
+      height: 2px;
+      display: block;
+    }
+
+    /* ---- Toolbar ---- */
+    .feedback-form__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px;
+      position: relative;
+      border-radius: 0 0 12px 12px;
+      overflow: visible;
+    }
+
+    .feedback-form__toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feedback-form__attach-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #d9d9d9;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ---- Polishing status (centered in toolbar) ---- */
+    .feedback-form__polish-status {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .feedback-form__polish-status--visible {
+      display: flex;
+    }
+
+    .feedback-form__polish-status-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: #6b6b6b;
+      line-height: 16px;
+    }
+
+    /* ---- Undo bar (centered in toolbar) ---- */
+    .feedback-form__undo-bar {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .feedback-form__undo-bar--visible {
+      display: flex;
+    }
+
+    .feedback-form__undo-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: #0d0d0d;
+      line-height: 16px;
+    }
+
+    .feedback-form__undo-btn {
+      font-size: 12px;
+      font-weight: 500;
+      color: #4257ff;
+      line-height: 16px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      padding: 0;
+    }
+
+    /* ---- Pills / Chips ---- */
+    .feedback-form__pills {
+      display: flex;
+      gap: 8px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      flex-shrink: 1;
+      min-width: 0;
+      overflow: hidden;
+      margin-left: auto;
+    }
+
+    .feedback-form__pills--hidden {
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .feedback-form__pill {
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      background: rgba(84, 139, 223, 0.12);
+      padding: 4px 10px;
+      border-radius: 17px;
+      line-height: 16px;
+      white-space: nowrap;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    /* ---- AI Polish button ---- */
+    .feedback-form__ai-polish {
+      position: relative;
+      display: none;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .feedback-form__ai-polish--visible {
+      display: flex;
+    }
+
+    .feedback-form__ai-polish-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #eff2f9;
+      border: 1px solid #e4e4e4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(127, 121, 121, 0.25);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .feedback-form__ai-polish-btn--hovered {
+      background: #e4e9f5;
+      box-shadow: 0 3px 8px rgba(66, 87, 255, 0.25);
+    }
+
+    .feedback-form__ai-polish-btn img {
+      display: block;
+    }
+
+    /* Spinner replacing AI icon */
+    .feedback-form__ai-spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(66, 87, 255, 0.2);
+      border-top-color: #4257ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    .feedback-form__ai-spinner--active {
+      display: block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ---- Tooltip ---- */
+    .feedback-form__ai-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .feedback-form__ai-tooltip--visible {
+      opacity: 1;
+    }
+
+    .feedback-form__ai-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: #1a1a1a;
+      border-radius: 1px;
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    /* ---- Severity ---- */
+    .feedback-form__severity-cards {
+      display: flex;
+      gap: 14px;
+    }
+
+    .feedback-form__severity-card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid rgba(166,162,180,0.4);
+      border-radius: 12px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 3px 8px rgba(78,44,110,0.07);
+      min-height: 118px;
+      justify-content: center;
+    }
+
+    .feedback-form__severity-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: #222422;
+    }
+
+    .feedback-form__severity-desc {
+      font-size: 12px;
+      font-weight: 400;
+      color: #6c677f;
+    }
+
+    /* ---- Footer ---- */
+    .feedback-form__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .feedback-form__sender {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .feedback-form__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #f6f7f8;
+      flex-shrink: 0;
+      border: 1.5px solid #d9d9d9;
+    }
+
+    .feedback-form__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feedback-form__sender-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .feedback-form__sender-label {
+      font-size: 11px;
+      font-weight: 400;
+      color: #6b6b6b;
+      line-height: 11px;
+    }
+
+    .feedback-form__sender-email {
+      font-size: 11px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 11px;
+    }
+
+    .feedback-form__actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .feedback-form__btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      height: 40px;
+      border-radius: 9999px;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 21px;
+      transition: opacity 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .feedback-form__btn--cancel {
+      font-weight: 400;
+      color: #4257ff;
+      background: transparent;
+      border: 1px solid #d9d9d9;
+      padding: 0 24px;
+      min-width: 103px;
+    }
+
+    .feedback-form__btn--submit {
+      font-weight: 400;
+      color: #fff;
+      background: #4257ff;
+      border: none;
+      padding: 0 24px;
+      min-width: 144px;
+    }
+
+    /* Disabled state */
+    .feedback-form__btn--disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* ---- Animated Cursor ---- */
+    .anim-cursor {
+      position: absolute;
+      width: 29px;
+      height: 31px;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      transform: scale(1.1);
+      transform-origin: top left;
+    }
+
+    .anim-cursor--visible {
+      opacity: 1;
+    }
+
+    /* ---- Wave-uncover AI text rendering ---- */
+    .ai-word {
+      display: inline;
+      color: #0d0d0d;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="feedback-form">
+      <div class="feedback-form__header">
+        <h2 class="feedback-form__title">Share your feedback</h2>
+        <button class="feedback-form__close-btn" aria-label="Close">
+          <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+            <path d="M1 1L13 13M13 1L1 13" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="feedback-form__body">
+        <div class="feedback-form__field">
+          <label class="feedback-form__label">
+            Tell us about your experience<span class="feedback-form__required">*</span>
+          </label>
+          <div class="feedback-form__textarea-wrap" id="textareaWrap">
+            <div class="feedback-form__textarea">
+              <p class="feedback-form__textarea-text feedback-form__textarea-text--placeholder" id="textareaText">What's on your mind? Share a thought, suggestion, or issue.</p>
+            </div>
+            <div class="feedback-form__gradient-line">
+              <img src="assets/gradient-line.svg" alt="" class="feedback-form__gradient-line-img">
+            </div>
+            <div class="feedback-form__toolbar">
+              <div class="feedback-form__toolbar-left">
+                <div class="feedback-form__attach-btn">
+                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
+                  </svg>
+                </div>
+                <!-- Polishing status text (appears during AI generation) -->
+                <div class="feedback-form__polish-status" id="polishStatus">
+                  <span class="feedback-form__polish-status-text" id="polishStatusText">Polishing...</span>
+                </div>
+                <!-- Undo bar (appears after generation) -->
+                <div class="feedback-form__undo-bar" id="undoBar">
+                  <span class="feedback-form__undo-label">Not what you meant?</span>
+                  <button class="feedback-form__undo-btn">Undo</button>
+                </div>
+              </div>
+
+              <!-- Chips -->
+              <div class="feedback-form__pills" id="pills">
+                <span class="feedback-form__pill" id="pill-0">General thoughts</span>
+                <span class="feedback-form__pill" id="pill-1">Improve workflow</span>
+                <span class="feedback-form__pill" id="pill-2">Report a bug</span>
+              </div>
+
+              <!-- AI Polish button -->
+              <div class="feedback-form__ai-polish" id="aiPolish">
+                <div class="feedback-form__ai-tooltip" id="aiTooltip">Polish with AI</div>
+                <div class="feedback-form__ai-polish-btn" id="aiPolishBtn">
+                  <img src="assets/sparkle-ai.svg" alt="" width="14" height="14" id="aiIcon">
+                  <div class="feedback-form__ai-spinner" id="aiSpinner"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feedback-form__field">
+          <label class="feedback-form__label">
+            How much is this issue impacting you right now?
+          </label>
+          <div class="feedback-form__severity-cards">
+            <div class="feedback-form__severity-card">
+              <svg width="25" height="25" viewBox="0 0 33 33" fill="none">
+                <path d="M24.3066 4.14562C22.0275 1.98516 19.042 0.881719 15.8864 1.05187C9.97219 1.36641 5.15625 6.44531 5.15625 12.375C5.15625 15.9895 6.82172 19.305 9.72984 21.4655C10.4208 21.9811 10.8281 22.8216 10.8281 23.7188C10.8281 24.2859 11.2922 24.75 11.8594 24.75H21.1406C21.7078 24.75 22.1719 24.2859 22.1719 23.7188C22.1719 22.8216 22.5844 21.9759 23.2702 21.4655C26.1783 19.2998 27.8438 15.9895 27.8438 12.375C27.8438 9.22969 26.5856 6.30609 24.3066 4.14562Z" fill="#C2EDD2"/>
+                <path d="M22.1719 23.7188H10.8281V27.3281C10.8281 28.7512 11.9831 29.9062 13.4062 29.9062H13.5816C14.0095 31.1077 15.1542 31.9688 16.5 31.9688C17.8458 31.9688 18.9905 31.1077 19.4184 29.9062H19.5938C21.0169 29.9062 22.1719 28.7512 22.1719 27.3281V23.7188ZM22.6875 13.4062C22.1203 13.4062 21.6562 12.9422 21.6562 12.375C21.6562 9.53391 19.3411 7.21875 16.5 7.21875C15.9328 7.21875 15.4688 6.75469 15.4688 6.1875C15.4688 5.62031 15.9328 5.15625 16.5 5.15625C20.4806 5.15625 23.7188 8.39438 23.7188 12.375C23.7188 12.9422 23.2547 13.4062 22.6875 13.4062Z" fill="#25A458"/>
+              </svg>
+              <span class="feedback-form__severity-name">Minor</span>
+              <span class="feedback-form__severity-desc">Polished suggestion</span>
+            </div>
+            <div class="feedback-form__severity-card">
+              <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                <path d="M30.2878 22.507L20.7745 5.60484C19.8877 4.03219 18.2892 3.09375 16.5 3.09375C14.7056 3.09375 13.1072 4.03219 12.2255 5.60484L2.71219 22.507C1.83563 24.0642 1.85109 25.9205 2.75344 27.4673C3.64547 28.9936 5.22844 29.9062 6.99188 29.9062H26.0184C27.7767 29.9062 29.3597 28.9936 30.2569 27.4673C31.1592 25.9205 31.1747 24.0694 30.2981 22.507H30.2878Z" fill="#F7E9AD"/>
+                <path d="M16.5 19.5938C15.9328 19.5938 15.4688 19.1297 15.4688 18.5625V10.3125C15.4688 9.74531 15.9328 9.28125 16.5 9.28125C17.0672 9.28125 17.5312 9.74531 17.5312 10.3125V18.5625C17.5312 19.1297 17.0672 19.5938 16.5 19.5938Z" fill="#C07C16"/>
+                <path d="M16.5 23.7188C17.0695 23.7188 17.5312 23.257 17.5312 22.6875C17.5312 22.118 17.0695 21.6562 16.5 21.6562C15.9305 21.6562 15.4688 22.118 15.4688 22.6875C15.4688 23.257 15.9305 23.7188 16.5 23.7188Z" fill="#C07C16"/>
+              </svg>
+              <span class="feedback-form__severity-name">Moderate</span>
+              <span class="feedback-form__severity-desc">Annoying workflow</span>
+            </div>
+            <div class="feedback-form__severity-card">
+              <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                <path d="M28.5 11.5L21.5 4.5H11.5L4.5 11.5V21.5L11.5 28.5H21.5L28.5 21.5Z" fill="#FFE1E2" stroke="#FFE1E2" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M21.39 11.61C20.99 11.21 20.34 11.21 19.94 11.61L16.5 15.05L13.06 11.61C12.66 11.21 12.01 11.21 11.61 11.61C11.21 12.01 11.21 12.66 11.61 13.06L15.05 16.5L11.61 19.94C11.21 20.34 11.21 20.99 11.61 21.39C11.81 21.59 12.07 21.69 12.34 21.69C12.6 21.69 12.86 21.59 13.06 21.39L16.5 17.95L19.94 21.39C20.14 21.59 20.4 21.69 20.66 21.69C20.93 21.69 21.19 21.59 21.39 21.39C21.79 20.99 21.79 20.34 21.39 19.94L17.95 16.5L21.39 13.06C21.79 12.66 21.79 12.01 21.39 11.61Z" fill="#AA0E19"/>
+              </svg>
+              <span class="feedback-form__severity-name">Critical</span>
+              <span class="feedback-form__severity-desc">Blocking my work</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-form__footer">
+        <div class="feedback-form__sender">
+          <div class="feedback-form__avatar">
+            <img src="assets/avatar.png" alt="User avatar" width="32" height="32">
+          </div>
+          <div class="feedback-form__sender-info">
+            <span class="feedback-form__sender-label">Sending as</span>
+            <span class="feedback-form__sender-email">orhye@prescouter.com</span>
+          </div>
+        </div>
+        <div class="feedback-form__actions">
+          <button class="feedback-form__btn feedback-form__btn--cancel feedback-form__btn--disabled" id="btnDraft">Save as draft</button>
+          <button class="feedback-form__btn feedback-form__btn--submit feedback-form__btn--disabled" id="btnSubmit">Send feedback</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animated cursor -->
+    <img src="assets/pointing.svg" alt="" class="anim-cursor" id="cursor" width="29" height="31">
+  </div>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const textareaText = document.getElementById('textareaText');
+    const textareaWrap = document.getElementById('textareaWrap');
+    const pills = document.getElementById('pills');
+    const aiPolish = document.getElementById('aiPolish');
+    const aiPolishBtn = document.getElementById('aiPolishBtn');
+    const aiIcon = document.getElementById('aiIcon');
+    const aiSpinner = document.getElementById('aiSpinner');
+    const aiTooltip = document.getElementById('aiTooltip');
+    const polishStatus = document.getElementById('polishStatus');
+    const undoBar = document.getElementById('undoBar');
+    const btnDraft = document.getElementById('btnDraft');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const scene = document.querySelector('.scene');
+
+    const PLACEHOLDER = "What's on your mind? Share a thought, suggestion, or issue.";
+    const USER_TEXT = "The export feature breaks when I try to download reports with charts included";
+    const AI_POLISHED_TEXT = "When attempting to export reports that contain embedded charts, the export process fails silently — no file is generated and no error message is displayed. This occurs consistently across Chrome and Firefox when using the 'Download as PDF' option from the Reports dashboard. Reports without charts export normally, suggesting the issue is specifically related to chart rendering during the export pipeline.";
+
+    let running = true;
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Smoothly animate cursor to a position (relative to .scene)
+    function moveCursorTo(x, y, duration = 600) {
+      return new Promise(resolve => {
+        const startX = parseFloat(cursor.style.left) || 0;
+        const startY = parseFloat(cursor.style.top) || 0;
+        const startTime = performance.now();
+
+        function step(now) {
+          const elapsed = now - startTime;
+          const t = Math.min(elapsed / duration, 1);
+          const ease = 1 - Math.pow(1 - t, 3);
+          cursor.style.left = (startX + (x - startX) * ease) + 'px';
+          cursor.style.top = (startY + (y - startY) * ease) + 'px';
+          if (t < 1) {
+            requestAnimationFrame(step);
+          } else {
+            resolve();
+          }
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    function getElementCenter(el) {
+      const sceneRect = scene.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      return {
+        x: elRect.left - sceneRect.left + elRect.width / 2,
+        y: elRect.top - sceneRect.top + elRect.height / 2 + 6
+      };
+    }
+
+    function setPlaceholder(text) {
+      textareaText.textContent = text;
+      textareaText.className = 'feedback-form__textarea-text feedback-form__textarea-text--placeholder';
+    }
+
+    function setTypedText(text, showCaret = false) {
+      textareaText.textContent = text;
+      textareaText.className = 'feedback-form__textarea-text feedback-form__textarea-text--typed' +
+        (showCaret ? ' feedback-form__textarea-text--typing' : '');
+    }
+
+    function setButtonsDisabled(disabled) {
+      if (disabled) {
+        btnDraft.classList.add('feedback-form__btn--disabled');
+        btnSubmit.classList.add('feedback-form__btn--disabled');
+      } else {
+        btnDraft.classList.remove('feedback-form__btn--disabled');
+        btnSubmit.classList.remove('feedback-form__btn--disabled');
+      }
+    }
+
+    function showPills() {
+      pills.classList.remove('feedback-form__pills--hidden');
+    }
+
+    function hidePills() {
+      pills.classList.add('feedback-form__pills--hidden');
+    }
+
+    function showAiPolish() {
+      aiPolish.classList.add('feedback-form__ai-polish--visible');
+    }
+
+    function hideAiPolish() {
+      aiPolish.classList.remove('feedback-form__ai-polish--visible');
+    }
+
+    // Type text char by char; calls onWordCallback(wordIndex) after each space
+    function typeText(fullText, startFrom, charDelay = 40, onWordCallback) {
+      return new Promise(resolve => {
+        let i = startFrom;
+        let wordCount = 0;
+        function nextChar() {
+          if (i <= fullText.length) {
+            const slice = fullText.slice(0, i);
+            setTypedText(slice, true);
+            // Count word when we just typed a space
+            if (fullText[i - 1] === ' ') {
+              wordCount++;
+              if (onWordCallback) onWordCallback(wordCount);
+            }
+            i++;
+            setTimeout(nextChar, charDelay);
+          } else {
+            resolve();
+          }
+        }
+        nextChar();
+      });
+    }
+
+    // Wave-uncover: all text laid out instantly (invisible), then a smooth
+    // wave sweeps through revealing it — like the text was always there
+    function renderAiText(text) {
+      return new Promise(resolve => {
+        const textarea = document.querySelector('.feedback-form__textarea');
+        textarea.scrollTop = 0;
+        textareaText.textContent = '';
+        textareaText.className = 'feedback-form__textarea-text feedback-form__textarea-text--typed';
+
+        const words = text.split(' ');
+
+        // Place ALL words immediately — they occupy space but are invisible
+        const spans = words.map((word, idx) => {
+          const span = document.createElement('span');
+          span.className = 'ai-word';
+          span.textContent = (idx > 0 ? ' ' : '') + word;
+          textareaText.appendChild(span);
+          return span;
+        });
+
+        // Animate with requestAnimationFrame for buttery smoothness
+        // Each word gets its own start time; many overlap, creating a wave
+        const STAGGER = 65;      // ms between each word's reveal start
+        const FADE_DURATION = 750; // ms for each word to go 0→1
+        const totalWords = spans.length;
+        const startTime = performance.now();
+
+        function animate(now) {
+          const elapsed = now - startTime;
+          let allDone = true;
+
+          for (let i = 0; i < totalWords; i++) {
+            const wordStart = i * STAGGER;
+            const wordProgress = (elapsed - wordStart) / FADE_DURATION;
+
+            if (wordProgress >= 1) {
+              if (spans[i].style.opacity !== '1') {
+                spans[i].style.opacity = '1';
+              }
+            } else if (wordProgress > 0) {
+              // Smooth ease-out curve
+              const eased = 1 - Math.pow(1 - wordProgress, 2.5);
+              spans[i].style.opacity = eased;
+              allDone = false;
+            } else {
+              allDone = false;
+            }
+          }
+
+          if (!allDone) {
+            requestAnimationFrame(animate);
+          } else {
+            resolve();
+          }
+        }
+
+        // Tiny delay then start the wave
+        setTimeout(() => requestAnimationFrame(animate), 150);
+      });
+    }
+
+    // Reset everything to initial state
+    function resetState() {
+      cursor.classList.remove('anim-cursor--visible');
+      cursor.style.left = '580px';
+      cursor.style.top = '260px';
+      setPlaceholder(PLACEHOLDER);
+      setButtonsDisabled(true);
+      showPills();
+      hideAiPolish();
+
+      // Reset textarea scroll position
+      document.querySelector('.feedback-form__textarea').scrollTop = 0;
+      textareaWrap.classList.remove('feedback-form__textarea-wrap--focused');
+
+      // Reset AI polish button
+      aiIcon.style.display = 'block';
+      aiSpinner.classList.remove('feedback-form__ai-spinner--active');
+      aiPolishBtn.classList.remove('feedback-form__ai-polish-btn--hovered');
+      aiTooltip.classList.remove('feedback-form__ai-tooltip--visible');
+
+      // Reset status areas
+      polishStatus.classList.remove('feedback-form__polish-status--visible');
+      undoBar.classList.remove('feedback-form__undo-bar--visible');
+    }
+
+    async function runAnimation() {
+      while (running) {
+        // 1. Reset to initial state — default form with placeholder & chips
+        resetState();
+        await wait(1500);
+
+        // 2. Cursor appears from right and moves toward the textarea
+        cursor.classList.add('anim-cursor--visible');
+        await wait(200);
+        const textareaRect = textareaText.getBoundingClientRect();
+        const sceneRect = scene.getBoundingClientRect();
+        const textareaClickX = textareaRect.left - sceneRect.left + 40;
+        const textareaClickY = textareaRect.top - sceneRect.top + 20;
+        await moveCursorTo(textareaClickX, textareaClickY, 800);
+        await wait(300);
+
+        // 3. Click the textarea — border turns blue, cursor appears
+        textareaWrap.classList.add('feedback-form__textarea-wrap--focused');
+        setTypedText('', true);
+        await wait(400);
+
+        // 4. Hide mouse cursor, user starts typing — chips fade out, buttons active
+        cursor.classList.remove('anim-cursor--visible');
+        await wait(300);
+        hidePills();
+        setButtonsDisabled(false);
+        await wait(200);
+
+        // 5. Type user text (slightly slower) — AI button appears after 5 words
+        let aiShown = false;
+        await typeText(USER_TEXT, 1, 55, (wordCount) => {
+          if (wordCount >= 5 && !aiShown) {
+            aiShown = true;
+            showAiPolish();
+          }
+        });
+
+        await wait(800);
+
+        // 6. Cursor reappears and moves toward AI button
+        cursor.classList.add('anim-cursor--visible');
+        await wait(200);
+        const aiPos = getElementCenter(aiPolishBtn);
+        await moveCursorTo(aiPos.x, aiPos.y + 2, 700);
+
+        // 7. Hover state on AI button — tooltip appears
+        aiPolishBtn.classList.add('feedback-form__ai-polish-btn--hovered');
+        await wait(300);
+        aiTooltip.classList.add('feedback-form__ai-tooltip--visible');
+        await wait(1200);
+
+        // 8. Click the AI button
+        // Brief scale-down effect via transform
+        aiPolishBtn.style.transform = 'scale(0.92)';
+        await wait(100);
+        aiPolishBtn.style.transform = '';
+        await wait(100);
+
+        // 9. Loading state — icon becomes spinner, tooltip hides
+        aiTooltip.classList.remove('feedback-form__ai-tooltip--visible');
+        aiIcon.style.display = 'none';
+        aiSpinner.classList.add('feedback-form__ai-spinner--active');
+        aiPolishBtn.classList.remove('feedback-form__ai-polish-btn--hovered');
+
+        // Hide cursor after click
+        await wait(200);
+        cursor.classList.remove('anim-cursor--visible');
+
+        // 10. Show "Polishing..." status text next to attach icon
+        polishStatus.classList.add('feedback-form__polish-status--visible');
+
+        // Clear textarea text to show it's being processed
+        textareaText.textContent = '';
+        textareaText.className = 'feedback-form__textarea-text feedback-form__textarea-text--typed';
+        await wait(1200);
+
+        // 11. AI text renders character by character with blue cursor
+        await renderAiText(AI_POLISHED_TEXT);
+        await wait(400);
+
+        // 12. Generation done — spinner stops, icon returns
+        aiSpinner.classList.remove('feedback-form__ai-spinner--active');
+        aiIcon.style.display = 'block';
+
+        // Hide polishing status, show undo bar
+        polishStatus.classList.remove('feedback-form__polish-status--visible');
+        await wait(200);
+        undoBar.classList.add('feedback-form__undo-bar--visible');
+
+        // 13. Hold final state
+        await wait(3500);
+
+        // 14. Pause before loop restart
+        await wait(1500);
+      }
+    }
+
+    // Start the animation loop
+    runAnimation();
+  </script>
+</body>
+</html>
