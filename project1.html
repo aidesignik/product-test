@@ -1893,6 +1893,34 @@
         <p>Rather than a dropdown or radio list, we used visual cards with plain-language subtitles: &ldquo;Polished suggestion,&rdquo; &ldquo;Annoying workflow,&rdquo; &ldquo;Blocking my work.&rdquo; This translates abstract severity into the user&rsquo;s actual experience &mdash; making it faster to choose and more accurate for our team to triage.</p>
       </div>
 
+      <div class="case-study-section">
+        <h3 style="margin-bottom:8px;">Mobile Adaptation</h3>
+
+        <div class="anim-embed" style="padding: 24px 0 0 46px; overflow: hidden;">
+          <img src="images/mobile-adaptation.png" alt="Mobile adaptation of the feedback form showing three screens" style="width: 100%; border-radius: 16px; transform: scale(1.25); transform-origin: center 40%;">
+        </div>
+
+        <p>A significant portion of our user base accessed the platform on mobile, so the feedback form needed to work just as well on smaller screens. The core interaction stayed the same, but we adapted key elements for touch: chips use a tap-to-preview, tap-again-to-confirm pattern instead of hover, severity cards stack vertically for easier thumb reach, and the textarea auto-expands as users type to maximize visible space.</p>
+        <p>The goal was feature parity without compromise &mdash; every AI feature available on desktop works identically on mobile.</p>
+      </div>
+
+      <div class="case-study-section">
+        <h3 style="margin-bottom:8px;">Results</h3>
+
+        <p>Within the first 8 weeks of rolling out the redesigned feedback form, we saw a meaningful shift in both the quantity and quality of submissions.</p>
+        <div class="case-study-callout"><strong>Feedback volume increased by 42%.</strong> Before the redesign, most users in the pilot group never submitted feedback at all. The category chips and AI polish lowered the barrier enough that casual users &mdash; not just power users &mdash; started contributing.</div>
+        <div class="case-study-callout"><strong>Form abandonment dropped by 28%.</strong> We tracked how many users opened the modal but never submitted. The combination of guided chips and the save-as-draft option kept significantly more users from bailing mid-flow.</div>
+        <div class="case-study-callout"><strong>Actionable feedback rose from ~35% to ~68%.</strong> This was the metric that mattered most to our product team. Before, a large portion of submissions were too vague to triage (&ldquo;it&rsquo;s broken,&rdquo; &ldquo;I don&rsquo;t like it&rdquo;). The AI polish feature and structured chip prompts helped users articulate issues in a way our team could actually act on &mdash; including specific workflow pain points we hadn&rsquo;t identified through other research channels.</div>
+        <p>An unexpected insight: roughly 1 in 5 submissions used the &ldquo;General thoughts&rdquo; chip, and many of these surfaced feature requests and workflow ideas we hadn&rsquo;t considered. The open-ended category became an informal discovery channel that directly influenced two items on our next quarter&rsquo;s roadmap.</p>
+      </div>
+
+      <div class="case-study-section">
+        <h3 style="margin-bottom:8px;">Reflection</h3>
+
+        <p>This project reinforced a principle I keep coming back to when designing AI features: AI should reduce effort, not replace intent. The user always owns their feedback &mdash; AI just helps them say it better.</p>
+        <p>The feedback form was a small surface area, but it touched on big questions: How do you introduce AI into a familiar pattern without making it feel alien? How do you design for trust when the machine is editing someone&rsquo;s words? These are the kinds of problems I want to keep solving.</p>
+      </div>
+
       <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
     </section>
   </main>
@@ -1919,8 +1947,8 @@
 
       const PLACEHOLDER = "What\u2019s on your mind? Share a thought, suggestion, or issue.";
       const PREVIEWS = [
-        "I\u2019d like to share some general thoughts about\u2026",
-        "It would be great if the workflow could\u2026",
+        "I\u2019d like to share some general thoughts about",
+        "It would be great if the workflow could",
         "I encountered an issue while"
       ];
       const TYPED = "I encountered an issue while";
