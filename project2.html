@@ -8,6 +8,39 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- Case study overrides ---- */
+    .case-study,
+    .case-study p,
+    .case-study h2,
+    .case-study h3,
+    .case-study li,
+    .case-study em,
+    .case-study strong,
+    .case-study-back,
+    .page-header p {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .case-study h2:first-of-type { margin-top: 0; }
+
+    .case-study-section { margin-bottom: 48px; }
+
+    /* ---- Inline image embed ---- */
+    .anim-embed {
+      background: linear-gradient(145deg, #f0f1f8 0%, #eef4fb 30%, #f7f0f5 60%, #f4f2fa 100%);
+      border-radius: 16px;
+      padding: 48px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 28px 0 32px;
+      overflow: hidden;
+      /* Break out of the narrow case-study column */
+      width: calc(100% + 96px);
+      margin-left: -48px;
+    }
+  </style>
 </head>
 <body>
   <nav class="nav scrolled">
@@ -34,17 +67,20 @@
     <section class="case-study">
       <img src="https://picsum.photos/seed/submissions-hero/1400/600" alt="AI-Assisted Submissions hero" class="case-study-hero-img" loading="lazy">
 
-      <h2>Overview</h2>
-      <p>Regulatory submission forms are notoriously complex — full of jargon, conditional logic, and strict formatting requirements. This project introduced an AI assistant that guides non-technical users through the process, reducing errors and dramatically improving completion rates.</p>
+      <div class="case-study-section">
+        <h2>Overview</h2>
+        <p>The Open Technology Platform enables large enterprises to evaluate and onboard new technologies from external vendors. Submitters — often non-technical users — were required to complete detailed forms comparing their technology against conventional alternatives across cost, performance, and logistics. Many fields were optional but critical for evaluation quality, and users frequently left them blank or abandoned submissions entirely.</p>
+      </div>
 
-      <h2>The Challenge</h2>
-      <p>Users were abandoning submissions mid-way due to confusing form fields and unclear requirements. Support teams were overwhelmed with tickets asking for help with basic form completion. The existing interface assumed domain expertise that most users simply didn't have.</p>
+      <div class="case-study-section">
+        <h2>The Problem</h2>
+        <p>During early testing, users frequently skipped optional fields or contacted support asking what values to enter. These fields were critical for evaluation quality but required technical knowledge most submitters didn't have.</p>
+      </div>
 
-      <h2>The Approach</h2>
-      <p>I designed a conversational layer on top of the existing form infrastructure. The AI assistant breaks complex fields into plain-language questions, auto-suggests values based on context, and validates entries in real time. The interface adapts its level of guidance based on user behavior — offering more help to those who need it while staying out of the way for experienced users.</p>
-
-      <h2>The Outcome</h2>
-      <p>Form completion rates improved by 35%. Support tickets related to form help dropped by 50%. The assistant was particularly effective for first-time submitters, where completion rates improved by over 60%. Placeholder for additional metrics and testimonials.</p>
+      <div class="case-study-section">
+        <h2>The Solution</h2>
+        <p>We designed a smart submission flow where users only need to complete the required fields. Once submitted, AI analyses their responses and any uploaded supporting documents to generate contextually relevant suggestions for all remaining optional fields — removing the burden of technical knowledge from the user.</p>
+      </div>
 
       <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
     </section>
