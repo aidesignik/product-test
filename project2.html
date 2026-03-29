@@ -26,6 +26,14 @@
 
     .case-study-section { margin-bottom: 48px; }
 
+    .case-study h3 {
+      font-size: clamp(16px, 2.2vw, 18px);
+      font-weight: 500;
+      color: var(--color-gray-mid);
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+
     /* ---- Inline image embed ---- */
     .anim-embed {
       background: linear-gradient(145deg, #f0f1f8 0%, #eef4fb 30%, #f7f0f5 60%, #f4f2fa 100%);
@@ -78,6 +86,17 @@
       <div class="case-study-section">
         <h2>The Solution</h2>
         <p>We designed a smart submission flow where users only need to complete the required fields. Once submitted, AI analyses their responses and any uploaded supporting documents to generate contextually relevant suggestions for all remaining optional fields — removing the burden of technical knowledge from the user.</p>
+      </div>
+
+      <div class="case-study-section">
+        <h2>The AI Feature in Detail</h2>
+
+        <h3>Step 1 — User fills required fields</h3>
+        <p>Users complete core required information: company details, contact information, and key technology identifiers. These inputs — alongside any uploaded supporting documents — form the context the AI needs to generate meaningful, specific suggestions rather than generic ones.</p>
+
+        <div class="anim-embed">
+          <img src="images/step1-required-fields.png" alt="User filling required fields in the submission form" style="max-width: 520px; width: 90%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+        </div>
       </div>
 
       <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
