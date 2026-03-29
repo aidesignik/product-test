@@ -99,10 +99,16 @@
         <h3>Step 2 — AI analyses and generates</h3>
         <p>Once required fields are complete, the system shows a clear loading state: "We're analysing your inputs to pre-fill the remaining fields." The AI icon on each field label signals which fields are about to be suggested, setting expectations before results appear.</p>
 
-        <video autoplay loop muted playsinline style="width: 100%; margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
-          <source src="images/step2-ai-analyses.mp4" type="video/mp4">
-          <source src="images/step2-ai-analyses.mov" type="video/quicktime">
-        </video>
+        <div style="position: relative; margin: 28px 0 32px;">
+          <video id="step2Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
+            <source src="images/step2-ai-analyses.mp4" type="video/mp4">
+            <source src="images/step2-ai-analyses.mov" type="video/quicktime">
+          </video>
+          <button id="step2PlayPause" aria-label="Pause video" style="position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.45); color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; backdrop-filter: blur(4px);">
+            <svg id="step2PauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
+            <svg id="step2PlayIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;"><polygon points="2,1 13,7 2,13"/></svg>
+          </button>
+        </div>
       </div>
 
       <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
@@ -114,5 +120,31 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    (function() {
+      var video = document.getElementById('step2Video');
+      var btn = document.getElementById('step2PlayPause');
+      var pauseIcon = document.getElementById('step2PauseIcon');
+      var playIcon = document.getElementById('step2PlayIcon');
+      var wrapper = btn.parentElement;
+
+      wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
+      wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+
+      btn.addEventListener('click', function() {
+        if (video.paused) {
+          video.play();
+          pauseIcon.style.display = '';
+          playIcon.style.display = 'none';
+          btn.setAttribute('aria-label', 'Pause video');
+        } else {
+          video.pause();
+          pauseIcon.style.display = 'none';
+          playIcon.style.display = '';
+          btn.setAttribute('aria-label', 'Play video');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
