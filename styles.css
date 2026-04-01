@@ -92,9 +92,13 @@ h1 {
 }
 
 .nav-logo {
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo-img {
+  height: 24px;
+  width: auto;
 }
 
 .nav-links {
