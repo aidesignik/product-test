@@ -1453,21 +1453,19 @@
         width: calc(100% + 48px);
         margin-left: -24px;
         padding: 32px 0;
-        overflow: hidden;
-        justify-content: flex-start;
+        display: block;
       }
       .anim-embed .scene {
         width: 520px;
+        margin-left: calc(50% - 260px);
         transform: scale(0.75);
-        transform-origin: top left;
-        margin-left: calc(50% - 195px);
+        transform-origin: top center;
       }
     }
 
     @media (max-width: 480px) {
       .anim-embed .scene {
         transform: scale(0.58);
-        margin-left: calc(50% - 150.8px);
       }
     }
   </style>
