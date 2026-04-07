@@ -1457,17 +1457,16 @@
       }
       .anim-embed .scene {
         width: 520px;
-        position: relative;
-        left: 50%;
-        margin-left: -260px;
         transform: scale(0.75);
-        transform-origin: top center;
+        transform-origin: top left;
+        margin-left: calc(50% - 195px);
       }
     }
 
     @media (max-width: 480px) {
       .anim-embed .scene {
         transform: scale(0.58);
+        margin-left: calc(50% - 150.8px);
       }
     }
   </style>
