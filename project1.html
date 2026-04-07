@@ -1453,20 +1453,19 @@
         width: calc(100% + 48px);
         margin-left: -24px;
         padding: 32px 0;
-        overflow-x: clip;
-        height: calc((520px * 1.2) * 0.75 + 64px);
+        overflow: hidden;
       }
       .anim-embed .scene {
         width: 520px;
+        position: relative;
+        left: 50%;
+        margin-left: -260px;
         transform: scale(0.75);
         transform-origin: top center;
       }
     }
 
     @media (max-width: 480px) {
-      .anim-embed {
-        height: calc((520px * 1.2) * 0.58 + 64px);
-      }
       .anim-embed .scene {
         transform: scale(0.58);
       }
