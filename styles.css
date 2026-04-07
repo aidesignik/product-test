@@ -51,7 +51,7 @@ a {
 
 h2, h3, h4, h5, h6,
 .btn, .project-link,
-.resume-skill-tag, .resume-meta, .case-study-back {
+.resume-skill-tag, .resume-meta, .case-study-back, .case-study-next {
   font-family: var(--font-heading);
 }
 
@@ -541,20 +541,28 @@ h1 {
   margin-bottom: 18px;
 }
 
-.case-study-back {
+.case-study-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 56px;
+}
+
+.case-study-back,
+.case-study-next {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 14px;
   font-weight: 500;
   color: var(--color-gray-mid);
-  margin-top: 56px;
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: color var(--transition);
 }
 
-.case-study-back:hover {
+.case-study-back:hover,
+.case-study-next:hover {
   color: var(--color-black);
 }
 
