@@ -1455,23 +1455,13 @@
         padding: 32px 0;
       }
       .anim-embed .scene {
-        width: 520px;
-        transform: scale(0.75);
-        transform-origin: top center;
-      }
-      /* Collapse the space taken by the scaled-down scene */
-      .anim-embed {
-        height: calc((520px * 1.2) * 0.75 + 64px);
-        overflow: hidden;
+        zoom: 0.75;
       }
     }
 
     @media (max-width: 480px) {
       .anim-embed .scene {
-        transform: scale(0.58);
-      }
-      .anim-embed {
-        height: calc((520px * 1.2) * 0.58 + 64px);
+        zoom: 0.58;
       }
     }
   </style>
@@ -1983,7 +1973,8 @@
       function center(el) {
         const sr = scene.getBoundingClientRect();
         const pr = el.getBoundingClientRect();
-        return { x: pr.left - sr.left + pr.width / 2, y: pr.top - sr.top + pr.height / 2 + 6 };
+        const z = sr.width / scene.offsetWidth || 1;
+        return { x: (pr.left - sr.left + pr.width / 2) / z, y: (pr.top - sr.top + pr.height / 2 + 6 * z) / z };
       }
 
       function placeholder(t) {
@@ -2117,9 +2108,10 @@
       function getElementCenter(el) {
         const sceneRect = scene.getBoundingClientRect();
         const elRect = el.getBoundingClientRect();
+        const z = sceneRect.width / scene.offsetWidth || 1;
         return {
-          x: elRect.left - sceneRect.left + elRect.width / 2,
-          y: elRect.top - sceneRect.top + elRect.height / 2 + 6
+          x: (elRect.left - sceneRect.left + elRect.width / 2) / z,
+          y: (elRect.top - sceneRect.top + elRect.height / 2 + 6 * z) / z
         };
       }
 
@@ -2244,8 +2236,9 @@
           await wait(200);
           const textareaRect = textEl.getBoundingClientRect();
           const sceneRect = scene.getBoundingClientRect();
-          const textareaClickX = textareaRect.left - sceneRect.left + 40;
-          const textareaClickY = textareaRect.top - sceneRect.top + 20;
+          const z = sceneRect.width / scene.offsetWidth || 1;
+          const textareaClickX = (textareaRect.left - sceneRect.left + 40 * z) / z;
+          const textareaClickY = (textareaRect.top - sceneRect.top + 20 * z) / z;
           await moveCursorTo(textareaClickX, textareaClickY, 800);
           await wait(300);
 
@@ -2382,9 +2375,10 @@
       function getElementCenter(el) {
         const sceneRect = scene.getBoundingClientRect();
         const elRect = el.getBoundingClientRect();
+        const z = sceneRect.width / scene.offsetWidth || 1;
         return {
-          x: elRect.left - sceneRect.left + elRect.width / 2,
-          y: elRect.top - sceneRect.top + elRect.height / 2 + 6
+          x: (elRect.left - sceneRect.left + elRect.width / 2) / z,
+          y: (elRect.top - sceneRect.top + elRect.height / 2 + 6 * z) / z
         };
       }
 
