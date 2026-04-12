@@ -102,7 +102,7 @@
         <p>Once required fields are complete, the system shows a clear loading state: "We're analysing your inputs to pre-fill the remaining fields." The AI icon on each field label signals which fields are about to be suggested, setting expectations before results appear.</p>
 
         <div style="position: relative; margin: 28px 0 32px;">
-          <video id="step2Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
+          <video id="step2Video" autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
             <source src="images/step2-ai-analyses.mp4" type="video/mp4">
             <source src="images/step2-ai-analyses.mov" type="video/quicktime">
           </video>
@@ -121,7 +121,7 @@
         <p>If a user removes the AI-generated fills, a prompt allows them to restore suggestions instantly or fill manually.</p>
 
         <div style="position: relative; margin: 28px 0 32px;">
-          <video id="step4Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
+          <video id="step4Video" autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
             <source src="images/step4-recovery-state.mp4" type="video/mp4">
             <source src="images/step4-recovery-state.mov" type="video/quicktime">
           </video>
@@ -156,12 +156,42 @@
 
   <script src="script.js"></script>
   <script>
-    (function() {
-      var video = document.getElementById('step2Video');
-      var btn = document.getElementById('step2PlayPause');
-      var pauseIcon = document.getElementById('step2PauseIcon');
-      var playIcon = document.getElementById('step2PlayIcon');
+    // Force autoplay on mobile for all case study videos
+    function initCaseVideo(videoId, btnId, pauseIconId, playIconId) {
+      var video = document.getElementById(videoId);
+      var btn = document.getElementById(btnId);
+      var pauseIcon = document.getElementById(pauseIconId);
+      var playIcon = document.getElementById(playIconId);
       var wrapper = btn.parentElement;
+
+      video.muted = true;
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+
+      function syncButton() {
+        if (video.paused) {
+          pauseIcon.style.display = 'none';
+          playIcon.style.display = '';
+          btn.setAttribute('aria-label', 'Play video');
+        } else {
+          pauseIcon.style.display = '';
+          playIcon.style.display = 'none';
+          btn.setAttribute('aria-label', 'Pause video');
+        }
+      }
+
+      // Try to autoplay programmatically
+      var p = video.play();
+      if (p !== undefined) {
+        p.catch(function() {
+          syncButton();
+          // Retry on first touch
+          document.addEventListener('touchstart', function once() {
+            video.play().then(syncButton).catch(function() {});
+            document.removeEventListener('touchstart', once);
+          }, { once: true });
+        });
+      }
 
       wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
       wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
@@ -169,42 +199,15 @@
       btn.addEventListener('click', function() {
         if (video.paused) {
           video.play();
-          pauseIcon.style.display = '';
-          playIcon.style.display = 'none';
-          btn.setAttribute('aria-label', 'Pause video');
         } else {
           video.pause();
-          pauseIcon.style.display = 'none';
-          playIcon.style.display = '';
-          btn.setAttribute('aria-label', 'Play video');
         }
+        syncButton();
       });
-    })();
+    }
 
-    (function() {
-      var video = document.getElementById('step4Video');
-      var btn = document.getElementById('step4PlayPause');
-      var pauseIcon = document.getElementById('step4PauseIcon');
-      var playIcon = document.getElementById('step4PlayIcon');
-      var wrapper = btn.parentElement;
-
-      wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
-      wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
-
-      btn.addEventListener('click', function() {
-        if (video.paused) {
-          video.play();
-          pauseIcon.style.display = '';
-          playIcon.style.display = 'none';
-          btn.setAttribute('aria-label', 'Pause video');
-        } else {
-          video.pause();
-          pauseIcon.style.display = 'none';
-          playIcon.style.display = '';
-          btn.setAttribute('aria-label', 'Play video');
-        }
-      });
-    })();
+    initCaseVideo('step2Video', 'step2PlayPause', 'step2PauseIcon', 'step2PlayIcon');
+    initCaseVideo('step4Video', 'step4PlayPause', 'step4PauseIcon', 'step4PlayIcon');
   </script>
 </body>
 </html>
