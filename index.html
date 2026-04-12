@@ -37,10 +37,10 @@
 
   <main>
     <section class="hero">
-      <video id="heroVidA" autoplay muted playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:opacity 1.5s ease;">
+      <video id="heroVidA" autoplay muted playsinline webkit-playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:opacity 1.5s ease;">
         <source src="/assets/7677511-hd_1920_1080_25fps.mp4" type="video/mp4">
       </video>
-      <video id="heroVidB" muted playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0;transition:opacity 1.5s ease;">
+      <video id="heroVidB" muted playsinline webkit-playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0;transition:opacity 1.5s ease;">
         <source src="/assets/7677511-hd_1920_1080_25fps.mp4" type="video/mp4">
       </video>
       <div class="hero-content">
@@ -56,6 +56,24 @@
     (function() {
       const vidA = document.getElementById('heroVidA');
       const vidB = document.getElementById('heroVidB');
+
+      // Force autoplay on mobile — the autoplay attribute alone is unreliable
+      [vidA, vidB].forEach(function(v) {
+        v.setAttribute('playsinline', '');
+        v.setAttribute('webkit-playsinline', '');
+        v.muted = true;
+      });
+      var playPromise = vidA.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function() {
+          // If autoplay still blocked, retry on first user interaction
+          document.addEventListener('touchstart', function once() {
+            vidA.play();
+            document.removeEventListener('touchstart', once);
+          }, { once: true });
+        });
+      }
+
       let active = vidA, inactive = vidB;
       let swapping = false;
       function crossfade() {
