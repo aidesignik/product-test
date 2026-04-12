@@ -9,6 +9,48 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- Case study overrides ---- */
+    .case-study,
+    .case-study p,
+    .case-study h2,
+    .case-study h3,
+    .case-study li,
+    .case-study em,
+    .case-study strong,
+    .case-study-back,
+    .case-study-next,
+    .page-header p {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .case-study h2:first-of-type { margin-top: 0; }
+
+    .case-study-section { margin-bottom: 48px; }
+
+    .case-study h3 {
+      font-size: clamp(16px, 2.2vw, 18px);
+      font-weight: 500;
+      color: var(--color-gray-mid);
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+
+    /* ---- Inline image embed ---- */
+    .anim-embed {
+      background: linear-gradient(145deg, #f0f1f8 0%, #eef4fb 30%, #f7f0f5 60%, #f4f2fa 100%);
+      border-radius: 16px;
+      padding: 48px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 28px 0 32px;
+      overflow: hidden;
+      /* Break out of the narrow case-study column */
+      width: calc(100% + 96px);
+      margin-left: -48px;
+    }
+  </style>
 </head>
 <body>
   <nav class="nav scrolled">
@@ -33,21 +75,78 @@
     </section>
 
     <section class="case-study">
-      <img src="https://picsum.photos/seed/submissions-hero/1400/600" alt="AI-Assisted Submissions hero" class="case-study-hero-img" loading="lazy">
+      <div class="case-study-section">
+        <h2>Context</h2>
+        <p>The Open Technology Platform enables large enterprises to evaluate and onboard new technologies from external vendors. Submitters — often non-technical users — were required to complete detailed forms comparing their technology against conventional alternatives across cost, performance, and logistics. Many fields were optional but critical for evaluation quality, and users frequently left them blank or abandoned submissions entirely.</p>
+      </div>
 
-      <h2>Overview</h2>
-      <p>Regulatory submission forms are notoriously complex — full of jargon, conditional logic, and strict formatting requirements. This project introduced an AI assistant that guides non-technical users through the process, reducing errors and dramatically improving completion rates.</p>
+      <div class="case-study-section">
+        <h2>The Problem</h2>
+        <p>During early testing, users frequently skipped optional fields or contacted support asking what values to enter. These fields were critical for evaluation quality but required technical knowledge most submitters didn't have.</p>
+      </div>
 
-      <h2>The Challenge</h2>
-      <p>Users were abandoning submissions mid-way due to confusing form fields and unclear requirements. Support teams were overwhelmed with tickets asking for help with basic form completion. The existing interface assumed domain expertise that most users simply didn't have.</p>
+      <div class="case-study-section">
+        <h2>The Solution</h2>
+        <p>We designed a smart submission flow where users only need to complete the required fields. Once submitted, AI analyses their responses and any uploaded supporting documents to generate contextually relevant suggestions for all remaining optional fields — removing the burden of technical knowledge from the user.</p>
+      </div>
 
-      <h2>The Approach</h2>
-      <p>I designed a conversational layer on top of the existing form infrastructure. The AI assistant breaks complex fields into plain-language questions, auto-suggests values based on context, and validates entries in real time. The interface adapts its level of guidance based on user behavior — offering more help to those who need it while staying out of the way for experienced users.</p>
+      <div class="case-study-section">
+        <h2>The AI Feature in Detail</h2>
 
-      <h2>The Outcome</h2>
-      <p>Form completion rates improved by 35%. Support tickets related to form help dropped by 50%. The assistant was particularly effective for first-time submitters, where completion rates improved by over 60%. Placeholder for additional metrics and testimonials.</p>
+        <h3>Step 1 — User fills required fields</h3>
+        <p>Users complete core required information: company details, contact information, and key technology identifiers. These inputs — alongside any uploaded supporting documents — form the context the AI needs to generate meaningful, specific suggestions rather than generic ones.</p>
 
-      <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
+        <img src="images/step1-required-fields.png" alt="User filling required fields in the submission form" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+
+        <h3>Step 2 — AI analyses and generates</h3>
+        <p>Once required fields are complete, the system shows a clear loading state: "We're analysing your inputs to pre-fill the remaining fields." The AI icon on each field label signals which fields are about to be suggested, setting expectations before results appear.</p>
+
+        <div style="position: relative; margin: 28px 0 32px;">
+          <video id="step2Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
+            <source src="images/step2-ai-analyses.mp4" type="video/mp4">
+            <source src="images/step2-ai-analyses.mov" type="video/quicktime">
+          </video>
+          <button id="step2PlayPause" aria-label="Pause video" style="position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.45); color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; backdrop-filter: blur(4px);">
+            <svg id="step2PauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
+            <svg id="step2PlayIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;"><polygon points="2,1 13,7 2,13"/></svg>
+          </button>
+        </div>
+
+        <h3>Step 3 — AI-filled fields with confidence indicators</h3>
+        <p>All AI-generated fields are colour-coded to indicate how confident the AI is in each suggestion — high, medium, or low. Users can hover over any field to see what the colour means and what it was based on. Every suggestion can be edited or removed before submitting.</p>
+
+        <img src="images/step3-confidence-indicators.png" alt="AI-filled fields with colour-coded confidence indicators" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+
+        <h3>Step 4 — Recovery state if suggestions are removed</h3>
+        <p>If a user removes the AI-generated fills, a prompt allows them to restore suggestions instantly or fill manually.</p>
+
+        <div style="position: relative; margin: 28px 0 32px;">
+          <video id="step4Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
+            <source src="images/step4-recovery-state.mp4" type="video/mp4">
+            <source src="images/step4-recovery-state.mov" type="video/quicktime">
+          </video>
+          <button id="step4PlayPause" aria-label="Pause video" style="position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.45); color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; backdrop-filter: blur(4px);">
+            <svg id="step4PauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
+            <svg id="step4PlayIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;"><polygon points="2,1 13,7 2,13"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="case-study-section">
+        <h2>Result</h2>
+        <p>Vendors can now complete a full submission without needing deep technical knowledge. The platform receives richer, more complete data for evaluation, and submitters have a clear, trustworthy experience where AI assists rather than overrides.</p>
+
+        <img src="images/result-grid.jpg" alt="Overview of the completed AI-assisted submission flow" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+
+        <div style="font-size: 14px; color: var(--color-gray-mid); line-height: 1.8; padding: 16px 20px; background: var(--color-gray-light); border-left: 3px solid var(--color-gray-border); border-radius: 0 6px 6px 0; margin: 20px 0 18px;">
+          <strong>Status:</strong> This feature has been confirmed and approved by the client and is currently in the implementation phase. Initial reactions have been positive — we are awaiting real user data and feedback to measure impact.
+        </div>
+      </div>
+
+      <div class="case-study-nav">
+        <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
+        <a href="project3.html" class="case-study-next">From Tables to Gallery &rarr;</a>
+      </div>
     </section>
   </main>
 
@@ -56,5 +155,56 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    (function() {
+      var video = document.getElementById('step2Video');
+      var btn = document.getElementById('step2PlayPause');
+      var pauseIcon = document.getElementById('step2PauseIcon');
+      var playIcon = document.getElementById('step2PlayIcon');
+      var wrapper = btn.parentElement;
+
+      wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
+      wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+
+      btn.addEventListener('click', function() {
+        if (video.paused) {
+          video.play();
+          pauseIcon.style.display = '';
+          playIcon.style.display = 'none';
+          btn.setAttribute('aria-label', 'Pause video');
+        } else {
+          video.pause();
+          pauseIcon.style.display = 'none';
+          playIcon.style.display = '';
+          btn.setAttribute('aria-label', 'Play video');
+        }
+      });
+    })();
+
+    (function() {
+      var video = document.getElementById('step4Video');
+      var btn = document.getElementById('step4PlayPause');
+      var pauseIcon = document.getElementById('step4PauseIcon');
+      var playIcon = document.getElementById('step4PlayIcon');
+      var wrapper = btn.parentElement;
+
+      wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
+      wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+
+      btn.addEventListener('click', function() {
+        if (video.paused) {
+          video.play();
+          pauseIcon.style.display = '';
+          playIcon.style.display = 'none';
+          btn.setAttribute('aria-label', 'Pause video');
+        } else {
+          video.pause();
+          pauseIcon.style.display = 'none';
+          playIcon.style.display = '';
+          btn.setAttribute('aria-label', 'Play video');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
