@@ -209,6 +209,14 @@ h1 {
   overflow: hidden;
 }
 
+/* Hide Safari's native play button overlay on hero videos */
+.hero video::-webkit-media-controls-panel,
+.hero video::-webkit-media-controls-play-button,
+.hero video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
 .hero-content {
   position: relative;
   z-index: 1;
