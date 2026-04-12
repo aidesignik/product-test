@@ -14,6 +14,8 @@
   --font-body: 'Quattrocento', Georgia, 'Times New Roman', serif;
   --nav-height: 64px;
   --content-width: 1080px;
+  --container-width: 1440px;
+  --container-padding: clamp(24px, 5vw, 80px);
   --transition: 0.3s ease;
 }
 
@@ -51,7 +53,7 @@ a {
 
 h2, h3, h4, h5, h6,
 .btn, .project-link,
-.resume-skill-tag, .resume-meta, .case-study-back {
+.resume-skill-tag, .resume-meta, .case-study-back, .case-study-next {
   font-family: var(--font-heading);
 }
 
@@ -82,9 +84,9 @@ h1 {
 }
 
 .nav-inner {
-  max-width: 100%;
+  max-width: var(--container-width);
   margin: 0 auto;
-  padding: 0 48px;
+  padding: 0 var(--container-padding);
   height: 100%;
   display: flex;
   align-items: center;
@@ -94,6 +96,11 @@ h1 {
 .nav-logo {
   display: flex;
   align-items: center;
+}
+
+.nav-logo-img {
+  height: 24px;
+  width: auto;
 }
 
 .nav-logo-img {
@@ -151,7 +158,7 @@ h1 {
 .nav-toggle span {
   display: block;
   width: 100%;
-  height: 1.5px;
+  height: 2px;
   background: var(--color-black);
   position: absolute;
   left: 0;
@@ -199,17 +206,15 @@ h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url('https://images.unsplash.com/photo-1631929418913-922fec1b5f5d?w=1920&q=80&auto=format');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.15);
+/* Hide Safari's native play button overlay on hero videos */
+.hero video::-webkit-media-controls-panel,
+.hero video::-webkit-media-controls-play-button,
+.hero video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
 }
 
 .hero-content {
@@ -268,8 +273,8 @@ h1 {
   grid-template-columns: 2fr 3fr;
   gap: 60px;
   align-items: center;
-  padding: 80px 48px;
-  max-width: 1200px;
+  padding: 80px var(--container-padding);
+  max-width: var(--container-width);
   margin: 0 auto;
   width: 100%;
 }
@@ -360,8 +365,8 @@ h1 {
 
 /* ---- Coaching Page ---- */
 .page-header {
-  padding: 160px 48px 60px;
-  max-width: var(--content-width);
+  padding: 160px var(--container-padding) 60px;
+  max-width: var(--container-width);
   margin: 0 auto;
 }
 
@@ -381,9 +386,9 @@ h1 {
 }
 
 .coaching-content {
-  max-width: var(--content-width);
+  max-width: var(--container-width);
   margin: 0 auto;
-  padding: 0 48px 100px;
+  padding: 0 var(--container-padding) 100px;
 }
 
 .coaching-grid {
@@ -450,7 +455,7 @@ h1 {
 .resume-content {
   max-width: 720px;
   margin: 0 auto;
-  padding: 0 48px 100px;
+  padding: 0 var(--container-padding) 100px;
 }
 
 .resume-download {
@@ -514,7 +519,7 @@ h1 {
 .case-study {
   max-width: 720px;
   margin: 0 auto;
-  padding: 0 48px 100px;
+  padding: 0 var(--container-padding) 100px;
 }
 
 .case-study-hero-img {
@@ -541,30 +546,40 @@ h1 {
   margin-bottom: 18px;
 }
 
-.case-study-back {
+.case-study-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 56px;
+}
+
+.case-study-back,
+.case-study-next {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 14px;
   font-weight: 500;
   color: var(--color-gray-mid);
-  margin-top: 56px;
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: color var(--transition);
 }
 
-.case-study-back:hover {
+.case-study-back:hover,
+.case-study-next:hover {
   color: var(--color-black);
 }
 
 /* ---- Footer ---- */
 .footer {
-  padding: 40px 48px;
+  padding: 40px var(--container-padding);
   text-align: center;
   font-size: 13px;
   color: var(--color-gray-mid);
   border-top: 1px solid var(--color-gray-border);
+  max-width: var(--container-width);
+  margin: 0 auto;
 }
 
 /* ---- Mobile ---- */

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon.png">
   <title>Ivan Kisin — Product Designer</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,16 +27,22 @@
   </nav>
 
   <div class="social-fixed">
-    <a href="mailto:hello@ivanoisin.com" class="social-fixed-icon" aria-label="Email">
+    <a href="mailto:ivankisin@gmail.com" class="social-fixed-icon" aria-label="Email">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13L2 4"/></svg>
     </a>
-    <a href="https://linkedin.com" class="social-fixed-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+    <a href="https://www.linkedin.com/in/ivan-kisin-65515a264/?skipRedirect=true" class="social-fixed-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
     </a>
   </div>
 
   <main>
     <section class="hero">
+      <video id="heroVidA" autoplay muted playsinline webkit-playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:opacity 1.5s ease;">
+        <source src="/assets/7677511-hd_1920_1080_25fps.mp4" type="video/mp4">
+      </video>
+      <video id="heroVidB" muted playsinline webkit-playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0;transition:opacity 1.5s ease;">
+        <source src="/assets/7677511-hd_1920_1080_25fps.mp4" type="video/mp4">
+      </video>
       <div class="hero-content">
         <h1>Ivan Kisin</h1>
         <p class="hero-tagline">Product Designer crafting thoughtful, human-centered experiences for enterprise teams, with a focus on AI-driven workflows, design systems, and vibe coding.</p>
@@ -45,13 +52,76 @@
       </a>
     </section>
 
+    <script>
+    (function() {
+      const vidA = document.getElementById('heroVidA');
+      const vidB = document.getElementById('heroVidB');
+
+      // Force autoplay on mobile — the autoplay attribute alone is unreliable
+      [vidA, vidB].forEach(function(v) {
+        v.setAttribute('playsinline', '');
+        v.setAttribute('webkit-playsinline', '');
+        v.muted = true;
+      });
+
+      function tryPlay() {
+        var p = vidA.play();
+        if (p !== undefined) {
+          p.catch(function() {
+            // If blocked, retry on first user interaction
+            ['touchstart', 'click', 'scroll'].forEach(function(evt) {
+              document.addEventListener(evt, function once() {
+                vidA.play();
+                ['touchstart', 'click', 'scroll'].forEach(function(e) {
+                  document.removeEventListener(e, once);
+                });
+              }, { once: true });
+            });
+          });
+        }
+      }
+
+      // Wait for video data to be ready, then play
+      if (vidA.readyState >= 2) {
+        tryPlay();
+      } else {
+        vidA.addEventListener('loadeddata', tryPlay, { once: true });
+      }
+
+      let active = vidA, inactive = vidB;
+      let swapping = false;
+      function crossfade() {
+        if (!swapping && active.duration && active.currentTime >= 7.5) {
+          swapping = true;
+          inactive.currentTime = 0;
+          inactive.play();
+          inactive.style.opacity = '1';
+          // Keep the old video visible underneath during the fade,
+          // only hide it after the transition completes
+          setTimeout(() => {
+            active.style.opacity = '0';
+            const prev = active;
+            active = inactive;
+            inactive = prev;
+            setTimeout(() => {
+              inactive.pause();
+              swapping = false;
+            }, 1600);
+          }, 200);
+        }
+        requestAnimationFrame(crossfade);
+      }
+      requestAnimationFrame(crossfade);
+    })();
+    </script>
+
     <div class="projects" id="projects">
       <div class="project-section">
         <article class="project">
           <div class="project-text">
             <div class="project-text-inner">
               <h2>Smarter Feedback Collection</h2>
-              <p class="project-desc">AI-driven insights for enterprise teams. Redesigned the feedback pipeline for a Fortune 500 client, integrating AI-powered analysis to surface actionable insights from thousands of user responses.</p>
+              <p class="project-desc">AI-driven insights for enterprise teams. Redesigned the feedback pipeline for a major pharmaceutical client, integrating AI-powered analysis to surface actionable insights from thousands of user responses.</p>
             </div>
             <a href="project1.html" class="project-btn">See Case Study</a>
           </div>
@@ -80,8 +150,8 @@
         <article class="project">
           <div class="project-text">
             <div class="project-text-inner">
-              <h2>Analytics Dashboard Redesign</h2>
-              <p class="project-desc">Making complex data accessible to every stakeholder. Led the end-to-end redesign of an enterprise analytics platform, transforming dense data tables into clear, interactive visualizations.</p>
+              <h2>From Tables to Gallery</h2>
+              <p class="project-desc">Rethinking how users browse and explore data in an enterprise platform. Designed a flexible view system that transforms dense data tables into visual, scannable gallery cards — giving users a faster, more intuitive way to discover content without sacrificing the depth of structured data.</p>
             </div>
             <a href="project3.html" class="project-btn">See Case Study</a>
           </div>
