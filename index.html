@@ -63,15 +63,29 @@
         v.setAttribute('webkit-playsinline', '');
         v.muted = true;
       });
-      var playPromise = vidA.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(function() {
-          // If autoplay still blocked, retry on first user interaction
-          document.addEventListener('touchstart', function once() {
-            vidA.play();
-            document.removeEventListener('touchstart', once);
-          }, { once: true });
-        });
+
+      function tryPlay() {
+        var p = vidA.play();
+        if (p !== undefined) {
+          p.catch(function() {
+            // If blocked, retry on first user interaction
+            ['touchstart', 'click', 'scroll'].forEach(function(evt) {
+              document.addEventListener(evt, function once() {
+                vidA.play();
+                ['touchstart', 'click', 'scroll'].forEach(function(e) {
+                  document.removeEventListener(e, once);
+                });
+              }, { once: true });
+            });
+          });
+        }
+      }
+
+      // Wait for video data to be ready, then play
+      if (vidA.readyState >= 2) {
+        tryPlay();
+      } else {
+        vidA.addEventListener('loadeddata', tryPlay, { once: true });
       }
 
       let active = vidA, inactive = vidB;
