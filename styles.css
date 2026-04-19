@@ -459,6 +459,54 @@ body > *:not(.page-loader) {
   line-height: 1.7;
 }
 
+.page-header--narrow {
+  max-width: 720px;
+}
+
+.page-header--narrow p {
+  max-width: none;
+}
+
+.coaching-content--narrow {
+  max-width: 720px;
+}
+
+.mentoring-block {
+  max-width: 100%;
+}
+
+.mentoring-block + .mentoring-block {
+  margin-top: 72px;
+}
+
+.mentoring-block h3 {
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+  color: var(--color-black);
+}
+
+.mentoring-block p {
+  font-size: 16px;
+  color: var(--color-gray-mid);
+  line-height: 1.75;
+}
+
+.mentoring-block p + p {
+  margin-top: 18px;
+}
+
+.mentoring-block strong {
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.coaching-content .btn {
+  margin-top: 56px;
+}
+
 .btn {
   display: inline-block;
   padding: 14px 36px;
