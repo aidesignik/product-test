@@ -65,6 +65,43 @@ h1 {
   font-family: var(--font-nav);
 }
 
+/* ---- Page loader (covers site until hero video is buffered) ---- */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+.page-loader.is-loaded {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Keep page content hidden until the loader is gone */
+body.is-loading > *:not(.page-loader) {
+  opacity: 0;
+}
+
+body > *:not(.page-loader) {
+  transition: opacity 0.5s ease;
+}
+
+.page-loader-logo {
+  height: 24px;
+  width: auto;
+  animation: loaderPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes loaderPulse {
+  0%, 100% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1); opacity: 1; }
+}
+
 /* ---- Navigation ---- */
 .nav {
   position: fixed;
