@@ -278,6 +278,13 @@ body > *:not(.page-loader) {
   line-height: 1.7;
 }
 
+.hero-about {
+  font-size: 13px;
+  color: var(--color-gray-mid);
+  line-height: 1.7;
+  margin-top: 16px;
+}
+
 .hero-scroll {
   position: absolute;
   bottom: 48px;
@@ -665,6 +672,21 @@ body > *:not(.page-loader) {
   border-top: 1px solid var(--color-gray-border);
   max-width: var(--container-width);
   margin: 0 auto;
+}
+
+.footer-contact {
+  margin-bottom: 10px;
+  color: var(--color-gray-mid);
+}
+
+.footer-contact a {
+  color: var(--color-black);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-contact a:hover {
+  color: var(--color-gray-mid);
 }
 
 /* ---- Mobile ---- */

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
-  <title>Technology Radar — Gallery View — Ivan Kisin</title>
+  <title>AI-Assisted Submissions — Ivan Kisin</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,84 +26,39 @@
 
     .case-study h2:first-of-type { margin-top: 0; }
 
-    .case-study h3 {
-      font-size: clamp(18px, 2.4vw, 22px);
-      font-weight: 600;
-      color: var(--color-black);
-      letter-spacing: -0.01em;
-      margin-top: 40px;
-      margin-bottom: 12px;
-    }
-
     .case-study-section { margin-bottom: 48px; }
 
-    .case-study-list {
-      list-style: none;
-      padding: 0;
-      margin: 16px 0 20px;
-    }
-
-    .case-study-list li {
-      position: relative;
-      padding-left: 22px;
-      margin-bottom: 14px;
-      font-size: 15px;
+    .case-study h3 {
+      font-size: clamp(16px, 2.2vw, 18px);
+      font-weight: 500;
       color: var(--color-gray-mid);
-      line-height: 1.8;
-    }
-
-    .case-study-list li::before {
-      content: '';
-      position: absolute;
-      left: 2px;
-      top: 14px;
-      width: 6px;
-      height: 6px;
-      background: var(--color-black);
-      border-radius: 50%;
-    }
-
-    .case-study-list strong {
-      color: var(--color-black);
-      font-weight: 600;
-    }
-
-    /* ---- Wider image for this case study ---- */
-    .case-study-img-wide {
-      display: block;
-      width: calc(100% + 200px);
-      margin-left: -100px;
-      max-width: none;
-      height: auto;
-      margin-top: 32px;
+      margin-top: 28px;
       margin-bottom: 8px;
-      border-radius: 8px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
 
-    @media (max-width: 900px) {
-      .case-study-img-wide {
-        width: calc(100% + 96px);
-        margin-left: -48px;
-        border-radius: 0;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .case-study-img-wide {
-        width: calc(100% + 48px);
-        margin-left: -24px;
-      }
+    /* ---- Inline image embed ---- */
+    .anim-embed {
+      background: linear-gradient(145deg, #f0f1f8 0%, #eef4fb 30%, #f7f0f5 60%, #f4f2fa 100%);
+      border-radius: 16px;
+      padding: 48px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 28px 0 32px;
+      overflow: hidden;
+      /* Break out of the narrow case-study column */
+      width: calc(100% + 96px);
+      margin-left: -48px;
     }
   </style>
 </head>
 <body>
   <nav class="nav scrolled">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="Home" class="nav-logo-img"></a>
+      <a href="index.html?v=2" class="nav-logo"><img src="assets/logo.png" alt="Home" class="nav-logo-img"></a>
       <div class="nav-links">
-        <a href="index.html" class="nav-link">Portfolio</a>
-        <a href="mentoring.html" class="nav-link">Mentoring</a>
+        <a href="index.html?v=2" class="nav-link">Portfolio</a>
+        <a href="mentoring.html?v=2" class="nav-link">Mentoring</a>
         <a href="resume.pdf" class="nav-link" target="_blank" rel="noopener">Resume</a>
       </div>
       <button class="nav-toggle" aria-label="Toggle menu">
@@ -115,75 +70,87 @@
 
   <main>
     <section class="page-header">
-      <h1>Technology Radar — Gallery View</h1>
-      <p>Reframing a data table around how users actually work</p>
+      <h1>AI-Assisted Submissions</h1>
+      <p>Helping non-technical users complete complex forms without friction</p>
     </section>
 
     <section class="case-study">
       <div class="case-study-section">
-        <h2>The situation</h2>
-        <p>We had an existing data table application already in production. When a new client came on board, they flagged early that the table wasn't working for their team. Rather than taking that at face value, we ran user interviews to understand why — and found a more fundamental mismatch between the tool and how their users actually worked.</p>
-        <p>Rebuilding from scratch wasn't an option — limited time, existing codebase. The constraint forced a smarter question: what does this client actually need, and how do we deliver it within what we already have?</p>
-
-        <img src="images/tech-radar-gallery.png" alt="Technology Radar Gallery View" class="case-study-img-wide" loading="lazy">
+        <h2>Context</h2>
+        <p>The Open Technology Platform enables large enterprises to evaluate and onboard new technologies from external vendors. Submitters — often non-technical users — were required to complete detailed forms comparing their technology against conventional alternatives across cost, performance, and logistics. Many fields were optional but critical for evaluation quality, and users frequently left them blank or abandoned submissions entirely.</p>
       </div>
 
       <div class="case-study-section">
-        <h2>One data model, three different users</h2>
-        <p>Interviews revealed three distinct touchpoints in the same product:</p>
-        <ul class="case-study-list">
-          <li><strong>Submitters</strong> fill a structured form to propose a technology. Their job ends at submission. They never see the table.</li>
-          <li><strong>Data managers</strong> work with the table directly — reviewing, organising, managing records. The table was already built for them.</li>
-          <li><strong>Browsers</strong> evaluate submitted technologies to decide what to adopt. They're not managing data — they're making decisions.</li>
-        </ul>
-        <p>The product was already serving submitters and data managers well. The new client introduced browsers — a user type the existing product had never been designed for. That was the real problem the client couldn't fully articulate.</p>
+        <h2>The Problem</h2>
+        <p>During early testing, users frequently skipped optional fields or contacted support asking what values to enter. These fields were critical for evaluation quality but required technical knowledge most submitters didn't have.</p>
       </div>
 
       <div class="case-study-section">
-        <h2>The core insight</h2>
-        <p>Browsers had one job: scan a list, identify what deserves attention, move on. The table forced them to read across rows and mentally filter columns — work they shouldn't have to do.</p>
-        <p>The client knew something felt wrong. The interviews told us why.</p>
-        <p>The same data, presented differently, could serve a completely different job. We didn't need a new product. We needed a new view.</p>
+        <h2>The Solution</h2>
+        <p>We designed a smart submission flow where users only need to complete the required fields. Once submitted, AI analyses their responses and any uploaded supporting documents to generate contextually relevant suggestions for all remaining optional fields — removing the burden of technical knowledge from the user.</p>
       </div>
 
       <div class="case-study-section">
-        <h2>The transition</h2>
-        <p>The solution had to work within the existing product without disrupting what data managers already had. Adding a new tab with gallery view as the view type meant exactly that — nothing changed for existing users. Data managers kept their table tabs untouched. Browsers got a dedicated space built for how they actually work.</p>
+        <h2>The AI Feature in Detail</h2>
 
-        <img src="images/tech-radar-transition-1.png" alt="New tab with gallery view added alongside existing table views" class="case-study-img-wide" loading="lazy">
+        <h3>Step 1 — User fills required fields</h3>
+        <p>Users complete core required information: company details, contact information, and key technology identifiers. These inputs — alongside any uploaded supporting documents — form the context the AI needs to generate meaningful, specific suggestions rather than generic ones.</p>
 
-        <p>Each gallery tab represents a specific stage in the review process — browsers only see what's relevant to them at that moment rather than the entire dataset at once.</p>
+        <img src="images/step1-required-fields.png" alt="User filling required fields in the submission form" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
 
-        <img src="images/tech-radar-transition-2.png" alt="Gallery tabs organised by review stage" class="case-study-img-wide" loading="lazy">
+        <h3>Step 2 — AI analyses and generates</h3>
+        <p>Once required fields are complete, the system shows a clear loading state: "We're analysing your inputs to pre-fill the remaining fields." The AI icon on each field label signals which fields are about to be suggested, setting expectations before results appear.</p>
+
+        <div style="position: relative; margin: 28px 0 32px;">
+          <video id="step2Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
+            <source src="images/step2-ai-analyses.mp4" type="video/mp4">
+            <source src="images/step2-ai-analyses.mov" type="video/quicktime">
+          </video>
+          <button id="step2PlayPause" aria-label="Pause video" style="position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.45); color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; backdrop-filter: blur(4px);">
+            <svg id="step2PauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
+            <svg id="step2PlayIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;"><polygon points="2,1 13,7 2,13"/></svg>
+          </button>
+        </div>
+
+        <h3>Step 3 — AI-filled fields with confidence indicators</h3>
+        <p>All AI-generated fields are colour-coded to indicate how confident the AI is in each suggestion — high, medium, or low. Users can hover over any field to see what the colour means and what it was based on. Every suggestion can be edited or removed before submitting.</p>
+
+        <img src="images/step3-confidence-indicators.png" alt="AI-filled fields with colour-coded confidence indicators" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+
+        <h3>Step 4 — Recovery state if suggestions are removed</h3>
+        <p>If a user removes the AI-generated fills, a prompt allows them to restore suggestions instantly or fill manually.</p>
+
+        <div style="position: relative; margin: 28px 0 32px;">
+          <video id="step4Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
+            <source src="images/step4-recovery-state.mp4" type="video/mp4">
+            <source src="images/step4-recovery-state.mov" type="video/quicktime">
+          </video>
+          <button id="step4PlayPause" aria-label="Pause video" style="position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.45); color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; backdrop-filter: blur(4px);">
+            <svg id="step4PauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
+            <svg id="step4PlayIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;"><polygon points="2,1 13,7 2,13"/></svg>
+          </button>
+        </div>
       </div>
 
       <div class="case-study-section">
-        <h2>The decision</h2>
-        <p>A gallery view matches how browsers actually think. By default each card surfaces three things: the technology name, its category, and its internal review status. Status tells browsers immediately where something sits in the buying process — approved, pending, declined — without opening a single record.</p>
-        <p>Everything else is off by default. Scannability was the entire point.</p>
+        <h2>Result</h2>
+        <p>Vendors can now complete a full submission without needing deep technical knowledge. The platform receives richer, more complete data for evaluation, and submitters have a clear, trustworthy experience where AI assists rather than overrides.</p>
 
-        <img src="images/tech-radar-decision-1.png" alt="Default gallery card showing technology name, category, and review status" class="case-study-img-wide" loading="lazy">
+        <img src="images/result-grid.jpg" alt="Overview of the completed AI-assisted submission flow" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
 
-        <h3>Giving editors control without breaking the experience</h3>
-        <p>Editors needed flexibility to customise what appeared on cards. But unconstrained flexibility would let them undo the very thing that made the gallery useful — so we built guardrails into the customisation itself.</p>
-
-        <img src="images/tech-radar-editors-1.png" alt="Customise cards panel with field selection options" class="case-study-img-wide" loading="lazy">
-
-        <img src="images/tech-radar-editors-2.png" alt="Gallery card after editor customisation" class="case-study-img-wide" loading="lazy">
-
-        <p>The cover image appears on cards for visual scanning in the grid. It is deliberately removed from the detail view — once a browser opens a record they are reading, not scanning.</p>
-
-        <img src="images/tech-radar-cover-detail.png" alt="Detail view of a record with the cover image omitted" class="case-study-img-wide" loading="lazy">
+        <div style="font-size: 14px; color: var(--color-gray-mid); line-height: 1.8; padding: 16px 20px; background: var(--color-gray-light); border-left: 3px solid var(--color-gray-border); border-radius: 0 6px 6px 0; margin: 20px 0 18px;">
+          <strong>Status:</strong> This feature has been confirmed and approved by the client and is currently in the implementation phase. Initial reactions have been positive — we are awaiting real user data and feedback to measure impact.
+        </div>
       </div>
 
       <div class="case-study-section">
-        <h2>Built on top, not from scratch</h2>
-        <p>The constraint turned out to be the point. Because we couldn't rebuild, we had to understand the problem precisely enough to solve it with the minimum possible change. One new view was enough.</p>
+        <h3 style="margin-bottom:8px;">Reflection</h3>
+        <p>[PLACEHOLDER — 2–3 sentences about what this project taught me, a principle I took away, or a question it raised that I'm still thinking about.]</p>
       </div>
 
       <div class="case-study-nav">
-        <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
-        <a href="project1.html" class="case-study-next">Smarter Feedback Collection &rarr;</a>
+        <a href="index.html?v=2" class="case-study-back">&larr; Back to Portfolio</a>
+        <a href="project1.html?v=2" class="case-study-next">Technology Radar — Gallery View &rarr;</a>
       </div>
     </section>
   </main>
@@ -193,5 +160,56 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    (function() {
+      var video = document.getElementById('step2Video');
+      var btn = document.getElementById('step2PlayPause');
+      var pauseIcon = document.getElementById('step2PauseIcon');
+      var playIcon = document.getElementById('step2PlayIcon');
+      var wrapper = btn.parentElement;
+
+      wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
+      wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+
+      btn.addEventListener('click', function() {
+        if (video.paused) {
+          video.play();
+          pauseIcon.style.display = '';
+          playIcon.style.display = 'none';
+          btn.setAttribute('aria-label', 'Pause video');
+        } else {
+          video.pause();
+          pauseIcon.style.display = 'none';
+          playIcon.style.display = '';
+          btn.setAttribute('aria-label', 'Play video');
+        }
+      });
+    })();
+
+    (function() {
+      var video = document.getElementById('step4Video');
+      var btn = document.getElementById('step4PlayPause');
+      var pauseIcon = document.getElementById('step4PauseIcon');
+      var playIcon = document.getElementById('step4PlayIcon');
+      var wrapper = btn.parentElement;
+
+      wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
+      wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+
+      btn.addEventListener('click', function() {
+        if (video.paused) {
+          video.play();
+          pauseIcon.style.display = '';
+          playIcon.style.display = 'none';
+          btn.setAttribute('aria-label', 'Pause video');
+        } else {
+          video.pause();
+          pauseIcon.style.display = 'none';
+          playIcon.style.display = '';
+          btn.setAttribute('aria-label', 'Play video');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
