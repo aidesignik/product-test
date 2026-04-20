@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
-  <title>AI-Assisted Submissions — Ivan Kisin</title>
+  <title>Smarter Feedback Collection — Ivan Kisin</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* ---- Case study overrides ---- */
     .case-study,
@@ -20,6 +20,7 @@
     .case-study strong,
     .case-study-back,
     .case-study-next,
+    .case-study-callout,
     .page-header p {
       font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
@@ -28,15 +29,41 @@
 
     .case-study-section { margin-bottom: 48px; }
 
-    .case-study h3 {
-      font-size: clamp(16px, 2.2vw, 18px);
-      font-weight: 500;
+    .case-study-design-decisions {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px;
+    }
+    .case-study-design-decisions li {
+      font-size: 15px;
       color: var(--color-gray-mid);
-      margin-top: 28px;
-      margin-bottom: 8px;
+      line-height: 1.8;
+      padding-left: 20px;
+      position: relative;
+    }
+    .case-study-design-decisions li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-gray-mid);
     }
 
-    /* ---- Inline image embed ---- */
+    .case-study-callout {
+      font-size: 14px;
+      color: var(--color-gray-mid);
+      line-height: 1.8;
+      padding: 16px 20px;
+      background: var(--color-gray-light);
+      border-left: 3px solid var(--color-gray-border);
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0 18px;
+    }
+
+    /* ---- Inline animation embed ---- */
     .anim-embed {
       background: linear-gradient(145deg, #f0f1f8 0%, #eef4fb 30%, #f7f0f5 60%, #f4f2fa 100%);
       border-radius: 16px;
@@ -50,15 +77,1413 @@
       width: calc(100% + 96px);
       margin-left: -48px;
     }
+
+    /* ---- Feedback form styles (scoped inside .anim-embed) — Animation 1 ---- */
+    .anim-embed .scene {
+      position: relative;
+      width: 520px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .anim-embed .fb {
+      background: #fff;
+      border-radius: 24px;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .anim-embed .fb__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anim-embed .fb__title {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 1;
+      margin: 0;
+    }
+
+    .anim-embed .fb__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: none;
+      background: none;
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    .anim-embed .fb__body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .anim-embed .fb__field {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .anim-embed .fb__label {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #0d0d0d;
+      text-align: center;
+      line-height: 21px;
+    }
+
+    .anim-embed .fb__required { color: #b3261e; }
+
+    .anim-embed .fb__textarea-wrap {
+      border: 1px solid #d9d9d9;
+      border-radius: 12px;
+      overflow: visible;
+      transition: border-color 0.3s ease;
+    }
+
+    .anim-embed .fb__textarea-wrap--focused {
+      border-color: #76a4ee;
+    }
+
+    .anim-embed .fb__textarea {
+      background: #fcfcfc;
+      padding: 12px 14px;
+      min-height: 120px;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .anim-embed .fb__text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      min-height: 24px;
+    }
+
+    .anim-embed .fb__text--placeholder { color: #9ca3af; }
+    .anim-embed .fb__text--typed { color: #0d0d0d; }
+
+    .anim-embed .fb__text--typing::after {
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+      background: #0d0d0d;
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      animation: blink-caret 0.7s step-end infinite;
+    }
+
+    @keyframes blink-caret {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .anim-embed .fb__gradient {
+      height: 2px;
+      line-height: 0;
+      overflow: hidden;
+    }
+
+    .anim-embed .fb__gradient img {
+      width: 100%;
+      height: 2px;
+      display: block;
+    }
+
+    .anim-embed .fb__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px;
+      position: relative;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .anim-embed .fb__attach {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #d9d9d9;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .anim-embed .fb__pills {
+      display: flex;
+      gap: 8px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .anim-embed .fb__pills--hidden {
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+      position: absolute;
+      right: 8px;
+    }
+
+    .anim-embed .fb__pill {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      background: rgba(84, 139, 223, 0.12);
+      padding: 4px 10px;
+      border-radius: 17px;
+      line-height: 16px;
+      white-space: nowrap;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    .anim-embed .fb__pill--hovered {
+      background: rgba(84, 139, 223, 0.25);
+      box-shadow: 0 1px 3px rgba(84, 139, 223, 0.2);
+    }
+
+    .anim-embed .fb__pill--clicked {
+      background: rgba(84, 139, 223, 0.35);
+      transform: scale(0.96);
+    }
+
+    .anim-embed .fb__severity-cards {
+      display: flex;
+      gap: 14px;
+    }
+
+    .anim-embed .fb__severity-card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid rgba(166,162,180,0.4);
+      border-radius: 12px;
+      padding: 24px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 3px 8px rgba(78,44,110,0.07);
+      min-height: 118px;
+      justify-content: center;
+    }
+
+    .anim-embed .fb__severity-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #222422;
+    }
+
+    .anim-embed .fb__severity-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #6c677f;
+      white-space: nowrap;
+    }
+
+    .anim-embed .fb__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anim-embed .fb__sender {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .anim-embed .fb__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #f6f7f8;
+      flex-shrink: 0;
+      border: 1.5px solid #d9d9d9;
+    }
+
+    .anim-embed .fb__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .anim-embed .fb__sender-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .anim-embed .fb__sender-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #6b6b6b;
+      line-height: 11px;
+    }
+
+    .anim-embed .fb__sender-email {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 11px;
+    }
+
+    .anim-embed .fb__actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .anim-embed .fb__btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      height: 40px;
+      border-radius: 9999px;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 21px;
+      padding-bottom: 1px;
+      transition: opacity 0.3s ease, background 0.3s ease;
+    }
+
+    .anim-embed .fb__btn--cancel {
+      font-weight: 400;
+      color: #4257ff;
+      background: transparent;
+      border: 1px solid #d9d9d9;
+      padding: 0 24px;
+      min-width: 103px;
+    }
+
+    .anim-embed .fb__btn--submit {
+      font-weight: 400;
+      color: #fff;
+      background: #4257ff;
+      border: none;
+      padding: 0 24px;
+      min-width: 144px;
+    }
+
+    .anim-embed .fb__btn--disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .anim-embed .anim-cursor {
+      position: absolute;
+      width: 29px;
+      height: 31px;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      transform: scale(1.1);
+      transform-origin: top left;
+    }
+
+    .anim-embed .anim-cursor--visible {
+      opacity: 1;
+    }
+
+    /* Animation 2 container needs visible overflow for tooltip */
+    #animEmbed2 {
+      overflow: visible;
+    }
+
+    /* Animation 3 container needs visible overflow for tooltip */
+    #animEmbed3 {
+      overflow: visible;
+    }
+
+    /* ---- Animation 2: Polish with AI — scoped styles ---- */
+    .anim-embed .fb2 {
+      background: #fff;
+      border-radius: 24px;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .anim-embed .fb2__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anim-embed .fb2__title {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 1;
+      padding-left: 2px;
+      margin: 0;
+    }
+
+    .anim-embed .fb2__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: none;
+      background: none;
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    .anim-embed .fb2__body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .anim-embed .fb2__field {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .anim-embed .fb2__label {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #0d0d0d;
+      text-align: center;
+      line-height: 21px;
+    }
+
+    .anim-embed .fb2__required { color: #b3261e; }
+
+    .anim-embed .fb2__textarea-wrap {
+      border: 1px solid #d9d9d9;
+      border-radius: 12px;
+      overflow: visible;
+      transition: border-color 0.3s ease;
+    }
+
+    .anim-embed .fb2__textarea-wrap--focused {
+      border-color: #76a4ee;
+    }
+
+    .anim-embed .fb2__textarea {
+      background: #fcfcfc;
+      padding: 12px 14px;
+      height: 120px;
+      position: relative;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      overflow-y: hidden;
+      pointer-events: none;
+      scrollbar-width: none;
+    }
+
+    .anim-embed .fb2__textarea::-webkit-scrollbar {
+      display: none;
+    }
+
+    .anim-embed .fb2__text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      min-height: 24px;
+      position: relative;
+      white-space: pre-wrap;
+    }
+
+    .anim-embed .fb2__text--placeholder { color: #9ca3af; }
+    .anim-embed .fb2__text--typed { color: #0d0d0d; }
+
+    .anim-embed .fb2__text--typing::after {
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+      background: #0d0d0d;
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      animation: blink-caret 0.7s step-end infinite;
+    }
+
+    .anim-embed .fb2__gradient {
+      height: 2px;
+      line-height: 0;
+      overflow: hidden;
+    }
+
+    .anim-embed .fb2__gradient img {
+      width: 100%;
+      height: 2px;
+      display: block;
+    }
+
+    .anim-embed .fb2__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px;
+      position: relative;
+      border-radius: 0 0 12px 12px;
+      overflow: visible;
+    }
+
+    .anim-embed .fb2__toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .anim-embed .fb2__attach {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #d9d9d9;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Polish status (centered in toolbar) */
+    .anim-embed .fb2__polish-status {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .anim-embed .fb2__polish-status--visible {
+      display: flex;
+    }
+
+    .anim-embed .fb2__polish-status-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #6b6b6b;
+      line-height: 16px;
+    }
+
+    /* Undo bar (centered in toolbar) */
+    .anim-embed .fb2__undo-bar {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .anim-embed .fb2__undo-bar--visible {
+      display: flex;
+    }
+
+    .anim-embed .fb2__undo-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #0d0d0d;
+      line-height: 16px;
+    }
+
+    .anim-embed .fb2__undo-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #4257ff;
+      line-height: 16px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    /* Pills / Chips for animation 2 */
+    .anim-embed .fb2__pills {
+      display: flex;
+      gap: 8px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      flex-shrink: 1;
+      min-width: 0;
+      overflow: hidden;
+      margin-left: auto;
+    }
+
+    .anim-embed .fb2__pills--hidden {
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .anim-embed .fb2__pill {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      background: rgba(84, 139, 223, 0.12);
+      padding: 4px 10px;
+      border-radius: 17px;
+      line-height: 16px;
+      white-space: nowrap;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    /* AI Polish button */
+    .anim-embed .fb2__ai-polish {
+      position: relative;
+      display: none;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .anim-embed .fb2__ai-polish--visible {
+      display: flex;
+    }
+
+    .anim-embed .fb2__ai-polish-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #eff2f9;
+      border: 1px solid #e4e4e4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(127, 121, 121, 0.25);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .anim-embed .fb2__ai-polish-btn--hovered {
+      background: #e4e9f5;
+      box-shadow: 0 3px 8px rgba(66, 87, 255, 0.25);
+    }
+
+    .anim-embed .fb2__ai-polish-btn img {
+      display: block;
+    }
+
+    /* Spinner replacing AI icon */
+    .anim-embed .fb2__ai-spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(66, 87, 255, 0.2);
+      border-top-color: #4257ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    .anim-embed .fb2__ai-spinner--active {
+      display: block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Tooltip */
+    .anim-embed .fb2__ai-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .anim-embed .fb2__ai-tooltip--visible {
+      opacity: 1;
+    }
+
+    .anim-embed .fb2__ai-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: #1a1a1a;
+      border-radius: 1px;
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    /* Severity cards for animation 2 */
+    .anim-embed .fb2__severity-cards {
+      display: flex;
+      gap: 14px;
+    }
+
+    .anim-embed .fb2__severity-card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid rgba(166,162,180,0.4);
+      border-radius: 12px;
+      padding: 24px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 3px 8px rgba(78,44,110,0.07);
+      min-height: 118px;
+      justify-content: center;
+    }
+
+    .anim-embed .fb2__severity-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #222422;
+    }
+
+    .anim-embed .fb2__severity-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #6c677f;
+      white-space: nowrap;
+    }
+
+    /* Footer for animation 2 */
+    .anim-embed .fb2__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anim-embed .fb2__sender {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .anim-embed .fb2__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #f6f7f8;
+      flex-shrink: 0;
+      border: 1.5px solid #d9d9d9;
+    }
+
+    .anim-embed .fb2__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .anim-embed .fb2__sender-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .anim-embed .fb2__sender-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #6b6b6b;
+      line-height: 11px;
+    }
+
+    .anim-embed .fb2__sender-email {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 11px;
+    }
+
+    .anim-embed .fb2__actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .anim-embed .fb2__btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      height: 40px;
+      border-radius: 9999px;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 21px;
+      padding-bottom: 1px;
+      transition: opacity 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .anim-embed .fb2__btn--cancel {
+      font-weight: 400;
+      color: #4257ff;
+      background: transparent;
+      border: 1px solid #d9d9d9;
+      padding: 0 24px;
+      min-width: 103px;
+    }
+
+    .anim-embed .fb2__btn--submit {
+      font-weight: 400;
+      color: #fff;
+      background: #4257ff;
+      border: none;
+      padding: 0 24px;
+      min-width: 144px;
+    }
+
+    .anim-embed .fb2__btn--disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* Wave-uncover AI text rendering */
+    .anim-embed .ai-word {
+      display: inline;
+      color: #0d0d0d;
+      opacity: 0;
+    }
+
+    /* ---- Animation 3: Supporting Documents & Categorizing Impact — scoped styles ---- */
+    .anim-embed .fb3 {
+      background: #fff;
+      border-radius: 24px;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .anim-embed .fb3__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anim-embed .fb3__title {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 1;
+      padding-left: 2px;
+      margin: 0;
+    }
+
+    .anim-embed .fb3__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: none;
+      background: none;
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    .anim-embed .fb3__body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .anim-embed .fb3__field {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .anim-embed .fb3__label {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #0d0d0d;
+      text-align: center;
+      line-height: 21px;
+    }
+
+    .anim-embed .fb3__required { color: #b3261e; }
+
+    .anim-embed .fb3__textarea-wrap {
+      border: 1px solid #d9d9d9;
+      border-radius: 12px;
+      overflow: visible;
+      transition: border-color 0.3s ease;
+    }
+
+    .anim-embed .fb3__textarea-wrap--focused {
+      border-color: #76a4ee;
+    }
+
+    .anim-embed .fb3__textarea {
+      background: #fcfcfc;
+      padding: 12px 14px;
+      height: 120px;
+      position: relative;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      overflow-y: hidden;
+      pointer-events: none;
+      scrollbar-width: none;
+    }
+
+    .anim-embed .fb3__textarea::-webkit-scrollbar {
+      display: none;
+    }
+
+    .anim-embed .fb3__text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      min-height: 24px;
+      position: relative;
+      white-space: pre-wrap;
+    }
+
+    .anim-embed .fb3__text--placeholder { color: #9ca3af; }
+    .anim-embed .fb3__text--typed { color: #0d0d0d; }
+
+    .anim-embed .fb3__text--typing::after {
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+      background: #0d0d0d;
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      animation: blink-caret 0.7s step-end infinite;
+    }
+
+    .anim-embed .fb3__gradient {
+      height: 2px;
+      line-height: 0;
+      overflow: hidden;
+    }
+
+    .anim-embed .fb3__gradient img {
+      width: 100%;
+      height: 2px;
+      display: block;
+    }
+
+    .anim-embed .fb3__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px;
+      position: relative;
+      border-radius: 0 0 12px 12px;
+      overflow: visible;
+    }
+
+    .anim-embed .fb3__toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .anim-embed .fb3__attach-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #d9d9d9;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .anim-embed .fb3__attach-btn--hovered {
+      background: #f0f1f8;
+      box-shadow: 0 2px 6px rgba(66, 87, 255, 0.15);
+    }
+
+    /* Attach tooltip */
+    .anim-embed .fb3__attach-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 10;
+    }
+
+    .anim-embed .fb3__attach-tooltip--visible {
+      opacity: 1;
+    }
+
+    .anim-embed .fb3__attach-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: #1a1a1a;
+      border-radius: 1px;
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    /* Supporting documents */
+    .anim-embed .fb3__documents {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .anim-embed .fb3__documents--visible {
+      display: flex;
+    }
+
+    .anim-embed .fb3__documents-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #0d0d0d;
+      line-height: 16px;
+    }
+
+    .anim-embed .fb3__file-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: 1px solid #e8e8ec;
+      border-radius: 10px;
+      padding: 6px 8px;
+    }
+
+    .anim-embed .fb3__file-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #fee2e2;
+      color: #dc2626;
+      font-family: 'Inter', sans-serif;
+      font-size: 7px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: 0.3px;
+    }
+
+    .anim-embed .fb3__file-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #0d0d0d;
+      line-height: 16px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .anim-embed .fb3__file-spinner {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid #e8e8ec;
+      border-top-color: #4257ff;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .anim-embed .fb3__file-check {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    .anim-embed .fb3__file-check--visible {
+      display: block;
+    }
+
+    .anim-embed .fb3__file-spinner--hidden {
+      display: none;
+    }
+
+    /* Undo bar (centered in toolbar) */
+    .anim-embed .fb3__undo-bar {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .anim-embed .fb3__undo-bar--visible {
+      display: flex;
+    }
+
+    .anim-embed .fb3__undo-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #0d0d0d;
+      line-height: 16px;
+    }
+
+    .anim-embed .fb3__undo-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #4257ff;
+      line-height: 16px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    /* Pills / Chips for animation 3 */
+    .anim-embed .fb3__pills {
+      display: flex;
+      gap: 8px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      flex-shrink: 1;
+      min-width: 0;
+      overflow: hidden;
+      margin-left: auto;
+    }
+
+    .anim-embed .fb3__pills--hidden {
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .anim-embed .fb3__pill {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      background: rgba(84, 139, 223, 0.12);
+      padding: 4px 10px;
+      border-radius: 17px;
+      line-height: 16px;
+      white-space: nowrap;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    /* AI Polish button for animation 3 */
+    .anim-embed .fb3__ai-polish {
+      position: relative;
+      display: none;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .anim-embed .fb3__ai-polish--visible {
+      display: flex;
+    }
+
+    .anim-embed .fb3__ai-polish-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #eff2f9;
+      border: 1px solid #e4e4e4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(127, 121, 121, 0.25);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .anim-embed .fb3__ai-polish-btn img {
+      display: block;
+    }
+
+    /* Severity cards for animation 3 */
+    .anim-embed .fb3__severity-cards {
+      display: flex;
+      gap: 14px;
+    }
+
+    .anim-embed .fb3__severity-card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid rgba(166,162,180,0.4);
+      border-radius: 12px;
+      padding: 24px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 3px 8px rgba(78,44,110,0.07);
+      min-height: 118px;
+      justify-content: center;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .anim-embed .fb3__severity-card--hovered {
+      border-color: rgba(66, 87, 255, 0.4);
+      box-shadow: 0 3px 10px rgba(66, 87, 255, 0.1);
+    }
+
+    .anim-embed .fb3__severity-card--selected {
+      border: 2px solid #4257ff;
+      padding: 23px 9px;
+      background: rgba(66, 87, 255, 0.04);
+      box-shadow: 0 3px 12px rgba(66, 87, 255, 0.15);
+    }
+
+    .anim-embed .fb3__severity-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #222422;
+    }
+
+    .anim-embed .fb3__severity-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #6c677f;
+      white-space: nowrap;
+    }
+
+    /* Footer for animation 3 */
+    .anim-embed .fb3__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anim-embed .fb3__sender {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .anim-embed .fb3__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #f6f7f8;
+      flex-shrink: 0;
+      border: 1.5px solid #d9d9d9;
+    }
+
+    .anim-embed .fb3__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .anim-embed .fb3__sender-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .anim-embed .fb3__sender-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #6b6b6b;
+      line-height: 11px;
+    }
+
+    .anim-embed .fb3__sender-email {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #0d0d0d;
+      line-height: 11px;
+    }
+
+    .anim-embed .fb3__actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .anim-embed .fb3__btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      height: 40px;
+      border-radius: 9999px;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 21px;
+      padding-bottom: 1px;
+      transition: opacity 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .anim-embed .fb3__btn--cancel {
+      font-weight: 400;
+      color: #4257ff;
+      background: transparent;
+      border: 1px solid #d9d9d9;
+      padding: 0 24px;
+      min-width: 103px;
+    }
+
+    .anim-embed .fb3__btn--submit {
+      font-weight: 400;
+      color: #fff;
+      background: #4257ff;
+      border: none;
+      padding: 0 24px;
+      min-width: 144px;
+    }
+
+    .anim-embed .fb3__btn--submit--hovered {
+      background: #3345d9;
+    }
+
+    .anim-embed .fb3__btn--submit--pressed {
+      background: #2a38b8;
+    }
+
+    .anim-embed .fb3__btn--disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* Snackbar confirmation for animation 3 */
+    .anim-embed .fb3__snackbar {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateY(8px);
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .anim-embed .fb3__snackbar--visible {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    .anim-embed .fb3__snackbar-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .anim-embed .fb3__snackbar-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.3;
+    }
+
+    /* Scale the entire scene on smaller viewports to avoid layout breaks */
+    @media (max-width: 768px) {
+      .anim-embed {
+        width: calc(100% + 48px);
+        margin-left: -24px;
+        padding: 32px 0;
+        display: block;
+        overflow: hidden;
+      }
+      .anim-embed .scene {
+        width: 520px;
+        margin-left: calc(50% - 260px);
+        transform: scale(0.75);
+        transform-origin: top center;
+        margin-bottom: -130px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .anim-embed .scene {
+        transform: scale(0.58);
+        margin-bottom: -220px;
+      }
+    }
   </style>
 </head>
 <body>
   <nav class="nav scrolled">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="Home" class="nav-logo-img"></a>
+      <a href="index.html?v=2" class="nav-logo"><img src="assets/logo.png" alt="Home" class="nav-logo-img"></a>
       <div class="nav-links">
-        <a href="index.html" class="nav-link">Portfolio</a>
-        <a href="mentoring.html" class="nav-link">Mentoring</a>
+        <a href="index.html?v=2" class="nav-link active">Portfolio</a>
+        <a href="mentoring.html?v=2" class="nav-link">Mentoring</a>
         <a href="resume.pdf" class="nav-link" target="_blank" rel="noopener">Resume</a>
       </div>
       <button class="nav-toggle" aria-label="Toggle menu">
@@ -70,82 +1495,437 @@
 
   <main>
     <section class="page-header">
-      <h1>AI-Assisted Submissions</h1>
-      <p>Helping non-technical users complete complex forms without friction</p>
+      <h1>Smarter Feedback Collection</h1>
+      <p>Using AI to help users articulate feedback with smart categorization and severity tagging</p>
     </section>
 
     <section class="case-study">
+
+      <!-- Context -->
       <div class="case-study-section">
         <h2>Context</h2>
-        <p>The Open Technology Platform enables large enterprises to evaluate and onboard new technologies from external vendors. Submitters — often non-technical users — were required to complete detailed forms comparing their technology against conventional alternatives across cost, performance, and logistics. Many fields were optional but critical for evaluation quality, and users frequently left them blank or abandoned submissions entirely.</p>
+        <p>We launched our platform to a small group of enterprise users and needed a way to collect meaningful feedback. The challenge? We had no idea what kind of feedback they'd share &mdash; it could be anything from a minor UI suggestion to a critical workflow blocker.</p>
+        <p>We needed a feedback experience that was fast, low-friction, and helped users articulate their thoughts clearly &mdash; even when they didn't know where to start.</p>
       </div>
 
+      <!-- The Problem -->
       <div class="case-study-section">
         <h2>The Problem</h2>
-        <p>During early testing, users frequently skipped optional fields or contacted support asking what values to enter. These fields were critical for evaluation quality but required technical knowledge most submitters didn't have.</p>
+        <p>Users struggle to write useful feedback. They either leave vague comments ("it's confusing"), over-explain with walls of text, or abandon the form entirely. For our team, this meant low-quality signal that was hard to act on.</p>
+        <p>We asked ourselves: <em>How might we reduce the effort of giving feedback while increasing its clarity?</em></p>
       </div>
 
+      <!-- The Solution -->
       <div class="case-study-section">
         <h2>The Solution</h2>
-        <p>We designed a smart submission flow where users only need to complete the required fields. Once submitted, AI analyses their responses and any uploaded supporting documents to generate contextually relevant suggestions for all remaining optional fields — removing the burden of technical knowledge from the user.</p>
+        <p>A feedback modal enhanced with AI-powered features that guide users from a blank page to a well-structured submission &mdash; in seconds.</p>
+        <p>Three key design decisions:</p>
+        <ul class="case-study-design-decisions">
+          <li>Smart category chips to eliminate the blank-page problem</li>
+          <li>AI text polishing to turn rough thoughts into clear feedback</li>
+          <li>Impact severity cards to help prioritize without complicated forms</li>
+        </ul>
+      </div>
+
+      <!-- Walkthrough -->
+      <div class="case-study-section">
+        <h2>Walkthrough</h2>
+        <h3 style="margin-bottom:8px;">1. Starting Point – Eliminating the Blank Page</h3>
+
+        <!-- Embedded animation 1 -->
+        <div class="anim-embed">
+          <div class="scene" id="animScene">
+            <div class="fb">
+              <div class="fb__header">
+                <h2 class="fb__title">Share your feedback</h2>
+                <button class="fb__close" aria-label="Close">
+                  <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 1L13 13M13 1L1 13" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="fb__body">
+                <div class="fb__field">
+                  <label class="fb__label">
+                    Tell us about your experience<span class="fb__required">*</span>
+                  </label>
+                  <div class="fb__textarea-wrap" id="aTextareaWrap">
+                    <div class="fb__textarea">
+                      <p class="fb__text fb__text--placeholder" id="aText">What's on your mind? Share a thought, suggestion, or issue.</p>
+                    </div>
+                    <div class="fb__gradient">
+                      <img src="assets/gradient-line.svg" alt="">
+                    </div>
+                    <div class="fb__toolbar">
+                      <div class="fb__attach">
+                        <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
+                        </svg>
+                      </div>
+                      <div class="fb__pills" id="aPills">
+                        <span class="fb__pill" id="aPill0">General thoughts</span>
+                        <span class="fb__pill" id="aPill1">Improve workflow</span>
+                        <span class="fb__pill" id="aPill2">Report a bug</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="fb__field">
+                  <label class="fb__label">How much is this issue impacting you?</label>
+                  <div class="fb__severity-cards">
+                    <div class="fb__severity-card">
+                      <svg width="25" height="25" viewBox="0 0 33 33" fill="none">
+                        <path d="M24.3066 4.14562C22.0275 1.98516 19.042 0.881719 15.8864 1.05187C9.97219 1.36641 5.15625 6.44531 5.15625 12.375C5.15625 15.9895 6.82172 19.305 9.72984 21.4655C10.4208 21.9811 10.8281 22.8216 10.8281 23.7188C10.8281 24.2859 11.2922 24.75 11.8594 24.75H21.1406C21.7078 24.75 22.1719 24.2859 22.1719 23.7188C22.1719 22.8216 22.5844 21.9759 23.2702 21.4655C26.1783 19.2998 27.8438 15.9895 27.8438 12.375C27.8438 9.22969 26.5856 6.30609 24.3066 4.14562Z" fill="#C2EDD2"/>
+                        <path d="M22.1719 23.7188H10.8281V27.3281C10.8281 28.7512 11.9831 29.9062 13.4062 29.9062H13.5816C14.0095 31.1077 15.1542 31.9688 16.5 31.9688C17.8458 31.9688 18.9905 31.1077 19.4184 29.9062H19.5938C21.0169 29.9062 22.1719 28.7512 22.1719 27.3281V23.7188ZM22.6875 13.4062C22.1203 13.4062 21.6562 12.9422 21.6562 12.375C21.6562 9.53391 19.3411 7.21875 16.5 7.21875C15.9328 7.21875 15.4688 6.75469 15.4688 6.1875C15.4688 5.62031 15.9328 5.15625 16.5 5.15625C20.4806 5.15625 23.7188 8.39438 23.7188 12.375C23.7188 12.9422 23.2547 13.4062 22.6875 13.4062Z" fill="#25A458"/>
+                      </svg>
+                      <span class="fb__severity-name">Minor</span>
+                      <span class="fb__severity-desc">Polished suggestion</span>
+                    </div>
+                    <div class="fb__severity-card">
+                      <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                        <path d="M30.2878 22.507L20.7745 5.60484C19.8877 4.03219 18.2892 3.09375 16.5 3.09375C14.7056 3.09375 13.1072 4.03219 12.2255 5.60484L2.71219 22.507C1.83563 24.0642 1.85109 25.9205 2.75344 27.4673C3.64547 28.9936 5.22844 29.9062 6.99188 29.9062H26.0184C27.7767 29.9062 29.3597 28.9936 30.2569 27.4673C31.1592 25.9205 31.1747 24.0694 30.2981 22.507H30.2878Z" fill="#F7E9AD"/>
+                        <path d="M16.5 19.5938C15.9328 19.5938 15.4688 19.1297 15.4688 18.5625V10.3125C15.4688 9.74531 15.9328 9.28125 16.5 9.28125C17.0672 9.28125 17.5312 9.74531 17.5312 10.3125V18.5625C17.5312 19.1297 17.0672 19.5938 16.5 19.5938Z" fill="#C07C16"/>
+                        <path d="M16.5 23.7188C17.0695 23.7188 17.5312 23.257 17.5312 22.6875C17.5312 22.118 17.0695 21.6562 16.5 21.6562C15.9305 21.6562 15.4688 22.118 15.4688 22.6875C15.4688 23.257 15.9305 23.7188 16.5 23.7188Z" fill="#C07C16"/>
+                      </svg>
+                      <span class="fb__severity-name">Moderate</span>
+                      <span class="fb__severity-desc">Annoying workflow</span>
+                    </div>
+                    <div class="fb__severity-card">
+                      <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                        <path d="M28.5 11.5L21.5 4.5H11.5L4.5 11.5V21.5L11.5 28.5H21.5L28.5 21.5Z" fill="#FFE1E2" stroke="#FFE1E2" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M21.39 11.61C20.99 11.21 20.34 11.21 19.94 11.61L16.5 15.05L13.06 11.61C12.66 11.21 12.01 11.21 11.61 11.61C11.21 12.01 11.21 12.66 11.61 13.06L15.05 16.5L11.61 19.94C11.21 20.34 11.21 20.99 11.61 21.39C11.81 21.59 12.07 21.69 12.34 21.69C12.6 21.69 12.86 21.59 13.06 21.39L16.5 17.95L19.94 21.39C20.14 21.59 20.4 21.69 20.66 21.69C20.93 21.69 21.19 21.59 21.39 21.39C21.79 20.99 21.79 20.34 21.39 19.94L17.95 16.5L21.39 13.06C21.79 12.66 21.79 12.01 21.39 11.61Z" fill="#AA0E19"/>
+                      </svg>
+                      <span class="fb__severity-name">Critical</span>
+                      <span class="fb__severity-desc">Blocking my work</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fb__footer">
+                <div class="fb__sender">
+                  <div class="fb__avatar">
+                    <img src="assets/avatar.png" alt="User avatar" width="32" height="32">
+                  </div>
+                  <div class="fb__sender-info">
+                    <span class="fb__sender-label">Sending as</span>
+                    <span class="fb__sender-email">orhye@prescouter.com</span>
+                  </div>
+                </div>
+                <div class="fb__actions">
+                  <button class="fb__btn fb__btn--cancel fb__btn--disabled" id="aBtnDraft">Save as draft</button>
+                  <button class="fb__btn fb__btn--submit fb__btn--disabled" id="aBtnSubmit">Send feedback</button>
+                </div>
+              </div>
+            </div>
+
+            <img src="assets/pointing.svg" alt="" class="anim-cursor" id="aCursor" width="29" height="31">
+          </div>
+        </div>
+
+        <p>When the modal opens, users see three chips: <strong>General thoughts</strong>, <strong>Improve workflow</strong>, and <strong>Report a bug</strong>. These aren't just labels &mdash; hovering over a chip previews suggested text directly in the textarea. Nothing is committed until the user clicks.</p>
+        <p class="case-study-callout"><strong>Why this matters:</strong> It removes the anxiety of a blank textarea. Users can explore categories before committing, lowering the barrier to start writing.</p>
+      </div>
+
+      <!-- Polish with AI -->
+      <div class="case-study-section">
+        <h3 style="margin-bottom:8px;">2. Polish with AI – From Rough to Ready</h3>
+
+        <!-- Embedded animation 2 -->
+        <div class="anim-embed" id="animEmbed2">
+          <div class="scene" id="animScene2">
+            <div class="fb2">
+              <div class="fb2__header">
+                <h2 class="fb2__title">Share your feedback</h2>
+                <button class="fb2__close" aria-label="Close">
+                  <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 1L13 13M13 1L1 13" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="fb2__body">
+                <div class="fb2__field">
+                  <label class="fb2__label">
+                    Tell us about your experience<span class="fb2__required">*</span>
+                  </label>
+                  <div class="fb2__textarea-wrap" id="bTextareaWrap">
+                    <div class="fb2__textarea" id="bTextarea">
+                      <p class="fb2__text fb2__text--placeholder" id="bText">What's on your mind? Share a thought, suggestion, or issue.</p>
+                    </div>
+                    <div class="fb2__gradient">
+                      <img src="assets/gradient-line.svg" alt="">
+                    </div>
+                    <div class="fb2__toolbar">
+                      <div class="fb2__toolbar-left">
+                        <div class="fb2__attach">
+                          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
+                          </svg>
+                        </div>
+                        <!-- Polishing status text -->
+                        <div class="fb2__polish-status" id="bPolishStatus">
+                          <span class="fb2__polish-status-text">Polishing&hellip;</span>
+                        </div>
+                        <!-- Undo bar -->
+                        <div class="fb2__undo-bar" id="bUndoBar">
+                          <span class="fb2__undo-label">Not what you meant?</span>
+                          <button class="fb2__undo-btn">Undo</button>
+                        </div>
+                      </div>
+
+                      <!-- Chips -->
+                      <div class="fb2__pills" id="bPills">
+                        <span class="fb2__pill">General thoughts</span>
+                        <span class="fb2__pill">Improve workflow</span>
+                        <span class="fb2__pill">Report a bug</span>
+                      </div>
+
+                      <!-- AI Polish button -->
+                      <div class="fb2__ai-polish" id="bAiPolish">
+                        <div class="fb2__ai-tooltip" id="bAiTooltip">Polish with AI</div>
+                        <div class="fb2__ai-polish-btn" id="bAiPolishBtn">
+                          <img src="assets/sparkle-ai.svg" alt="" width="14" height="14" id="bAiIcon">
+                          <div class="fb2__ai-spinner" id="bAiSpinner"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="fb2__field">
+                  <label class="fb2__label">How much is this issue impacting you?</label>
+                  <div class="fb2__severity-cards">
+                    <div class="fb2__severity-card">
+                      <svg width="25" height="25" viewBox="0 0 33 33" fill="none">
+                        <path d="M24.3066 4.14562C22.0275 1.98516 19.042 0.881719 15.8864 1.05187C9.97219 1.36641 5.15625 6.44531 5.15625 12.375C5.15625 15.9895 6.82172 19.305 9.72984 21.4655C10.4208 21.9811 10.8281 22.8216 10.8281 23.7188C10.8281 24.2859 11.2922 24.75 11.8594 24.75H21.1406C21.7078 24.75 22.1719 24.2859 22.1719 23.7188C22.1719 22.8216 22.5844 21.9759 23.2702 21.4655C26.1783 19.2998 27.8438 15.9895 27.8438 12.375C27.8438 9.22969 26.5856 6.30609 24.3066 4.14562Z" fill="#C2EDD2"/>
+                        <path d="M22.1719 23.7188H10.8281V27.3281C10.8281 28.7512 11.9831 29.9062 13.4062 29.9062H13.5816C14.0095 31.1077 15.1542 31.9688 16.5 31.9688C17.8458 31.9688 18.9905 31.1077 19.4184 29.9062H19.5938C21.0169 29.9062 22.1719 28.7512 22.1719 27.3281V23.7188ZM22.6875 13.4062C22.1203 13.4062 21.6562 12.9422 21.6562 12.375C21.6562 9.53391 19.3411 7.21875 16.5 7.21875C15.9328 7.21875 15.4688 6.75469 15.4688 6.1875C15.4688 5.62031 15.9328 5.15625 16.5 5.15625C20.4806 5.15625 23.7188 8.39438 23.7188 12.375C23.7188 12.9422 23.2547 13.4062 22.6875 13.4062Z" fill="#25A458"/>
+                      </svg>
+                      <span class="fb2__severity-name">Minor</span>
+                      <span class="fb2__severity-desc">Polished suggestion</span>
+                    </div>
+                    <div class="fb2__severity-card">
+                      <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                        <path d="M30.2878 22.507L20.7745 5.60484C19.8877 4.03219 18.2892 3.09375 16.5 3.09375C14.7056 3.09375 13.1072 4.03219 12.2255 5.60484L2.71219 22.507C1.83563 24.0642 1.85109 25.9205 2.75344 27.4673C3.64547 28.9936 5.22844 29.9062 6.99188 29.9062H26.0184C27.7767 29.9062 29.3597 28.9936 30.2569 27.4673C31.1592 25.9205 31.1747 24.0694 30.2981 22.507H30.2878Z" fill="#F7E9AD"/>
+                        <path d="M16.5 19.5938C15.9328 19.5938 15.4688 19.1297 15.4688 18.5625V10.3125C15.4688 9.74531 15.9328 9.28125 16.5 9.28125C17.0672 9.28125 17.5312 9.74531 17.5312 10.3125V18.5625C17.5312 19.1297 17.0672 19.5938 16.5 19.5938Z" fill="#C07C16"/>
+                        <path d="M16.5 23.7188C17.0695 23.7188 17.5312 23.257 17.5312 22.6875C17.5312 22.118 17.0695 21.6562 16.5 21.6562C15.9305 21.6562 15.4688 22.118 15.4688 22.6875C15.4688 23.257 15.9305 23.7188 16.5 23.7188Z" fill="#C07C16"/>
+                      </svg>
+                      <span class="fb2__severity-name">Moderate</span>
+                      <span class="fb2__severity-desc">Annoying workflow</span>
+                    </div>
+                    <div class="fb2__severity-card">
+                      <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                        <path d="M28.5 11.5L21.5 4.5H11.5L4.5 11.5V21.5L11.5 28.5H21.5L28.5 21.5Z" fill="#FFE1E2" stroke="#FFE1E2" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M21.39 11.61C20.99 11.21 20.34 11.21 19.94 11.61L16.5 15.05L13.06 11.61C12.66 11.21 12.01 11.21 11.61 11.61C11.21 12.01 11.21 12.66 11.61 13.06L15.05 16.5L11.61 19.94C11.21 20.34 11.21 20.99 11.61 21.39C11.81 21.59 12.07 21.69 12.34 21.69C12.6 21.69 12.86 21.59 13.06 21.39L16.5 17.95L19.94 21.39C20.14 21.59 20.4 21.69 20.66 21.69C20.93 21.69 21.19 21.59 21.39 21.39C21.79 20.99 21.79 20.34 21.39 19.94L17.95 16.5L21.39 13.06C21.79 12.66 21.79 12.01 21.39 11.61Z" fill="#AA0E19"/>
+                      </svg>
+                      <span class="fb2__severity-name">Critical</span>
+                      <span class="fb2__severity-desc">Blocking my work</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fb2__footer">
+                <div class="fb2__sender">
+                  <div class="fb2__avatar">
+                    <img src="assets/avatar.png" alt="User avatar" width="32" height="32">
+                  </div>
+                  <div class="fb2__sender-info">
+                    <span class="fb2__sender-label">Sending as</span>
+                    <span class="fb2__sender-email">orhye@prescouter.com</span>
+                  </div>
+                </div>
+                <div class="fb2__actions">
+                  <button class="fb2__btn fb2__btn--cancel fb2__btn--disabled" id="bBtnDraft">Save as draft</button>
+                  <button class="fb2__btn fb2__btn--submit fb2__btn--disabled" id="bBtnSubmit">Send feedback</button>
+                </div>
+              </div>
+            </div>
+
+            <img src="assets/pointing.svg" alt="" class="anim-cursor" id="bCursor" width="29" height="31">
+          </div>
+        </div>
+
+        <p>Once a user starts typing, the category chips disappear and a &ldquo;Polish with AI&rdquo; button appears. Users can type just a few rough words and let AI expand them into clear, structured feedback.</p>
+        <p class="case-study-callout"><strong>Designing for latency:</strong> AI processing isn&rsquo;t instant, so we used a spinner and a reassuring &ldquo;Polishing&hellip;&rdquo; message to set expectations and keep users in the flow.</p>
+        <p class="case-study-callout"><strong>The undo option was non-negotiable:</strong> Users need to trust that AI is helping, not overriding. The persistent undo link ensures they always feel in control of their own words.</p>
+      </div>
+
+      <!-- Supporting Documents & Categorizing Impact -->
+      <div class="case-study-section">
+        <h3 style="margin-bottom:8px;">3. Supporting Documents &amp; Categorizing Impact</h3>
+
+        <!-- Embedded animation 3 -->
+        <div class="anim-embed" id="animEmbed3">
+          <div class="scene" id="animScene3">
+            <div class="fb3" id="cFeedbackForm">
+              <div class="fb3__header">
+                <h2 class="fb3__title">Share your feedback</h2>
+                <button class="fb3__close" aria-label="Close">
+                  <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 1L13 13M13 1L1 13" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="fb3__body">
+                <div class="fb3__field">
+                  <label class="fb3__label">
+                    Tell us about your experience<span class="fb3__required">*</span>
+                  </label>
+                  <div class="fb3__textarea-wrap" id="cTextareaWrap">
+                    <div class="fb3__textarea" id="cTextarea">
+                      <p class="fb3__text fb3__text--typed" id="cText"></p>
+                    </div>
+                    <div class="fb3__gradient">
+                      <img src="assets/gradient-line.svg" alt="">
+                    </div>
+                    <div class="fb3__toolbar">
+                      <div class="fb3__toolbar-left">
+                        <div class="fb3__attach-btn" id="cAttachBtn">
+                          <div class="fb3__attach-tooltip" id="cAttachTooltip">Add supporting documents</div>
+                          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#7B8794" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.5 9.583l-7.917 7.917a5 5 0 01-7.071-7.071L10.429 2.5a3.333 3.333 0 014.714 4.714L7.214 15.143a1.667 1.667 0 01-2.357-2.357l7.5-7.5"/>
+                          </svg>
+                        </div>
+                        <!-- Undo bar -->
+                        <div class="fb3__undo-bar" id="cUndoBar">
+                          <span class="fb3__undo-label">Not what you meant?</span>
+                          <button class="fb3__undo-btn">Undo</button>
+                        </div>
+                      </div>
+
+                      <!-- Chips -->
+                      <div class="fb3__pills fb3__pills--hidden" id="cPills">
+                        <span class="fb3__pill">General thoughts</span>
+                        <span class="fb3__pill">Improve workflow</span>
+                        <span class="fb3__pill">Report a bug</span>
+                      </div>
+
+                      <!-- AI Polish button -->
+                      <div class="fb3__ai-polish fb3__ai-polish--visible" id="cAiPolish">
+                        <div class="fb3__ai-polish-btn" id="cAiPolishBtn">
+                          <img src="assets/sparkle-ai.svg" alt="" width="14" height="14" id="cAiIcon">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Supporting documents (hidden initially) -->
+                <div class="fb3__documents" id="cDocuments">
+                  <span class="fb3__documents-label">Supporting documents</span>
+                  <div class="fb3__file-row">
+                    <div class="fb3__file-icon" style="background: #dbeafe; color: #2563eb;">PNG</div>
+                    <span class="fb3__file-name">Screenshot 12. 02. 26</span>
+                    <div class="fb3__file-spinner" id="cFileSpinner"></div>
+                    <svg class="fb3__file-check" id="cFileCheck" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <circle cx="10" cy="10" r="9" stroke="#25A458" stroke-width="1.5"/>
+                      <path d="M6 10.5L8.5 13L14 7.5" stroke="#25A458" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="fb3__field">
+                  <label class="fb3__label">
+                    How much is this issue impacting you right now?
+                  </label>
+                  <div class="fb3__severity-cards">
+                    <div class="fb3__severity-card">
+                      <svg width="25" height="25" viewBox="0 0 33 33" fill="none">
+                        <path d="M24.3066 4.14562C22.0275 1.98516 19.042 0.881719 15.8864 1.05187C9.97219 1.36641 5.15625 6.44531 5.15625 12.375C5.15625 15.9895 6.82172 19.305 9.72984 21.4655C10.4208 21.9811 10.8281 22.8216 10.8281 23.7188C10.8281 24.2859 11.2922 24.75 11.8594 24.75H21.1406C21.7078 24.75 22.1719 24.2859 22.1719 23.7188C22.1719 22.8216 22.5844 21.9759 23.2702 21.4655C26.1783 19.2998 27.8438 15.9895 27.8438 12.375C27.8438 9.22969 26.5856 6.30609 24.3066 4.14562Z" fill="#C2EDD2"/>
+                        <path d="M22.1719 23.7188H10.8281V27.3281C10.8281 28.7512 11.9831 29.9062 13.4062 29.9062H13.5816C14.0095 31.1077 15.1542 31.9688 16.5 31.9688C17.8458 31.9688 18.9905 31.1077 19.4184 29.9062H19.5938C21.0169 29.9062 22.1719 28.7512 22.1719 27.3281V23.7188ZM22.6875 13.4062C22.1203 13.4062 21.6562 12.9422 21.6562 12.375C21.6562 9.53391 19.3411 7.21875 16.5 7.21875C15.9328 7.21875 15.4688 6.75469 15.4688 6.1875C15.4688 5.62031 15.9328 5.15625 16.5 5.15625C20.4806 5.15625 23.7188 8.39438 23.7188 12.375C23.7188 12.9422 23.2547 13.4062 22.6875 13.4062Z" fill="#25A458"/>
+                      </svg>
+                      <span class="fb3__severity-name">Minor</span>
+                      <span class="fb3__severity-desc">Polished suggestion</span>
+                    </div>
+                    <div class="fb3__severity-card" id="cSeverityModerate">
+                      <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                        <path d="M30.2878 22.507L20.7745 5.60484C19.8877 4.03219 18.2892 3.09375 16.5 3.09375C14.7056 3.09375 13.1072 4.03219 12.2255 5.60484L2.71219 22.507C1.83563 24.0642 1.85109 25.9205 2.75344 27.4673C3.64547 28.9936 5.22844 29.9062 6.99188 29.9062H26.0184C27.7767 29.9062 29.3597 28.9936 30.2569 27.4673C31.1592 25.9205 31.1747 24.0694 30.2981 22.507H30.2878Z" fill="#F7E9AD"/>
+                        <path d="M16.5 19.5938C15.9328 19.5938 15.4688 19.1297 15.4688 18.5625V10.3125C15.4688 9.74531 15.9328 9.28125 16.5 9.28125C17.0672 9.28125 17.5312 9.74531 17.5312 10.3125V18.5625C17.5312 19.1297 17.0672 19.5938 16.5 19.5938Z" fill="#C07C16"/>
+                        <path d="M16.5 23.7188C17.0695 23.7188 17.5312 23.257 17.5312 22.6875C17.5312 22.118 17.0695 21.6562 16.5 21.6562C15.9305 21.6562 15.4688 22.118 15.4688 22.6875C15.4688 23.257 15.9305 23.7188 16.5 23.7188Z" fill="#C07C16"/>
+                      </svg>
+                      <span class="fb3__severity-name">Moderate</span>
+                      <span class="fb3__severity-desc">Annoying workflow</span>
+                    </div>
+                    <div class="fb3__severity-card">
+                      <svg width="28" height="28" viewBox="0 0 33 33" fill="none">
+                        <path d="M28.5 11.5L21.5 4.5H11.5L4.5 11.5V21.5L11.5 28.5H21.5L28.5 21.5Z" fill="#FFE1E2" stroke="#FFE1E2" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M21.39 11.61C20.99 11.21 20.34 11.21 19.94 11.61L16.5 15.05L13.06 11.61C12.66 11.21 12.01 11.21 11.61 11.61C11.21 12.01 11.21 12.66 11.61 13.06L15.05 16.5L11.61 19.94C11.21 20.34 11.21 20.99 11.61 21.39C11.81 21.59 12.07 21.69 12.34 21.69C12.6 21.69 12.86 21.59 13.06 21.39L16.5 17.95L19.94 21.39C20.14 21.59 20.4 21.69 20.66 21.69C20.93 21.69 21.19 21.59 21.39 21.39C21.79 20.99 21.79 20.34 21.39 19.94L17.95 16.5L21.39 13.06C21.79 12.66 21.79 12.01 21.39 11.61Z" fill="#AA0E19"/>
+                      </svg>
+                      <span class="fb3__severity-name">Critical</span>
+                      <span class="fb3__severity-desc">Blocking my work</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fb3__footer">
+                <div class="fb3__sender">
+                  <div class="fb3__avatar">
+                    <img src="assets/avatar.png" alt="User avatar" width="32" height="32">
+                  </div>
+                  <div class="fb3__sender-info">
+                    <span class="fb3__sender-label">Sending as</span>
+                    <span class="fb3__sender-email">orhye@prescouter.com</span>
+                  </div>
+                </div>
+                <div class="fb3__actions">
+                  <button class="fb3__btn fb3__btn--cancel fb3__btn--disabled" id="cBtnDraft">Save as draft</button>
+                  <button class="fb3__btn fb3__btn--submit fb3__btn--disabled" id="cBtnSubmit">Send feedback</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Snackbar confirmation -->
+            <div class="fb3__snackbar" id="cSnackbar">
+              <svg class="fb3__snackbar-icon" width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="9" stroke="#4ade80" stroke-width="1.5"/>
+                <path d="M6 10.5L8.5 13L14 7.5" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="fb3__snackbar-text">Feedback submitted! We'll get back to you soon.</span>
+            </div>
+
+            <!-- Animated cursor -->
+            <img src="assets/pointing.svg" alt="" class="anim-cursor" id="cCursor" width="29" height="31">
+          </div>
+        </div>
+
+        <p>Users can attach files as evidence &mdash; screenshots, spreadsheets, logs. The upload state uses green checkmarks for clear confirmation, keeping the experience lightweight.</p>
+        <p>Rather than a dropdown or radio list, we used visual cards with plain-language subtitles: &ldquo;Polished suggestion,&rdquo; &ldquo;Annoying workflow,&rdquo; &ldquo;Blocking my work.&rdquo; This translates abstract severity into the user&rsquo;s actual experience &mdash; making it faster to choose and more accurate for our team to triage.</p>
       </div>
 
       <div class="case-study-section">
-        <h2>The AI Feature in Detail</h2>
+        <h3 style="margin-bottom:8px;">Mobile Adaptation</h3>
 
-        <h3>Step 1 — User fills required fields</h3>
-        <p>Users complete core required information: company details, contact information, and key technology identifiers. These inputs — alongside any uploaded supporting documents — form the context the AI needs to generate meaningful, specific suggestions rather than generic ones.</p>
+        <img src="images/mobile-adaptation.png" alt="Mobile adaptation of the feedback form showing three screens" style="display: block; width: 100%; border-radius: 16px;">
 
-        <img src="images/step1-required-fields.png" alt="User filling required fields in the submission form" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
-
-        <h3>Step 2 — AI analyses and generates</h3>
-        <p>Once required fields are complete, the system shows a clear loading state: "We're analysing your inputs to pre-fill the remaining fields." The AI icon on each field label signals which fields are about to be suggested, setting expectations before results appear.</p>
-
-        <div style="position: relative; margin: 28px 0 32px;">
-          <video id="step2Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
-            <source src="images/step2-ai-analyses.mp4" type="video/mp4">
-            <source src="images/step2-ai-analyses.mov" type="video/quicktime">
-          </video>
-          <button id="step2PlayPause" aria-label="Pause video" style="position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.45); color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; backdrop-filter: blur(4px);">
-            <svg id="step2PauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
-            <svg id="step2PlayIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;"><polygon points="2,1 13,7 2,13"/></svg>
-          </button>
-        </div>
-
-        <h3>Step 3 — AI-filled fields with confidence indicators</h3>
-        <p>All AI-generated fields are colour-coded to indicate how confident the AI is in each suggestion — high, medium, or low. Users can hover over any field to see what the colour means and what it was based on. Every suggestion can be edited or removed before submitting.</p>
-
-        <img src="images/step3-confidence-indicators.png" alt="AI-filled fields with colour-coded confidence indicators" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
-
-        <h3>Step 4 — Recovery state if suggestions are removed</h3>
-        <p>If a user removes the AI-generated fills, a prompt allows them to restore suggestions instantly or fill manually.</p>
-
-        <div style="position: relative; margin: 28px 0 32px;">
-          <video id="step4Video" autoplay loop muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: block;">
-            <source src="images/step4-recovery-state.mp4" type="video/mp4">
-            <source src="images/step4-recovery-state.mov" type="video/quicktime">
-          </video>
-          <button id="step4PlayPause" aria-label="Pause video" style="position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.45); color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; backdrop-filter: blur(4px);">
-            <svg id="step4PauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
-            <svg id="step4PlayIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;"><polygon points="2,1 13,7 2,13"/></svg>
-          </button>
-        </div>
+        <p>A significant portion of our user base accessed the platform on mobile, so the feedback form needed to work just as well on smaller screens. The core interaction stayed the same, but we adapted key elements for touch: chips use a tap-to-preview, tap-again-to-confirm pattern instead of hover, severity cards stack vertically for easier thumb reach, and the textarea auto-expands as users type to maximize visible space.</p>
+        <p>The goal was feature parity without compromise &mdash; every AI feature available on desktop works identically on mobile.</p>
       </div>
 
       <div class="case-study-section">
-        <h2>Result</h2>
-        <p>Vendors can now complete a full submission without needing deep technical knowledge. The platform receives richer, more complete data for evaluation, and submitters have a clear, trustworthy experience where AI assists rather than overrides.</p>
+        <h3 style="margin-bottom:8px;">Results</h3>
 
-        <img src="images/result-grid.jpg" alt="Overview of the completed AI-assisted submission flow" style="margin: 28px 0 32px; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+        <p>Within the first 8 weeks of rolling out the redesigned feedback form, we saw a meaningful shift in both the quantity and quality of submissions.</p>
+        <div class="case-study-callout"><strong>Feedback volume increased by 42%.</strong> Before the redesign, most users in the pilot group never submitted feedback at all. The category chips and AI polish lowered the barrier enough that casual users &mdash; not just power users &mdash; started contributing.</div>
+        <div class="case-study-callout"><strong>Form abandonment dropped by 28%.</strong> We tracked how many users opened the modal but never submitted. The combination of guided chips and the save-as-draft option kept significantly more users from bailing mid-flow.</div>
+        <div class="case-study-callout"><strong>Actionable feedback rose from ~35% to ~68%.</strong> This was the metric that mattered most to our product team. Before, a large portion of submissions were too vague to triage (&ldquo;it&rsquo;s broken,&rdquo; &ldquo;I don&rsquo;t like it&rdquo;). The AI polish feature and structured chip prompts helped users articulate issues in a way our team could actually act on &mdash; including specific workflow pain points we hadn&rsquo;t identified through other research channels.</div>
+        <p>An unexpected insight: roughly 1 in 5 submissions used the &ldquo;General thoughts&rdquo; chip, and many of these surfaced feature requests and workflow ideas we hadn&rsquo;t considered. The open-ended category became an informal discovery channel that directly influenced two items on our next quarter&rsquo;s roadmap.</p>
+      </div>
 
-        <div style="font-size: 14px; color: var(--color-gray-mid); line-height: 1.8; padding: 16px 20px; background: var(--color-gray-light); border-left: 3px solid var(--color-gray-border); border-radius: 0 6px 6px 0; margin: 20px 0 18px;">
-          <strong>Status:</strong> This feature has been confirmed and approved by the client and is currently in the implementation phase. Initial reactions have been positive — we are awaiting real user data and feedback to measure impact.
-        </div>
+      <div class="case-study-section">
+        <h3 style="margin-bottom:8px;">Reflection</h3>
+
+        <p>This project reinforced a principle I keep coming back to when designing AI features: AI should reduce effort, not replace intent. The user always owns their feedback &mdash; AI just helps them say it better.</p>
+        <p>The feedback form was a small surface area, but it touched on big questions: How do you introduce AI into a familiar pattern without making it feel alien? How do you design for trust when the machine is editing someone&rsquo;s words? These are the kinds of problems I want to keep solving.</p>
       </div>
 
       <div class="case-study-nav">
-        <a href="index.html" class="case-study-back">&larr; Back to Portfolio</a>
-        <a href="project3.html" class="case-study-next">Technology Radar — Gallery View &rarr;</a>
+        <a href="index.html?v=2" class="case-study-back">&larr; Back to Portfolio</a>
+        <a href="project3.html?v=2" class="case-study-next">AI-Assisted Submissions &rarr;</a>
       </div>
     </section>
   </main>
@@ -155,55 +1935,646 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- Animation 1: Chips walkthrough -->
   <script>
     (function() {
-      var video = document.getElementById('step2Video');
-      var btn = document.getElementById('step2PlayPause');
-      var pauseIcon = document.getElementById('step2PauseIcon');
-      var playIcon = document.getElementById('step2PlayIcon');
-      var wrapper = btn.parentElement;
+      const cursor = document.getElementById('aCursor');
+      const textEl = document.getElementById('aText');
+      const wrap = document.getElementById('aTextareaWrap');
+      const pills = document.getElementById('aPills');
+      const pill0 = document.getElementById('aPill0');
+      const pill1 = document.getElementById('aPill1');
+      const pill2 = document.getElementById('aPill2');
+      const btnDraft = document.getElementById('aBtnDraft');
+      const btnSubmit = document.getElementById('aBtnSubmit');
+      const scene = document.getElementById('animScene');
 
-      wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
-      wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+      const PLACEHOLDER = "What\u2019s on your mind? Share a thought, suggestion, or issue.";
+      const PREVIEWS = [
+        "I\u2019d like to share some general thoughts about",
+        "It would be great if the workflow could",
+        "I encountered an issue while"
+      ];
+      const TYPED = "I encountered an issue while";
 
-      btn.addEventListener('click', function() {
-        if (video.paused) {
-          video.play();
-          pauseIcon.style.display = '';
-          playIcon.style.display = 'none';
-          btn.setAttribute('aria-label', 'Pause video');
-        } else {
-          video.pause();
-          pauseIcon.style.display = 'none';
-          playIcon.style.display = '';
-          btn.setAttribute('aria-label', 'Play video');
+      function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+      function moveTo(x, y, dur = 600, onApproach) {
+        return new Promise(resolve => {
+          const sx = parseFloat(cursor.style.left) || 0;
+          const sy = parseFloat(cursor.style.top) || 0;
+          const t0 = performance.now();
+          let approached = false;
+          function step(now) {
+            const t = Math.min((now - t0) / dur, 1);
+            const e = 1 - Math.pow(1 - t, 3);
+            cursor.style.left = (sx + (x - sx) * e) + 'px';
+            cursor.style.top = (sy + (y - sy) * e) + 'px';
+            if (!approached && t >= 0.5 && onApproach) {
+              approached = true;
+              onApproach();
+            }
+            t < 1 ? requestAnimationFrame(step) : resolve();
+          }
+          requestAnimationFrame(step);
+        });
+      }
+
+      function center(el) {
+        const sr = scene.getBoundingClientRect();
+        const pr = el.getBoundingClientRect();
+        const z = sr.width / scene.offsetWidth || 1;
+        return { x: (pr.left - sr.left + pr.width / 2) / z, y: (pr.top - sr.top + pr.height / 2 + 6 * z) / z };
+      }
+
+      function placeholder(t) {
+        textEl.textContent = t;
+        textEl.className = 'fb__text fb__text--placeholder';
+      }
+
+      function typed(t, caret) {
+        textEl.textContent = t;
+        textEl.className = 'fb__text fb__text--typed' + (caret ? ' fb__text--typing' : '');
+      }
+
+      function btns(disabled) {
+        btnDraft.classList.toggle('fb__btn--disabled', disabled);
+        btnSubmit.classList.toggle('fb__btn--disabled', disabled);
+      }
+
+      function hover(i) {
+        [pill0, pill1, pill2].forEach((p, j) => p.classList.toggle('fb__pill--hovered', j === i));
+      }
+
+      function clearHovers() {
+        [pill0, pill1, pill2].forEach(p => { p.classList.remove('fb__pill--hovered', 'fb__pill--clicked'); });
+      }
+
+      function reset() {
+        cursor.classList.remove('anim-cursor--visible');
+        cursor.style.left = '540px';
+        cursor.style.top = '240px';
+        placeholder(PLACEHOLDER);
+        btns(true);
+        pills.classList.remove('fb__pills--hidden');
+        clearHovers();
+        wrap.classList.remove('fb__textarea-wrap--focused');
+      }
+
+      async function loop() {
+        while (true) {
+          reset();
+          await wait(1500);
+
+          cursor.classList.add('anim-cursor--visible');
+          await wait(200);
+
+          // Hover General thoughts
+          const p0 = center(pill0);
+          await moveTo(p0.x, p0.y, 700, () => { hover(0); placeholder(PREVIEWS[0]); });
+          await wait(900);
+
+          // Hover Improve workflow
+          const p1 = center(pill1);
+          await moveTo(p1.x, p1.y, 500, () => { hover(1); placeholder(PREVIEWS[1]); });
+          await wait(900);
+
+          // Hover Report a bug
+          const p2 = center(pill2);
+          await moveTo(p2.x, p2.y, 500, () => { hover(2); placeholder(PREVIEWS[2]); });
+          await wait(800);
+
+          // Click
+          pill2.classList.add('fb__pill--clicked');
+          await wait(150);
+          pill2.classList.remove('fb__pill--clicked');
+
+          typed(TYPED, true);
+          wrap.classList.add('fb__textarea-wrap--focused');
+          pills.classList.add('fb__pills--hidden');
+          btns(false);
+
+          await wait(300);
+          cursor.classList.remove('anim-cursor--visible');
+
+          await wait(2500);
+          await wait(1500);
         }
-      });
+      }
+
+      loop();
     })();
+  </script>
 
+  <!-- Animation 2: Polish with AI -->
+  <script>
     (function() {
-      var video = document.getElementById('step4Video');
-      var btn = document.getElementById('step4PlayPause');
-      var pauseIcon = document.getElementById('step4PauseIcon');
-      var playIcon = document.getElementById('step4PlayIcon');
-      var wrapper = btn.parentElement;
+      const cursor = document.getElementById('bCursor');
+      const textEl = document.getElementById('bText');
+      const textareaEl = document.getElementById('bTextarea');
+      const textareaWrap = document.getElementById('bTextareaWrap');
+      const pills = document.getElementById('bPills');
+      const aiPolish = document.getElementById('bAiPolish');
+      const aiPolishBtn = document.getElementById('bAiPolishBtn');
+      const aiIcon = document.getElementById('bAiIcon');
+      const aiSpinner = document.getElementById('bAiSpinner');
+      const aiTooltip = document.getElementById('bAiTooltip');
+      const polishStatus = document.getElementById('bPolishStatus');
+      const undoBar = document.getElementById('bUndoBar');
+      const btnDraft = document.getElementById('bBtnDraft');
+      const btnSubmit = document.getElementById('bBtnSubmit');
+      const scene = document.getElementById('animScene2');
 
-      wrapper.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
-      wrapper.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+      const PLACEHOLDER = "What\u2019s on your mind? Share a thought, suggestion, or issue.";
+      const USER_TEXT = "The export feature breaks when I try to download reports with charts included";
+      const AI_POLISHED_TEXT = "When attempting to export reports that contain embedded charts, the export process fails silently \u2014 no file is generated and no error message is displayed. This occurs consistently across Chrome and Firefox when using the \u2018Download as PDF\u2019 option from the Reports dashboard. Reports without charts export normally, suggesting the issue is specifically related to chart rendering during the export pipeline.";
 
-      btn.addEventListener('click', function() {
-        if (video.paused) {
-          video.play();
-          pauseIcon.style.display = '';
-          playIcon.style.display = 'none';
-          btn.setAttribute('aria-label', 'Pause video');
-        } else {
-          video.pause();
-          pauseIcon.style.display = 'none';
-          playIcon.style.display = '';
-          btn.setAttribute('aria-label', 'Play video');
+      function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      function moveCursorTo(x, y, duration = 600) {
+        return new Promise(resolve => {
+          const startX = parseFloat(cursor.style.left) || 0;
+          const startY = parseFloat(cursor.style.top) || 0;
+          const startTime = performance.now();
+
+          function step(now) {
+            const elapsed = now - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - t, 3);
+            cursor.style.left = (startX + (x - startX) * ease) + 'px';
+            cursor.style.top = (startY + (y - startY) * ease) + 'px';
+            if (t < 1) {
+              requestAnimationFrame(step);
+            } else {
+              resolve();
+            }
+          }
+          requestAnimationFrame(step);
+        });
+      }
+
+      function getElementCenter(el) {
+        const sceneRect = scene.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        const z = sceneRect.width / scene.offsetWidth || 1;
+        return {
+          x: (elRect.left - sceneRect.left + elRect.width / 2) / z,
+          y: (elRect.top - sceneRect.top + elRect.height / 2 + 6 * z) / z
+        };
+      }
+
+      function setPlaceholder(text) {
+        textEl.textContent = text;
+        textEl.className = 'fb2__text fb2__text--placeholder';
+      }
+
+      function setTypedText(text, showCaret) {
+        textEl.textContent = text;
+        textEl.className = 'fb2__text fb2__text--typed' + (showCaret ? ' fb2__text--typing' : '');
+      }
+
+      function setButtonsDisabled(disabled) {
+        btnDraft.classList.toggle('fb2__btn--disabled', disabled);
+        btnSubmit.classList.toggle('fb2__btn--disabled', disabled);
+      }
+
+      function typeText(fullText, startFrom, charDelay, onWordCallback) {
+        return new Promise(resolve => {
+          let i = startFrom;
+          let wordCount = 0;
+          function nextChar() {
+            if (i <= fullText.length) {
+              const slice = fullText.slice(0, i);
+              setTypedText(slice, true);
+              if (fullText[i - 1] === ' ') {
+                wordCount++;
+                if (onWordCallback) onWordCallback(wordCount);
+              }
+              i++;
+              setTimeout(nextChar, charDelay);
+            } else {
+              resolve();
+            }
+          }
+          nextChar();
+        });
+      }
+
+      function renderAiText(text) {
+        return new Promise(resolve => {
+          textareaEl.scrollTop = 0;
+          textEl.textContent = '';
+          textEl.className = 'fb2__text fb2__text--typed';
+
+          const words = text.split(' ');
+          const spans = words.map((word, idx) => {
+            const span = document.createElement('span');
+            span.className = 'ai-word';
+            span.textContent = (idx > 0 ? ' ' : '') + word;
+            textEl.appendChild(span);
+            return span;
+          });
+
+          const STAGGER = 65;
+          const FADE_DURATION = 750;
+          const totalWords = spans.length;
+          const startTime = performance.now();
+
+          function animate(now) {
+            const elapsed = now - startTime;
+            let allDone = true;
+
+            for (let i = 0; i < totalWords; i++) {
+              const wordStart = i * STAGGER;
+              const wordProgress = (elapsed - wordStart) / FADE_DURATION;
+
+              if (wordProgress >= 1) {
+                if (spans[i].style.opacity !== '1') {
+                  spans[i].style.opacity = '1';
+                }
+              } else if (wordProgress > 0) {
+                const eased = 1 - Math.pow(1 - wordProgress, 2.5);
+                spans[i].style.opacity = eased;
+                allDone = false;
+              } else {
+                allDone = false;
+              }
+            }
+
+            if (!allDone) {
+              requestAnimationFrame(animate);
+            } else {
+              resolve();
+            }
+          }
+
+          setTimeout(() => requestAnimationFrame(animate), 150);
+        });
+      }
+
+      function resetState() {
+        cursor.classList.remove('anim-cursor--visible');
+        cursor.style.left = '540px';
+        cursor.style.top = '260px';
+        setPlaceholder(PLACEHOLDER);
+        setButtonsDisabled(true);
+        pills.classList.remove('fb2__pills--hidden');
+        aiPolish.classList.remove('fb2__ai-polish--visible');
+
+        textareaEl.scrollTop = 0;
+        textareaWrap.classList.remove('fb2__textarea-wrap--focused');
+
+        aiIcon.style.display = 'block';
+        aiSpinner.classList.remove('fb2__ai-spinner--active');
+        aiPolishBtn.classList.remove('fb2__ai-polish-btn--hovered');
+        aiTooltip.classList.remove('fb2__ai-tooltip--visible');
+
+        polishStatus.classList.remove('fb2__polish-status--visible');
+        undoBar.classList.remove('fb2__undo-bar--visible');
+      }
+
+      async function runAnimation() {
+        while (true) {
+          // 1. Reset to initial state
+          resetState();
+          await wait(1500);
+
+          // 2. Cursor appears and moves toward textarea
+          cursor.classList.add('anim-cursor--visible');
+          await wait(200);
+          const textareaRect = textEl.getBoundingClientRect();
+          const sceneRect = scene.getBoundingClientRect();
+          const z = sceneRect.width / scene.offsetWidth || 1;
+          const textareaClickX = (textareaRect.left - sceneRect.left + 40 * z) / z;
+          const textareaClickY = (textareaRect.top - sceneRect.top + 20 * z) / z;
+          await moveCursorTo(textareaClickX, textareaClickY, 800);
+          await wait(300);
+
+          // 3. Click textarea — border turns blue
+          textareaWrap.classList.add('fb2__textarea-wrap--focused');
+          setTypedText('', true);
+          await wait(400);
+
+          // 4. Hide mouse cursor, start typing — chips fade out, buttons active
+          cursor.classList.remove('anim-cursor--visible');
+          await wait(300);
+          pills.classList.add('fb2__pills--hidden');
+          setButtonsDisabled(false);
+          await wait(200);
+
+          // 5. Type user text — AI button appears after 5 words
+          let aiShown = false;
+          await typeText(USER_TEXT, 1, 55, (wordCount) => {
+            if (wordCount >= 5 && !aiShown) {
+              aiShown = true;
+              aiPolish.classList.add('fb2__ai-polish--visible');
+            }
+          });
+
+          await wait(800);
+
+          // 6. Cursor reappears and moves toward AI button
+          cursor.classList.add('anim-cursor--visible');
+          await wait(200);
+          const aiPos = getElementCenter(aiPolishBtn);
+          await moveCursorTo(aiPos.x, aiPos.y + 2, 700);
+
+          // 7. Hover state — tooltip appears
+          aiPolishBtn.classList.add('fb2__ai-polish-btn--hovered');
+          await wait(300);
+          aiTooltip.classList.add('fb2__ai-tooltip--visible');
+          await wait(1200);
+
+          // 8. Click the AI button
+          aiPolishBtn.style.transform = 'scale(0.92)';
+          await wait(100);
+          aiPolishBtn.style.transform = '';
+          await wait(100);
+
+          // 9. Loading state — spinner, tooltip hides
+          aiTooltip.classList.remove('fb2__ai-tooltip--visible');
+          aiIcon.style.display = 'none';
+          aiSpinner.classList.add('fb2__ai-spinner--active');
+          aiPolishBtn.classList.remove('fb2__ai-polish-btn--hovered');
+
+          await wait(200);
+          cursor.classList.remove('anim-cursor--visible');
+
+          // 10. Show "Polishing..." status
+          polishStatus.classList.add('fb2__polish-status--visible');
+
+          textEl.textContent = '';
+          textEl.className = 'fb2__text fb2__text--typed';
+          await wait(1200);
+
+          // 11. AI text renders with wave-uncover
+          await renderAiText(AI_POLISHED_TEXT);
+          await wait(400);
+
+          // 12. Generation done — spinner stops, icon returns
+          aiSpinner.classList.remove('fb2__ai-spinner--active');
+          aiIcon.style.display = 'block';
+
+          polishStatus.classList.remove('fb2__polish-status--visible');
+          await wait(200);
+          undoBar.classList.add('fb2__undo-bar--visible');
+
+          // 13. Hold final state
+          await wait(3500);
+
+          // 14. Pause before loop restart
+          await wait(1500);
         }
-      });
+      }
+
+      runAnimation();
+    })();
+  </script>
+
+  <!-- Animation 3: Supporting Documents & Categorizing Impact -->
+  <script>
+    (function() {
+      const cursor = document.getElementById('cCursor');
+      const textEl = document.getElementById('cText');
+      const textareaEl = document.getElementById('cTextarea');
+      const textareaWrap = document.getElementById('cTextareaWrap');
+      const undoBar = document.getElementById('cUndoBar');
+      const btnDraft = document.getElementById('cBtnDraft');
+      const btnSubmit = document.getElementById('cBtnSubmit');
+      const severityModerate = document.getElementById('cSeverityModerate');
+      const attachBtn = document.getElementById('cAttachBtn');
+      const attachTooltip = document.getElementById('cAttachTooltip');
+      const documents = document.getElementById('cDocuments');
+      const fileSpinner = document.getElementById('cFileSpinner');
+      const fileCheck = document.getElementById('cFileCheck');
+      const snackbar = document.getElementById('cSnackbar');
+      const feedbackForm = document.getElementById('cFeedbackForm');
+      const scene = document.getElementById('animScene3');
+
+      const AI_POLISHED_TEXT = "When attempting to export reports that contain embedded charts, the export process fails silently \u2014 no file is generated and no error message is displayed. This occurs consistently across Chrome and Firefox when using the \u2018Download as PDF\u2019 option from the Reports dashboard. Reports without charts export normally, suggesting the issue is specifically related to chart rendering during the export pipeline.";
+
+      function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      function moveCursorTo(x, y, duration) {
+        duration = duration || 600;
+        return new Promise(resolve => {
+          const startX = parseFloat(cursor.style.left) || 0;
+          const startY = parseFloat(cursor.style.top) || 0;
+          const startTime = performance.now();
+
+          function step(now) {
+            const elapsed = now - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - t, 3);
+            cursor.style.left = (startX + (x - startX) * ease) + 'px';
+            cursor.style.top = (startY + (y - startY) * ease) + 'px';
+            if (t < 1) {
+              requestAnimationFrame(step);
+            } else {
+              resolve();
+            }
+          }
+          requestAnimationFrame(step);
+        });
+      }
+
+      function getElementCenter(el) {
+        const sceneRect = scene.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        const z = sceneRect.width / scene.offsetWidth || 1;
+        return {
+          x: (elRect.left - sceneRect.left + elRect.width / 2) / z,
+          y: (elRect.top - sceneRect.top + elRect.height / 2 + 6 * z) / z
+        };
+      }
+
+      function setButtonsDisabled(disabled) {
+        btnDraft.classList.toggle('fb3__btn--disabled', disabled);
+        btnSubmit.classList.toggle('fb3__btn--disabled', disabled);
+      }
+
+      // Set the post-generation state: AI text rendered, undo bar visible
+      function setPostGenerationState() {
+        // Hide cursor off-screen
+        cursor.classList.remove('anim-cursor--visible');
+        cursor.style.left = '540px';
+        cursor.style.top = '400px';
+
+        // Textarea unfocused with AI-polished text (fully visible)
+        textareaWrap.classList.remove('fb3__textarea-wrap--focused');
+        textEl.textContent = '';
+        textEl.className = 'fb3__text fb3__text--typed';
+        var words = AI_POLISHED_TEXT.split(' ');
+        words.forEach(function(word, idx) {
+          var span = document.createElement('span');
+          span.className = 'ai-word';
+          span.textContent = (idx > 0 ? ' ' : '') + word;
+          span.style.opacity = '1';
+          textEl.appendChild(span);
+        });
+        textareaEl.scrollTop = 0;
+
+        // Buttons active
+        setButtonsDisabled(false);
+
+        // Undo bar visible
+        undoBar.classList.add('fb3__undo-bar--visible');
+
+        // Severity not selected yet
+        severityModerate.classList.remove('fb3__severity-card--hovered');
+        severityModerate.classList.remove('fb3__severity-card--selected');
+
+        // Reset submit button states
+        btnSubmit.classList.remove('fb3__btn--submit--hovered');
+        btnSubmit.classList.remove('fb3__btn--submit--pressed');
+
+        // Reset attach button and supporting documents
+        attachBtn.classList.remove('fb3__attach-btn--hovered');
+        attachTooltip.classList.remove('fb3__attach-tooltip--visible');
+        documents.classList.remove('fb3__documents--visible');
+        fileSpinner.classList.remove('fb3__file-spinner--hidden');
+        fileCheck.classList.remove('fb3__file-check--visible');
+
+        // Reset snackbar and form visibility
+        snackbar.classList.remove('fb3__snackbar--visible');
+        snackbar.style.transition = '';
+        snackbar.style.opacity = '';
+        snackbar.style.transform = '';
+        feedbackForm.style.opacity = '';
+        feedbackForm.style.transform = '';
+        feedbackForm.style.transition = '';
+      }
+
+      async function runAnimation() {
+        while (true) {
+          // 1. Start from post-generation state (text rendered, undo bar showing)
+          setPostGenerationState();
+          await wait(1500);
+
+          // 2. Cursor appears and moves toward the attach button
+          cursor.classList.add('anim-cursor--visible');
+          await wait(200);
+          var attachPos = getElementCenter(attachBtn);
+          await moveCursorTo(attachPos.x, attachPos.y, 700);
+
+          // 3. Hover the attach button — tooltip appears
+          attachBtn.classList.add('fb3__attach-btn--hovered');
+          await wait(300);
+          attachTooltip.classList.add('fb3__attach-tooltip--visible');
+          await wait(1200);
+
+          // 4. Click the attach button
+          var attachIcon = attachBtn.querySelector('svg');
+          attachIcon.style.transition = 'transform 0.1s ease';
+          attachIcon.style.transform = 'scale(0.85)';
+          await wait(100);
+          attachIcon.style.transform = '';
+          await wait(100);
+          attachIcon.style.transition = '';
+          await wait(100);
+
+          // 5. Hide tooltip and hover after click
+          await wait(200);
+          attachTooltip.classList.remove('fb3__attach-tooltip--visible');
+          attachBtn.classList.remove('fb3__attach-btn--hovered');
+
+          // 6. Hide cursor after click
+          await wait(200);
+          cursor.classList.remove('anim-cursor--visible');
+
+          // 7. Supporting documents section appears with file loading
+          await wait(300);
+          documents.classList.add('fb3__documents--visible');
+          await wait(2000);
+
+          // 8. File upload completes — spinner replaced by checkmark
+          fileSpinner.classList.add('fb3__file-spinner--hidden');
+          fileCheck.classList.add('fb3__file-check--visible');
+          await wait(1000);
+
+          // 9. Cursor reappears and moves toward "Moderate" severity card
+          cursor.classList.add('anim-cursor--visible');
+          await wait(200);
+          var moderatePos = getElementCenter(severityModerate);
+          // Add hover state while cursor is still approaching
+          setTimeout(function() {
+            severityModerate.classList.add('fb3__severity-card--hovered');
+          }, 400);
+          await moveCursorTo(moderatePos.x, moderatePos.y, 800);
+
+          // 10. Brief pause on hover before clicking
+          await wait(400);
+
+          // 11. Click the "Moderate" card — selection stroke
+          severityModerate.classList.remove('fb3__severity-card--hovered');
+          severityModerate.classList.add('fb3__severity-card--selected');
+
+          // 12. Hide cursor after click
+          await wait(300);
+          cursor.classList.remove('anim-cursor--visible');
+
+          // 13. Hold state with Moderate selected
+          await wait(1500);
+
+          // 14. Cursor reappears and moves toward "Send feedback" button
+          cursor.classList.add('anim-cursor--visible');
+          await wait(200);
+          var submitPos = getElementCenter(btnSubmit);
+          // Add hover partway through cursor movement
+          setTimeout(function() {
+            btnSubmit.classList.add('fb3__btn--submit--hovered');
+          }, 350);
+          await moveCursorTo(submitPos.x, submitPos.y, 700);
+          await wait(400);
+
+          // 15. Click "Send feedback" — darken color for pressed state
+          btnSubmit.classList.remove('fb3__btn--submit--hovered');
+          btnSubmit.classList.add('fb3__btn--submit--pressed');
+          await wait(150);
+          btnSubmit.classList.remove('fb3__btn--submit--pressed');
+          await wait(100);
+
+          // 16. Hide cursor
+          cursor.classList.remove('anim-cursor--visible');
+          await wait(200);
+
+          // 17. Form shrinks and morphs into snackbar
+          feedbackForm.style.transition = 'opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+          feedbackForm.style.transform = 'scale(0.35)';
+          feedbackForm.style.opacity = '0';
+          // Prep snackbar while form is collapsing
+          snackbar.style.transition = 'none';
+          snackbar.style.opacity = '0';
+          snackbar.style.transform = 'translate(-50%, -50%) scale(0.5)';
+          snackbar.classList.add('fb3__snackbar--visible');
+          // Wait for form collapse to finish
+          await wait(450);
+          // Snackbar emerges right after
+          snackbar.offsetHeight;
+          snackbar.style.transition = 'opacity 0.3s cubic-bezier(0, 0, 0.2, 1), transform 0.3s cubic-bezier(0, 0, 0.2, 1)';
+          snackbar.style.opacity = '1';
+          snackbar.style.transform = 'translate(-50%, -50%) scale(1)';
+
+          // 18. Hold snackbar state
+          await wait(3500);
+
+          // 19. Fade out snackbar before loop restart
+          snackbar.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          snackbar.style.opacity = '0';
+          snackbar.style.transform = 'translate(-50%, -50%) scale(0.85)';
+          await wait(500);
+
+          // 20. Pause before loop restart
+          await wait(1000);
+        }
+      }
+
+      runAnimation();
     })();
   </script>
 </body>
