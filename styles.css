@@ -246,12 +246,34 @@ body > *:not(.page-loader) {
   overflow: hidden;
 }
 
+/* Static poster shown until the video starts playing — also acts as the
+   permanent fallback on devices where autoplay is blocked (e.g. Low Power Mode) */
+.hero-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* Hide Safari's native play button overlay on hero videos */
+.hero video {
+  pointer-events: none;
+}
+.hero video::-webkit-media-controls,
+.hero video::-webkit-media-controls-enclosure,
 .hero video::-webkit-media-controls-panel,
 .hero video::-webkit-media-controls-play-button,
-.hero video::-webkit-media-controls-start-playback-button {
+.hero video::-webkit-media-controls-start-playback-button,
+.hero video::-webkit-media-controls-overlay-play-button {
   display: none !important;
   -webkit-appearance: none;
+  appearance: none;
+  opacity: 0 !important;
 }
 
 .hero-content {
