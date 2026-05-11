@@ -73,34 +73,48 @@
 
       // Reveal vidA only once it's actually playing — keeps the static poster
       // visible (and hides any iOS tap-to-play overlay) when autoplay is blocked
+      let playStarted = false;
       vidA.addEventListener('playing', function onFirstPlay() {
+        playStarted = true;
         vidA.style.opacity = '1';
         vidA.removeEventListener('playing', onFirstPlay);
       });
 
+      // Idempotent: keeps retrying play() at every reasonable opportunity until
+      // it succeeds. iOS often rejects the first attempt (video not buffered
+      // enough, tab not foregrounded, etc.) but accepts a later one.
       function tryPlay() {
+        if (playStarted || !vidA.paused) return;
         var p = vidA.play();
-        if (p !== undefined) {
-          p.catch(function() {
-            // If blocked, retry on first user interaction
-            ['touchstart', 'click', 'scroll'].forEach(function(evt) {
-              document.addEventListener(evt, function once() {
-                vidA.play();
-                ['touchstart', 'click', 'scroll'].forEach(function(e) {
-                  document.removeEventListener(e, once);
-                });
-              }, { once: true });
-            });
-          });
-        }
+        if (p !== undefined) p.catch(function() { /* will retry */ });
       }
 
-      // Wait for video data to be ready, then play
-      if (vidA.readyState >= 2) {
+      // Attempt once the video has enough data to actually start
+      if (vidA.readyState >= 3) {
         tryPlay();
       } else {
-        vidA.addEventListener('loadeddata', tryPlay, { once: true });
+        vidA.addEventListener('canplay', tryPlay);
       }
+
+      // Retry when the tab becomes visible (handles background-loaded pages)
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) tryPlay();
+      });
+
+      // Retry once the page-loader has finished hiding (video is now visible
+      // on-screen, which is when iOS is most permissive about autoplay)
+      const bodyObserver = new MutationObserver(function() {
+        if (!document.body.classList.contains('is-loading')) {
+          tryPlay();
+          bodyObserver.disconnect();
+        }
+      });
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+      // Final fallback: any user gesture unlocks playback
+      ['touchstart', 'click', 'scroll'].forEach(function(evt) {
+        document.addEventListener(evt, tryPlay, { once: true, passive: true });
+      });
 
       let active = vidA, inactive = vidB;
       let swapping = false;
