@@ -16,23 +16,23 @@ if (toggle) {
   });
 }
 
-// Page loader: fade out once hero video is fully buffered, then reveal content
+// Page loader: hide as soon as the page is ready — hero intro is rendered
+// inline (SVG) so there's no buffering wait.
 const pageLoader = document.getElementById('pageLoader');
-const heroVidA = document.getElementById('heroVidA');
-if (pageLoader && heroVidA) {
+if (pageLoader) {
   let hidden = false;
   const hideLoader = () => {
     if (hidden) return;
     hidden = true;
     pageLoader.classList.add('is-loaded');
-    setTimeout(() => document.body.classList.remove('is-loading'), 500);
+    setTimeout(() => document.body.classList.remove('is-loading'), 400);
   };
-  if (heroVidA.readyState >= 4) {
-    hideLoader();
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    requestAnimationFrame(hideLoader);
   } else {
-    heroVidA.addEventListener('canplaythrough', hideLoader, { once: true });
+    document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(hideLoader));
   }
-  setTimeout(hideLoader, 8000);
+  setTimeout(hideLoader, 3000);
 }
 
 // Nav background on scroll (transparent over hero, solid after)
