@@ -285,21 +285,8 @@ body > *:not(.page-loader) {
   pointer-events: none;
   overflow: visible;
 }
-.hero-scribble path {
-  opacity: 0.95;
-}
-/* Each strand erases on its own timer — durations and start delays vary so
-   lines vanish from all angles simultaneously but not in lock-step.
-   Toward the end, opacity also drops so the remaining ink "melts" away
-   rather than snapping off at the tip. */
-@keyframes heroScribbleErase {
-  0%   { stroke-dashoffset: 0; opacity: 0.95; }
-  65%  { opacity: 0.95; }
-  100% { stroke-dashoffset: calc(var(--len) * -1px); opacity: 0; }
-}
-body.intro-erasing .hero-scribble path {
-  animation: heroScribbleErase var(--dur, 7s) cubic-bezier(0.4, 0, 0.6, 1) var(--delay, 0s) forwards;
-}
+/* Strand initial state + erase animation are driven entirely by JS via the
+   Web Animations API — no CSS @keyframes (Safari was misinterpreting them). */
 body.intro-done .hero-scribble {
   display: none;
 }

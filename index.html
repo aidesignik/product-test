@@ -69,12 +69,13 @@
         };
       }
 
-      // One strand = continuous curve through 2–3 overlapping ovals.
-      // Multiple strands at different positions/orientations erase from their
-      // own tips, so the disappearance reads as "lines vanish from all angles."
+      // One strand = continuous polyline through 2–3 overlapping ovals.
+      // Returns both the path `d` string and its total length computed from
+      // the points directly — avoids relying on getTotalLength(), which
+      // returns 0 on freshly-appended paths in Safari before layout.
       function buildStrand(rand, cx, cy, w, h) {
         const pts = [];
-        const ovalCount = 2 + Math.floor(rand() * 2); // 2 or 3 ovals
+        const ovalCount = 2 + Math.floor(rand() * 2);
         for (let i = 0; i < ovalCount; i++) {
           const ocx = cx + (rand() - 0.5) * w * 0.32;
           const ocy = cy + (rand() - 0.5) * h * 0.32;
@@ -96,10 +97,14 @@
           }
         }
         let d = 'M ' + pts[0][0].toFixed(2) + ' ' + pts[0][1].toFixed(2);
+        let length = 0;
         for (let i = 1; i < pts.length; i++) {
           d += ' L ' + pts[i][0].toFixed(2) + ' ' + pts[i][1].toFixed(2);
+          const dx = pts[i][0] - pts[i - 1][0];
+          const dy = pts[i][1] - pts[i - 1][1];
+          length += Math.sqrt(dx * dx + dy * dy);
         }
-        return d;
+        return { d: d, length: length };
       }
 
       // Generate 12 independent strands that overlap to form the cluster.
@@ -107,28 +112,28 @@
       // stagger), so they all unravel simultaneously but not in lock-step.
       const STRAND_COUNT = 12;
       const rand = makeRand(11);
-      const eraseEndsAt = [];
+      const strands = [];
       for (let i = 0; i < STRAND_COUNT; i++) {
+        const strand = buildStrand(rand, 450, 290, 720, 440);
         const path = document.createElementNS(SVG_NS, 'path');
-        path.setAttribute('d', buildStrand(rand, 450, 290, 720, 440));
+        path.setAttribute('d', strand.d);
         path.setAttribute('fill', 'none');
         path.setAttribute('stroke', 'currentColor');
         path.setAttribute('stroke-width', '1.8');
         path.setAttribute('stroke-linecap', 'round');
         path.setAttribute('stroke-linejoin', 'round');
+        const len = strand.length;
+        // Explicit two-value dasharray so Safari doesn't interpret a single
+        // value ambiguously. Both initial attributes set so path is solid
+        // before SMIL begins.
+        path.setAttribute('stroke-dasharray', len + ' ' + len);
+        path.setAttribute('stroke-dashoffset', '0');
+        path.setAttribute('opacity', '0.95');
         strandsGroup.appendChild(path);
-        const len = path.getTotalLength() || 1;
-        // Most strands take 6.5–8.5s, lightly staggered start 0–1.0s.
-        const dur = 6.5 + rand() * 2;
-        const delay = rand() * 1.0;
-        path.style.setProperty('--len', len);
-        path.style.setProperty('--dur', dur + 's');
-        path.style.setProperty('--delay', delay + 's');
-        path.style.strokeDasharray = String(len);
-        path.style.strokeDashoffset = '0';
-        eraseEndsAt.push((dur + delay) * 1000);
+        const dur = 5.8 + rand() * 1.8;   // seconds
+        const delay = rand() * 0.35;       // seconds
+        strands.push({ path: path, len: len, dur: dur, delay: delay });
       }
-      const maxEraseMs = Math.max.apply(null, eraseEndsAt);
 
       // Typewriter sequence: types nodes in order, then resolves
       function typeNode(node, speed) {
@@ -185,13 +190,39 @@
           revealContent();
           return;
         }
-        // Brief settle, then trigger CSS keyframe erase. Erase speed itself
-        // is unchanged — only the surrounding timing is tightened.
-        const settleMs = 200;
-        setTimeout(function() {
-          document.body.classList.add('intro-erasing');
-          setTimeout(revealContent, maxEraseMs + 80);
-        }, settleMs);
+        // SMIL animations: native SVG, no CSS or JS animation engine in the
+        // way. Safari has supported these since the start. Two <animate>
+        // elements per strand — one for the stroke erase, one for the
+        // melt-out opacity fade in the last 35%.
+        const settleS = 0.08;
+        let totalMs = 0;
+        strands.forEach(function(s) {
+          // Use values syntax (more robust in Safari) and shift the dash
+          // pattern by +len rather than -len; both produce the same "erase"
+          // visual but Safari handles positive numbers in SMIL more reliably.
+          const eraseEl = document.createElementNS(SVG_NS, 'animate');
+          eraseEl.setAttribute('attributeName', 'stroke-dashoffset');
+          eraseEl.setAttribute('values', '0;' + s.len);
+          eraseEl.setAttribute('keyTimes', '0;1');
+          eraseEl.setAttribute('begin', (settleS + s.delay) + 's');
+          eraseEl.setAttribute('dur', s.dur + 's');
+          eraseEl.setAttribute('fill', 'freeze');
+          eraseEl.setAttribute('calcMode', 'spline');
+          eraseEl.setAttribute('keySplines', '0.4 0 0.6 1');
+          s.path.appendChild(eraseEl);
+
+          const opaEl = document.createElementNS(SVG_NS, 'animate');
+          opaEl.setAttribute('attributeName', 'opacity');
+          opaEl.setAttribute('values', '0.95;0.95;0');
+          opaEl.setAttribute('keyTimes', '0;0.65;1');
+          opaEl.setAttribute('begin', (settleS + s.delay) + 's');
+          opaEl.setAttribute('dur', s.dur + 's');
+          opaEl.setAttribute('fill', 'freeze');
+          s.path.appendChild(opaEl);
+
+          totalMs = Math.max(totalMs, (settleS + s.delay + s.dur) * 1000);
+        });
+        setTimeout(revealContent, totalMs + 40);
       }
 
       // Kick off scribble once the page-loader has dropped (page is visible)
