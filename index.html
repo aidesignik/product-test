@@ -6,13 +6,11 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Ivan Kisin — Product Designer</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="preload" as="video" href="/assets/hero-bg.mp4" type="video/mp4">
-  <link rel="preload" as="image" href="/assets/hero-bg-poster.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="is-loading">
+<body class="is-loading intro-playing">
   <div class="page-loader" id="pageLoader">
     <img src="assets/logo.png" alt="" class="page-loader-logo">
   </div>
@@ -42,16 +40,12 @@
 
   <main>
     <section class="hero">
-      <img class="hero-poster" src="/assets/hero-bg-poster.jpg" alt="" aria-hidden="true">
-      <video id="heroVidA" autoplay muted playsinline webkit-playsinline preload="auto" disableremoteplayback x-webkit-airplay="deny" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transform:scale(1.2);z-index:0;opacity:0;transition:opacity 1.5s ease;">
-        <source src="/assets/hero-bg.mp4" type="video/mp4">
-      </video>
-      <video id="heroVidB" muted playsinline webkit-playsinline preload="auto" disableremoteplayback x-webkit-airplay="deny" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transform:scale(1.2);z-index:0;opacity:0;transition:opacity 1.5s ease;">
-        <source src="/assets/hero-bg.mp4" type="video/mp4">
-      </video>
-      <div class="hero-content">
-        <h1>Ivan Kisin</h1>
-        <p class="hero-tagline">Product Designer simplifying complex workflows through AI-driven UX and shipping front-end solutions through code.</p>
+      <svg class="hero-scribble" id="heroScribble" viewBox="0 0 900 580" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <g id="heroScribbleStrands"></g>
+      </svg>
+      <div class="hero-content" data-state="idle">
+        <h1 data-text="Ivan Kisin"><span class="hero-ghost" aria-hidden="true">Ivan Kisin</span><span class="hero-typed"></span><span class="hero-caret" aria-hidden="true"></span></h1>
+        <p class="hero-tagline" data-text="Product Designer simplifying complex workflows through AI-driven UX and shipping front-end solutions through code."><span class="hero-ghost" aria-hidden="true">Product Designer simplifying complex workflows through AI-driven UX and shipping front-end solutions through code.</span><span class="hero-typed"></span><span class="hero-caret" aria-hidden="true"></span></p>
       </div>
       <a href="#projects" class="hero-scroll" aria-label="Scroll to projects">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -60,86 +54,164 @@
 
     <script>
     (function() {
-      const vidA = document.getElementById('heroVidA');
-      const vidB = document.getElementById('heroVidB');
+      const heroContent = document.querySelector('.hero-content');
+      const scribbleSvg = document.getElementById('heroScribble');
+      const strandsGroup = document.getElementById('heroScribbleStrands');
+      const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const SVG_NS = 'http://www.w3.org/2000/svg';
 
-      // Force autoplay on mobile — the autoplay attribute alone is unreliable
-      [vidA, vidB].forEach(function(v) {
-        v.setAttribute('playsinline', '');
-        v.setAttribute('webkit-playsinline', '');
-        v.muted = true;
-        v.defaultMuted = true;
-      });
-
-      // Reveal vidA only once it's actually playing — keeps the static poster
-      // visible (and hides any iOS tap-to-play overlay) when autoplay is blocked
-      let playStarted = false;
-      vidA.addEventListener('playing', function onFirstPlay() {
-        playStarted = true;
-        vidA.style.opacity = '1';
-        vidA.removeEventListener('playing', onFirstPlay);
-      });
-
-      // Idempotent: keeps retrying play() at every reasonable opportunity until
-      // it succeeds. iOS often rejects the first attempt (video not buffered
-      // enough, tab not foregrounded, etc.) but accepts a later one.
-      function tryPlay() {
-        if (playStarted || !vidA.paused) return;
-        var p = vidA.play();
-        if (p !== undefined) p.catch(function() { /* will retry */ });
+      // Deterministic PRNG so the scribble looks identical every load.
+      function makeRand(seed) {
+        let s = seed >>> 0;
+        return function() {
+          s = (s * 1664525 + 1013904223) >>> 0;
+          return s / 0xffffffff;
+        };
       }
 
-      // Attempt once the video has enough data to actually start
-      if (vidA.readyState >= 3) {
-        tryPlay();
-      } else {
-        vidA.addEventListener('canplay', tryPlay);
-      }
-
-      // Retry when the tab becomes visible (handles background-loaded pages)
-      document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) tryPlay();
-      });
-
-      // Retry once the page-loader has finished hiding (video is now visible
-      // on-screen, which is when iOS is most permissive about autoplay)
-      const bodyObserver = new MutationObserver(function() {
-        if (!document.body.classList.contains('is-loading')) {
-          tryPlay();
-          bodyObserver.disconnect();
+      // One strand = continuous curve through 2–3 overlapping ovals.
+      // Multiple strands at different positions/orientations erase from their
+      // own tips, so the disappearance reads as "lines vanish from all angles."
+      function buildStrand(rand, cx, cy, w, h) {
+        const pts = [];
+        const ovalCount = 2 + Math.floor(rand() * 2); // 2 or 3 ovals
+        for (let i = 0; i < ovalCount; i++) {
+          const ocx = cx + (rand() - 0.5) * w * 0.32;
+          const ocy = cy + (rand() - 0.5) * h * 0.32;
+          const rx = w * (0.20 + rand() * 0.20);
+          const ry = h * (0.20 + rand() * 0.20);
+          const rot = rand() * Math.PI;
+          const startA = rand() * Math.PI * 2;
+          const dir = rand() > 0.5 ? 1 : -1;
+          const turns = 1.0 + rand() * 0.6;
+          const steps = Math.round(30 * turns);
+          for (let s = 0; s <= steps; s++) {
+            const a = startA + dir * (s / steps) * Math.PI * 2 * turns;
+            const lx = rx * Math.cos(a);
+            const ly = ry * Math.sin(a);
+            pts.push([
+              ocx + Math.cos(rot) * lx - Math.sin(rot) * ly,
+              ocy + Math.sin(rot) * lx + Math.cos(rot) * ly
+            ]);
+          }
         }
-      });
-      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-
-      // Final fallback: any user gesture unlocks playback
-      ['touchstart', 'click', 'scroll'].forEach(function(evt) {
-        document.addEventListener(evt, tryPlay, { once: true, passive: true });
-      });
-
-      let active = vidA, inactive = vidB;
-      let swapping = false;
-      function crossfade() {
-        if (!swapping && active.duration && active.currentTime >= 7.5) {
-          swapping = true;
-          inactive.currentTime = 0;
-          inactive.play();
-          inactive.style.opacity = '1';
-          // Keep the old video visible underneath during the fade,
-          // only hide it after the transition completes
-          setTimeout(() => {
-            active.style.opacity = '0';
-            const prev = active;
-            active = inactive;
-            inactive = prev;
-            setTimeout(() => {
-              inactive.pause();
-              swapping = false;
-            }, 1600);
-          }, 200);
+        let d = 'M ' + pts[0][0].toFixed(2) + ' ' + pts[0][1].toFixed(2);
+        for (let i = 1; i < pts.length; i++) {
+          d += ' L ' + pts[i][0].toFixed(2) + ' ' + pts[i][1].toFixed(2);
         }
-        requestAnimationFrame(crossfade);
+        return d;
       }
-      requestAnimationFrame(crossfade);
+
+      // Generate 12 independent strands that overlap to form the cluster.
+      // Each erases on its own timer (durations close together with a small
+      // stagger), so they all unravel simultaneously but not in lock-step.
+      const STRAND_COUNT = 12;
+      const rand = makeRand(11);
+      const eraseEndsAt = [];
+      for (let i = 0; i < STRAND_COUNT; i++) {
+        const path = document.createElementNS(SVG_NS, 'path');
+        path.setAttribute('d', buildStrand(rand, 450, 290, 720, 440));
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', 'currentColor');
+        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+        strandsGroup.appendChild(path);
+        const len = path.getTotalLength() || 1;
+        // Most strands take 6.5–8.5s, lightly staggered start 0–1.0s.
+        const dur = 6.5 + rand() * 2;
+        const delay = rand() * 1.0;
+        path.style.setProperty('--len', len);
+        path.style.setProperty('--dur', dur + 's');
+        path.style.setProperty('--delay', delay + 's');
+        path.style.strokeDasharray = String(len);
+        path.style.strokeDashoffset = '0';
+        eraseEndsAt.push((dur + delay) * 1000);
+      }
+      const maxEraseMs = Math.max.apply(null, eraseEndsAt);
+
+      // Typewriter sequence: types nodes in order, then resolves
+      function typeNode(node, speed) {
+        return new Promise(function(resolve) {
+          const text = node.getAttribute('data-text') || '';
+          const target = node.querySelector('.hero-typed');
+          let i = 0;
+          node.classList.add('is-typing');
+          (function step() {
+            if (i >= text.length) {
+              node.classList.remove('is-typing');
+              node.classList.add('is-typed');
+              resolve();
+              return;
+            }
+            target.textContent += text.charAt(i++);
+            setTimeout(step, speed);
+          })();
+        });
+      }
+
+      function revealContent() {
+        if (heroContent.dataset.state !== 'idle') return;
+        heroContent.dataset.state = 'typing';
+
+        // Hard-remove the scribble before text appears
+        document.body.classList.add('intro-done');
+
+        // Reveal nav, projects, footer alongside the typewriter
+        document.body.classList.remove('intro-playing');
+
+        const h1 = heroContent.querySelector('h1');
+        const tag = heroContent.querySelector('.hero-tagline');
+
+        if (prefersReduce) {
+          h1.querySelector('.hero-typed').textContent = h1.getAttribute('data-text');
+          tag.querySelector('.hero-typed').textContent = tag.getAttribute('data-text');
+          h1.classList.add('is-typed');
+          tag.classList.add('is-typed');
+          heroContent.dataset.state = 'done';
+          return;
+        }
+
+        typeNode(h1, 45)
+          .then(function() { return new Promise(function(r) { setTimeout(r, 200); }); })
+          .then(function() { return typeNode(tag, 14); })
+          .then(function() {
+            heroContent.dataset.state = 'done';
+          });
+      }
+
+      function playScribble() {
+        if (prefersReduce) {
+          revealContent();
+          return;
+        }
+        // Brief settle, then trigger CSS keyframe erase. Erase speed itself
+        // is unchanged — only the surrounding timing is tightened.
+        const settleMs = 200;
+        setTimeout(function() {
+          document.body.classList.add('intro-erasing');
+          setTimeout(revealContent, maxEraseMs + 80);
+        }, settleMs);
+      }
+
+      // Kick off scribble once the page-loader has dropped (page is visible)
+      function start() {
+        if (document.body.classList.contains('is-loading')) {
+          const obs = new MutationObserver(function() {
+            if (!document.body.classList.contains('is-loading')) {
+              obs.disconnect();
+              playScribble();
+            }
+          });
+          obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        } else {
+          playScribble();
+        }
+      }
+      start();
+
+      // Safety net: never let the intro stall the page indefinitely
+      setTimeout(revealContent, 9000);
     })();
     </script>
 
