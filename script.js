@@ -25,14 +25,16 @@ if (pageLoader) {
     if (hidden) return;
     hidden = true;
     pageLoader.classList.add('is-loaded');
-    setTimeout(() => document.body.classList.remove('is-loading'), 400);
+    // Drop is-loading right away — the loader's own CSS opacity transition
+    // handles the visual fade, no need to delay the page reveal further.
+    document.body.classList.remove('is-loading');
   };
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     requestAnimationFrame(hideLoader);
   } else {
     document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(hideLoader));
   }
-  setTimeout(hideLoader, 3000);
+  setTimeout(hideLoader, 2000);
 }
 
 // Nav background on scroll (transparent over hero, solid after)
