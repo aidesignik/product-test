@@ -6,6 +6,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Ivan Kisin — Product Designer</title>
   <link rel="stylesheet" href="styles.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
@@ -40,12 +41,10 @@
 
   <main>
     <section class="hero">
-      <svg class="hero-scribble" id="heroScribble" viewBox="0 0 900 580" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <g id="heroScribbleStrands"></g>
-      </svg>
       <div class="hero-content" data-state="idle">
-        <h1 data-text="Ivan Kisin"><span class="hero-ghost" aria-hidden="true">Ivan Kisin</span><span class="hero-typed"></span><span class="hero-caret" aria-hidden="true"></span></h1>
-        <p class="hero-tagline" data-text="Product Designer simplifying complex workflows through AI-driven UX and shipping front-end solutions through code."><span class="hero-ghost" aria-hidden="true">Product Designer simplifying complex workflows through AI-driven UX and shipping front-end solutions through code.</span><span class="hero-typed"></span><span class="hero-caret" aria-hidden="true"></span></p>
+        <div class="hero-welcome" id="heroWelcome" aria-label="Welcome"></div>
+        <h1>I'm Ivan</h1>
+        <p class="hero-tagline">Product Designer simplifying complex workflows through <span style="white-space: nowrap;">AI-driven</span> UX and shipping front-end solutions through code.</p>
       </div>
       <a href="#projects" class="hero-scroll" aria-label="Scroll to projects">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -55,194 +54,57 @@
     <script>
     (function() {
       const heroContent = document.querySelector('.hero-content');
-      const scribbleSvg = document.getElementById('heroScribble');
-      const strandsGroup = document.getElementById('heroScribbleStrands');
-      const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const SVG_NS = 'http://www.w3.org/2000/svg';
+      const welcomeEl = document.getElementById('heroWelcome');
+      let welcomeLoaded = false;
+      let revealed = false;
 
-      // Deterministic PRNG so the scribble looks identical every load.
-      function makeRand(seed) {
-        let s = seed >>> 0;
-        return function() {
-          s = (s * 1664525 + 1013904223) >>> 0;
-          return s / 0xffffffff;
-        };
-      }
-
-      // One strand = continuous polyline through 2–3 overlapping ovals.
-      // Returns both the path `d` string and its total length computed from
-      // the points directly — avoids relying on getTotalLength(), which
-      // returns 0 on freshly-appended paths in Safari before layout.
-      function buildStrand(rand, cx, cy, w, h) {
-        const pts = [];
-        const ovalCount = 2 + Math.floor(rand() * 2);
-        for (let i = 0; i < ovalCount; i++) {
-          const ocx = cx + (rand() - 0.5) * w * 0.32;
-          const ocy = cy + (rand() - 0.5) * h * 0.32;
-          const rx = w * (0.20 + rand() * 0.20);
-          const ry = h * (0.20 + rand() * 0.20);
-          const rot = rand() * Math.PI;
-          const startA = rand() * Math.PI * 2;
-          const dir = rand() > 0.5 ? 1 : -1;
-          const turns = 1.0 + rand() * 0.6;
-          const steps = Math.round(30 * turns);
-          for (let s = 0; s <= steps; s++) {
-            const a = startA + dir * (s / steps) * Math.PI * 2 * turns;
-            const lx = rx * Math.cos(a);
-            const ly = ry * Math.sin(a);
-            pts.push([
-              ocx + Math.cos(rot) * lx - Math.sin(rot) * ly,
-              ocy + Math.sin(rot) * lx + Math.cos(rot) * ly
-            ]);
-          }
-        }
-        let d = 'M ' + pts[0][0].toFixed(2) + ' ' + pts[0][1].toFixed(2);
-        let length = 0;
-        for (let i = 1; i < pts.length; i++) {
-          d += ' L ' + pts[i][0].toFixed(2) + ' ' + pts[i][1].toFixed(2);
-          const dx = pts[i][0] - pts[i - 1][0];
-          const dy = pts[i][1] - pts[i - 1][1];
-          length += Math.sqrt(dx * dx + dy * dy);
-        }
-        return { d: d, length: length };
-      }
-
-      // Generate 12 independent strands that overlap to form the cluster.
-      // Each erases on its own timer (durations close together with a small
-      // stagger), so they all unravel simultaneously but not in lock-step.
-      const STRAND_COUNT = 12;
-      const rand = makeRand(11);
-      const strands = [];
-      for (let i = 0; i < STRAND_COUNT; i++) {
-        const strand = buildStrand(rand, 450, 290, 720, 440);
-        const path = document.createElementNS(SVG_NS, 'path');
-        path.setAttribute('d', strand.d);
-        path.setAttribute('fill', 'none');
-        path.setAttribute('stroke', 'currentColor');
-        path.setAttribute('stroke-width', '1.8');
-        path.setAttribute('stroke-linecap', 'round');
-        path.setAttribute('stroke-linejoin', 'round');
-        const len = strand.length;
-        // Explicit two-value dasharray so Safari doesn't interpret a single
-        // value ambiguously. Both initial attributes set so path is solid
-        // before SMIL begins.
-        path.setAttribute('stroke-dasharray', len + ' ' + len);
-        path.setAttribute('stroke-dashoffset', '0');
-        path.setAttribute('opacity', '0.95');
-        strandsGroup.appendChild(path);
-        const dur = 5.8 + rand() * 1.8;   // seconds
-        const delay = rand() * 0.35;       // seconds
-        strands.push({ path: path, len: len, dur: dur, delay: delay });
-      }
-
-      // Typewriter sequence: types nodes in order, then resolves
-      function typeNode(node, speed) {
-        return new Promise(function(resolve) {
-          const text = node.getAttribute('data-text') || '';
-          const target = node.querySelector('.hero-typed');
-          let i = 0;
-          node.classList.add('is-typing');
-          (function step() {
-            if (i >= text.length) {
-              node.classList.remove('is-typing');
-              node.classList.add('is-typed');
-              resolve();
-              return;
-            }
-            target.textContent += text.charAt(i++);
-            setTimeout(step, speed);
-          })();
+      function loadWelcome() {
+        if (welcomeLoaded) return;
+        if (typeof lottie === 'undefined') return setTimeout(loadWelcome, 50);
+        welcomeLoaded = true;
+        // Clear any prior children in case a previous attempt half-rendered.
+        welcomeEl.innerHTML = '';
+        const anim = lottie.loadAnimation({
+          container: welcomeEl,
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          path: '/assets/hero-welcome.json'
+        });
+        anim.setSpeed(1.6);
+        anim.addEventListener('DOMLoaded', function () {
+          // Play from start to frame 257 (the word is fully drawn there)
+          // and freeze on that frame.
+          anim.playSegments([0, 257], true);
+        });
+        anim.addEventListener('complete', function () {
+          anim.goToAndStop(257, true);
         });
       }
 
-      function revealContent() {
-        if (heroContent.dataset.state !== 'idle') return;
-        heroContent.dataset.state = 'typing';
-
-        // Hard-remove the scribble before text appears
-        document.body.classList.add('intro-done');
-
-        // Reveal nav, projects, footer alongside the typewriter
+      function reveal() {
+        if (revealed) return;
+        revealed = true;
         document.body.classList.remove('intro-playing');
-
-        const h1 = heroContent.querySelector('h1');
-        const tag = heroContent.querySelector('.hero-tagline');
-
-        if (prefersReduce) {
-          h1.querySelector('.hero-typed').textContent = h1.getAttribute('data-text');
-          tag.querySelector('.hero-typed').textContent = tag.getAttribute('data-text');
-          h1.classList.add('is-typed');
-          tag.classList.add('is-typed');
-          heroContent.dataset.state = 'done';
-          return;
-        }
-
-        typeNode(h1, 45)
-          .then(function() { return new Promise(function(r) { setTimeout(r, 200); }); })
-          .then(function() { return typeNode(tag, 14); })
-          .then(function() {
-            heroContent.dataset.state = 'done';
-          });
+        heroContent.dataset.state = 'revealing';
+        loadWelcome();
       }
 
-      function playScribble() {
-        if (prefersReduce) {
-          revealContent();
-          return;
-        }
-        // SMIL animations: native SVG, no CSS or JS animation engine in the
-        // way. Safari has supported these since the start. Two <animate>
-        // elements per strand — one for the stroke erase, one for the
-        // melt-out opacity fade in the last 35%.
-        const settleS = 0.08;
-        let totalMs = 0;
-        strands.forEach(function(s) {
-          // Use values syntax (more robust in Safari) and shift the dash
-          // pattern by +len rather than -len; both produce the same "erase"
-          // visual but Safari handles positive numbers in SMIL more reliably.
-          const eraseEl = document.createElementNS(SVG_NS, 'animate');
-          eraseEl.setAttribute('attributeName', 'stroke-dashoffset');
-          eraseEl.setAttribute('values', '0;' + s.len);
-          eraseEl.setAttribute('keyTimes', '0;1');
-          eraseEl.setAttribute('begin', (settleS + s.delay) + 's');
-          eraseEl.setAttribute('dur', s.dur + 's');
-          eraseEl.setAttribute('fill', 'freeze');
-          eraseEl.setAttribute('calcMode', 'spline');
-          eraseEl.setAttribute('keySplines', '0.4 0 0.6 1');
-          s.path.appendChild(eraseEl);
-
-          const opaEl = document.createElementNS(SVG_NS, 'animate');
-          opaEl.setAttribute('attributeName', 'opacity');
-          opaEl.setAttribute('values', '0.95;0.95;0');
-          opaEl.setAttribute('keyTimes', '0;0.65;1');
-          opaEl.setAttribute('begin', (settleS + s.delay) + 's');
-          opaEl.setAttribute('dur', s.dur + 's');
-          opaEl.setAttribute('fill', 'freeze');
-          s.path.appendChild(opaEl);
-
-          totalMs = Math.max(totalMs, (settleS + s.delay + s.dur) * 1000);
-        });
-        setTimeout(revealContent, totalMs + 40);
-      }
-
-      // Kick off scribble once the page-loader has dropped (page is visible)
       function start() {
         if (document.body.classList.contains('is-loading')) {
-          const obs = new MutationObserver(function() {
+          const obs = new MutationObserver(function () {
             if (!document.body.classList.contains('is-loading')) {
               obs.disconnect();
-              playScribble();
+              reveal();
             }
           });
           obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
         } else {
-          playScribble();
+          reveal();
         }
       }
       start();
-
-      // Safety net: never let the intro stall the page indefinitely
-      setTimeout(revealContent, 9000);
+      setTimeout(reveal, 3000); // safety net (idempotent thanks to guard)
     })();
     </script>
 

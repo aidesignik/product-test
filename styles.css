@@ -255,7 +255,7 @@ body > *:not(.page-loader) {
   color: var(--color-black);
 }
 
-/* ---- Hero (full viewport with background) ---- */
+/* ---- Hero (full viewport, paper-texture background) ---- */
 .hero {
   position: relative;
   width: 100%;
@@ -271,35 +271,21 @@ body > *:not(.page-loader) {
   background-repeat: no-repeat;
 }
 
-/* Hero intro scribble — centered cluster, smaller than viewport.
-   Lines erase in reverse (stroke-dashoffset) per-strand on body.intro-erasing. */
-.hero-scribble {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  height: min(420px, 60vh);
-  aspect-ratio: 900 / 580;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  color: var(--color-black);
-  pointer-events: none;
-  overflow: visible;
-}
-/* Strand initial state + erase animation are driven entirely by JS via the
-   Web Animations API — no CSS @keyframes (Safari was misinterpreting them). */
-body.intro-done .hero-scribble {
-  display: none;
-}
-
+/* Hero intro scribble — a short looping/playing video centered behind the
+   text. Smoothly fades out when playback ends; typewriter takes over. */
+/* Lottie sits inside .hero-content, anchored to overlay the h1 — "Hello"
+   visually swaps with "Ivan Kisin" in the same spot. Vertical anchor uses
+   1em (= one line of h1's font) so the centre lines up across viewport
+   sizes regardless of the clamp on h1 font-size. */
 .hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   text-align: left;
   padding-left: 24px;
-  max-width: 420px;
+  max-width: 460px;
 }
 
-/* The vertical accent line — drawn in via scaleY after typing completes */
+/* Vertical accent line — animates in after the text reveal completes. */
 .hero-content::before {
   content: "";
   position: absolute;
@@ -310,16 +296,51 @@ body.intro-done .hero-scribble {
   background: var(--color-black);
   transform: scaleY(0);
   transform-origin: top;
-  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1) 2.2s;
 }
-.hero-content[data-state="done"]::before {
+.hero-content[data-state="revealing"]::before {
   transform: scaleY(1);
 }
 
-/* Idle: hide text outright. Typing/done: visible. */
-.hero-content[data-state="idle"] h1,
-.hero-content[data-state="idle"] .hero-tagline {
+/* Framer-style reveal: fade in + slide up + blur clears, staggered. */
+@keyframes heroReveal {
+  from { opacity: 0; transform: translateY(28px); filter: blur(8px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+.hero-content h1,
+.hero-content .hero-tagline,
+.hero-content .hero-welcome {
   opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+  will-change: opacity, transform, filter;
+}
+.hero-content[data-state="revealing"] .hero-welcome {
+  animation: heroReveal 0.7s cubic-bezier(0.2, 0.6, 0.2, 1) 0s forwards;
+}
+.hero-content[data-state="revealing"] h1 {
+  animation: heroReveal 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 1.3s forwards;
+}
+.hero-content[data-state="revealing"] .hero-tagline {
+  animation: heroReveal 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 1.7s forwards;
+}
+/* "Welcome" eyebrow wordmark — sits above the h1, small and discreet. */
+.hero-welcome {
+  width: 95px;
+  max-width: 32%;
+  margin-bottom: 12px;
+  margin-left: -3px;
+}
+.hero-welcome svg {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-content::before { transition: none; }
+  .hero-content h1,
+  .hero-content .hero-tagline,
+  .hero-content .hero-welcome { opacity: 1; transform: none; filter: none; animation: none; }
 }
 
 .hero h1 {
@@ -327,7 +348,7 @@ body.intro-done .hero-scribble {
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.1;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   color: var(--color-black);
   position: relative;
 }
@@ -339,26 +360,7 @@ body.intro-done .hero-scribble {
   position: relative;
 }
 
-/* Layout-lock: invisible full-text twin reserves the final box size so the
-   typed-in text never causes hero-content to grow or recenter mid-animation. */
-.hero-ghost {
-  visibility: hidden;
-  pointer-events: none;
-}
-.hero-typed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
 
-.hero-caret {
-  display: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-content::before { transition: none; }
-}
 
 .hero-scroll {
   position: absolute;
