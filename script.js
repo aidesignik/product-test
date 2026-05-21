@@ -37,7 +37,11 @@ if (pageLoader) {
   setTimeout(hideLoader, 2000);
 }
 
-// Typewriter tooltips on the fixed social icons
+// Typewriter tooltips on the fixed social icons (hover devices only —
+// on touch, tooltips can stick and the email icon's mailto: should
+// open the default mail app instead of running the clipboard copy)
+const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+if (supportsHover) {
 document.querySelectorAll('.social-fixed-icon').forEach((icon) => {
   const tip = icon.querySelector('.social-fixed-tooltip');
   if (!tip) return;
@@ -99,6 +103,7 @@ if (emailCopy) {
       }, 2500);
     }).catch(() => {});
   });
+}
 }
 
 // Nav background on scroll (transparent over hero, solid after)

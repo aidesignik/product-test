@@ -283,6 +283,13 @@ body > *:not(.page-loader) {
   transform: translateY(0);
 }
 
+@media (hover: none) {
+  .social-fixed-tooltip,
+  .prescouter-preview {
+    display: none !important;
+  }
+}
+
 
 .social-icon-success {
   display: none;
