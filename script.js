@@ -106,6 +106,68 @@ if (emailCopy) {
 }
 }
 
+// Prescouter preview: have it trail the cursor while hovering the link.
+// Hover-only — the CSS already hides the preview on touch.
+if (supportsHover) {
+  document.querySelectorAll('.prescouter-link').forEach((link) => {
+    const preview = link.querySelector('.prescouter-preview');
+    if (!preview) return;
+    preview.classList.add('is-cursor-follow');
+
+    const OFFSET_X = 22;
+    const OFFSET_Y = 26;
+    const EASE = 0.22;
+
+    let targetX = 0;
+    let targetY = 0;
+    let curX = 0;
+    let curY = 0;
+    let rafId = null;
+    let hovering = false;
+
+    const tick = () => {
+      curX += (targetX - curX) * EASE;
+      curY += (targetY - curY) * EASE;
+      preview.style.setProperty('--cx', curX + 'px');
+      preview.style.setProperty('--cy', curY + 'px');
+      const dx = targetX - curX;
+      const dy = targetY - curY;
+      if (hovering || dx * dx + dy * dy > 0.25) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rafId = null;
+      }
+    };
+
+    const updateTarget = (e) => {
+      const rect = link.getBoundingClientRect();
+      targetX = e.clientX - rect.left + OFFSET_X;
+      targetY = e.clientY - rect.top + OFFSET_Y;
+    };
+
+    link.addEventListener('mouseenter', (e) => {
+      hovering = true;
+      updateTarget(e);
+      // Snap to cursor on entry so the card appears next to the pointer,
+      // then subsequent moves produce the trailing float.
+      curX = targetX;
+      curY = targetY;
+      preview.style.setProperty('--cx', curX + 'px');
+      preview.style.setProperty('--cy', curY + 'px');
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    });
+
+    link.addEventListener('mousemove', (e) => {
+      updateTarget(e);
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    });
+
+    link.addEventListener('mouseleave', () => {
+      hovering = false;
+    });
+  });
+}
+
 // Nav background on scroll (transparent over hero, solid after)
 const nav = document.querySelector('.nav');
 const hero = document.querySelector('.hero');
