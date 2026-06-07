@@ -1020,7 +1020,7 @@ body > *:not(.page-loader) {
 .home-overlay {
   position: relative;
   width: 130px;
-  aspect-ratio: 540 / 730;
+  aspect-ratio: 540 / 760;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
@@ -1102,19 +1102,16 @@ body > *:not(.page-loader) {
   display: none;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  width: 130px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: var(--color-white, #ffffff);
-  color: var(--color-black, #000000);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  width: 100%;
+  padding: 10px 24px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-black);
+  background: var(--color-white);
+  border: 1px solid var(--color-black);
+  border-radius: 2px;
   text-decoration: none;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, width 0.3s ease;
+  transition: background var(--transition), color var(--transition);
   white-space: nowrap;
 }
 
@@ -1123,17 +1120,8 @@ body > *:not(.page-loader) {
 }
 
 .home-overlay-cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
-}
-
-.home-overlay-cta svg {
-  flex: none;
-  transition: transform 0.2s ease;
-}
-
-.home-overlay-cta:hover svg {
-  transform: translateX(2px);
+  background: var(--color-black);
+  color: var(--color-white);
 }
 
 .home-overlay-backdrop {
@@ -1164,7 +1152,7 @@ body > *:not(.page-loader) {
 }
 
 .home-corner.is-expanded .home-overlay {
-  width: min(420px, 92vw, calc(85vh * 540 / 730));
+  width: min(420px, 92vw, calc(85vh * 540 / 760));
   cursor: default;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
 }
@@ -1182,15 +1170,7 @@ body > *:not(.page-loader) {
 }
 
 .home-corner.is-expanded .home-overlay-cta {
-  width: min(420px, 92vw, calc(85vh * 540 / 730));
-  padding: 14px 24px;
-  font-size: 15px;
-  border-radius: 14px;
-}
-
-.home-corner.is-expanded .home-overlay-cta svg {
-  width: 18px;
-  height: 18px;
+  width: min(420px, 92vw, calc(85vh * 540 / 760));
 }
 
 @media (prefers-reduced-motion: reduce) {
