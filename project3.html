@@ -57,16 +57,19 @@
       overflow: hidden;
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
       cursor: pointer;
-      aspect-ratio: 1824 / 1116;
-      background: #000;
+      background: #fff;
     }
-    .hover-video__poster,
+    .hover-video__poster {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
     .hover-video__video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       display: block;
     }
     .hover-video__video {
@@ -118,7 +121,7 @@
 
   <main>
     <section class="page-header">
-      <h1>Enterprise software takes months to deploy. We used a calendar invite instead.</h1>
+      <h1>Enterprise software takes months to deploy. We used a calendar invite instead</h1>
       <p>Designing the onboarding flow that gets packaging and regulatory professionals an AI analyst in MS Teams in under 3 minutes — no IT request, no approval process, no waiting.</p>
     </section>
 
@@ -214,6 +217,7 @@
 
       function play() {
         wrapper.classList.add('is-playing');
+        try { video.currentTime = 0; } catch (e) {}
         pending = video.play();
         if (pending && typeof pending.catch === 'function') {
           pending.catch(function() { /* autoplay may reject on some devices — ignore */ });
@@ -222,7 +226,6 @@
       function stop() {
         wrapper.classList.remove('is-playing');
         video.pause();
-        try { video.currentTime = 0; } catch (e) {}
       }
 
       wrapper.addEventListener('mouseenter', play);
