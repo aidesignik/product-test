@@ -63,6 +63,9 @@
       margin: 20px 0 18px;
     }
 
+    /* ---- Wider case-study column so text matches embed width ---- */
+    .case-study { max-width: 820px; }
+
     /* ---- Inline animation embed ---- */
     .anim-embed {
       background: linear-gradient(145deg, #f0f1f8 0%, #eef4fb 30%, #f7f0f5 60%, #f4f2fa 100%);
@@ -73,9 +76,7 @@
       justify-content: center;
       margin: 28px 0 32px;
       overflow: hidden;
-      /* Break out of the narrow case-study column */
-      width: calc(100% + 96px);
-      margin-left: -48px;
+      width: 100%;
     }
 
     /* ---- Feedback form styles (scoped inside .anim-embed) — Animation 1 ---- */

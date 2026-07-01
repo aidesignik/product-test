@@ -68,11 +68,13 @@
       font-weight: 600;
     }
 
-    /* ---- Wider image for this case study ---- */
+    /* ---- Wider case-study column so text matches image width ---- */
+    .case-study { max-width: 920px; }
+
+    /* ---- Image sits flush inside the wider column ---- */
     .case-study-img-wide {
       display: block;
-      width: calc(100% + 200px);
-      margin-left: -100px;
+      width: 100%;
       max-width: none;
       height: auto;
       margin-top: 32px;
@@ -81,10 +83,11 @@
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
+      .case-study { max-width: 100%; }
       .case-study-img-wide {
-        width: calc(100% + 96px);
-        margin-left: -48px;
+        width: calc(100% + 48px);
+        margin-left: -24px;
         border-radius: 0;
       }
     }
