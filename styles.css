@@ -1041,8 +1041,7 @@ body > *:not(.page-loader) {
 
 .home-overlay-video {
   width: 100%;
-  height: calc(100% + 4px);
-  margin-top: -2px;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
