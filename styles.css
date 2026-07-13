@@ -243,7 +243,7 @@ body > *:not(.page-loader) {
   right: max(40px, calc((100vw - 1440px) / 2 + 40px));
   display: flex;
   gap: 16px;
-  z-index: 999;
+  z-index: 1001;
 }
 
 .social-fixed-icon {
@@ -1133,7 +1133,7 @@ body > *:not(.page-loader) {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
-  z-index: 999;
+  z-index: 1002;
 }
 
 .home-overlay-backdrop.is-visible {
@@ -1148,7 +1148,7 @@ body > *:not(.page-loader) {
   left: 50%;
   transform: translate(-50%, -50%);
   gap: 20px;
-  z-index: 1002;
+  z-index: 1003;
 }
 
 .home-corner.is-expanded .home-overlay {
