@@ -113,19 +113,31 @@
       start();
       setTimeout(reveal, 3000); // safety net (idempotent thanks to guard)
 
-      // Kick the hero background video on mobile Safari: autoplay silently
-      // fails if metadata isn't ready or the muted state isn't yet applied.
+      // Kick the hero background video on mobile Safari: iOS blocks muted
+      // autoplay in Low Power Mode / with Safari's Auto-Play preference off,
+      // so retry on every interaction until the video actually reports
+      // playing. Listeners are attached without { once: true } so that if
+      // an early play() call fails silently (buffer not ready), the next
+      // interaction still triggers a fresh attempt.
       const bgVideo = document.querySelector('.hero-bg-video');
       if (bgVideo) {
         bgVideo.muted = true;
         bgVideo.setAttribute('muted', '');
-        const tryPlay = () => { const p = bgVideo.play(); if (p && p.catch) p.catch(() => {}); };
+        const interactionEvents = ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown', 'keydown'];
+        const tryPlay = () => {
+          if (!bgVideo.paused) return;
+          const p = bgVideo.play();
+          if (p && p.catch) p.catch(() => {});
+        };
+        const cleanup = () => {
+          interactionEvents.forEach(evt => document.removeEventListener(evt, tryPlay, true));
+          bgVideo.removeEventListener('playing', cleanup);
+        };
         tryPlay();
-        bgVideo.addEventListener('loadedmetadata', tryPlay, { once: true });
-        bgVideo.addEventListener('canplay', tryPlay, { once: true });
-        ['touchstart', 'touchend', 'click', 'scroll'].forEach(evt => {
-          document.addEventListener(evt, tryPlay, { once: true, passive: true });
-        });
+        bgVideo.addEventListener('loadedmetadata', tryPlay);
+        bgVideo.addEventListener('canplay', tryPlay);
+        bgVideo.addEventListener('playing', cleanup);
+        interactionEvents.forEach(evt => document.addEventListener(evt, tryPlay, true));
       }
     })();
     </script>
