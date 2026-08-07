@@ -44,9 +44,9 @@
 
   <main>
     <section class="hero">
-      <video class="hero-bg-video" autoplay muted loop playsinline preload="auto" poster="assets/hero-bg-plexus-poster.jpg" aria-hidden="true">
-        <source src="assets/hero-bg-plexus.webm" type="video/webm">
+      <video class="hero-bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="assets/hero-bg-plexus-poster.jpg" aria-hidden="true" tabindex="-1">
         <source src="assets/hero-bg-plexus.mp4" type="video/mp4">
+        <source src="assets/hero-bg-plexus.webm" type="video/webm">
       </video>
       <div class="hero-content" data-state="idle">
         <div class="hero-welcome" id="heroWelcome" aria-label="Welcome"></div>
@@ -112,6 +112,17 @@
       }
       start();
       setTimeout(reveal, 3000); // safety net (idempotent thanks to guard)
+
+      // Kick the hero background video on mobile Safari: autoplay silently
+      // fails if metadata isn't ready or the muted state isn't yet applied.
+      const bgVideo = document.querySelector('.hero-bg-video');
+      if (bgVideo) {
+        bgVideo.muted = true;
+        const tryPlay = () => { const p = bgVideo.play(); if (p && p.catch) p.catch(() => {}); };
+        tryPlay();
+        bgVideo.addEventListener('loadedmetadata', tryPlay, { once: true });
+        document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+      }
     })();
     </script>
 
