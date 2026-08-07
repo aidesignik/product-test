@@ -338,14 +338,11 @@ body > *:not(.page-loader) {
 
 /* iOS Safari shows a big native "start playback" button when it blocks
    muted autoplay (Low Power Mode, Safari's autoplay setting, etc.).
-   Hide it — playback still kicks in on first scroll/tap via the JS
-   fallback in index.html, but the button never appears. */
+   Hide only that specific button — hiding the whole controls chrome
+   suppresses some of the video element's event handling. */
 .hero-bg-video::-webkit-media-controls-start-playback-button {
   display: none !important;
   -webkit-appearance: none;
-}
-.hero-bg-video::-webkit-media-controls {
-  display: none !important;
 }
 
 /* Subtle white wash over the video to lighten it behind the hero text. */
