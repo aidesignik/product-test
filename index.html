@@ -118,10 +118,14 @@
       const bgVideo = document.querySelector('.hero-bg-video');
       if (bgVideo) {
         bgVideo.muted = true;
+        bgVideo.setAttribute('muted', '');
         const tryPlay = () => { const p = bgVideo.play(); if (p && p.catch) p.catch(() => {}); };
         tryPlay();
         bgVideo.addEventListener('loadedmetadata', tryPlay, { once: true });
-        document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+        bgVideo.addEventListener('canplay', tryPlay, { once: true });
+        ['touchstart', 'touchend', 'click', 'scroll'].forEach(evt => {
+          document.addEventListener(evt, tryPlay, { once: true, passive: true });
+        });
       }
     })();
     </script>
