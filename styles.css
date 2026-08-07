@@ -307,7 +307,7 @@ body > *:not(.page-loader) {
   display: block;
 }
 
-/* ---- Hero (full viewport, paper-texture background) ---- */
+/* ---- Hero (full viewport, animated plexus video background) ---- */
 .hero {
   position: relative;
   width: 100%;
@@ -317,10 +317,36 @@ body > *:not(.page-loader) {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-image: url('/assets/hero-bg-paper.jpg');
+  background-color: #f2f2f2;
+  background-image: url('/assets/hero-bg-plexus-poster.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Subtle white wash over the video to lighten it behind the hero text. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-video { display: none; }
 }
 
 /* Hero intro scribble — a short looping/playing video centered behind the
