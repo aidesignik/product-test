@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>About — Ivan Kisin</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="index.html?v=2" class="nav-logo"><img src="assets/logo.png" alt="Home" class="nav-logo-img"></a>
+      <div class="nav-links">
+        <a href="index.html?v=2" class="nav-link">Portfolio</a>
+        <a href="about.html?v=2" class="nav-link active">About</a>
+        <a href="resume.pdf" class="nav-link" target="_blank" rel="noopener">Resume</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="social-fixed">
+    <a href="mailto:ivankisin@gmail.com" class="social-fixed-icon" id="emailCopy" data-tooltip="Click to copy my email address" data-copy="ivankisin@gmail.com" aria-label="Copy email address">
+      <svg class="social-icon-default" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13L2 4"/></svg>
+      <svg class="social-icon-success" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span class="social-fixed-tooltip" aria-hidden="true"></span>
+    </a>
+    <a href="https://www.linkedin.com/in/ivan-kisin-65515a264/?skipRedirect=true" class="social-fixed-icon" data-tooltip="Connect with me on LinkedIn" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      <span class="social-fixed-tooltip" aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <main class="about-page">
+    <section class="about-hero">
+      <div class="about-hero-left">
+        <span class="about-hero-eyebrow">Ivan Kisin &mdash; Product Designer</span>
+        <h1>The part that<br>doesn't get automated.</h1>
+        <p class="about-hero-desc">AI speeds up my research, wireframes, and code &mdash; so the hours I save go into clarity, taste, and the decisions that shape the product.</p>
+      </div>
+      <div class="about-hero-media">
+        <img src="images/ivan-portrait.png" alt="Portrait of Ivan Kisin">
+      </div>
+    </section>
+
+    <section class="about-section">
+      <span class="about-eyebrow">Background</span>
+      <div class="about-body">
+        <p>I'm a Product Designer with 5+ years of experience building interfaces for complex, data-heavy products &mdash; most recently at Prescouter, where I design AI-driven UX for enterprise workflows. But I don't stop at the mockup. I design and vibe-code the front end, work closely with developers, PMs, and QA through to deployment, and ship through GitHub.</p>
+        <p>I care about how the work looks, but just as much about how it functions, how it scales, and whether it actually moves the business forward.</p>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <span class="about-eyebrow">AI-first,<br>not AI-generated</span>
+      <div class="about-body">
+        <p>AI moves fast, but the people using what I build still need something that feels considered &mdash; clear, trustworthy, and built for how they actually work. That's the part that doesn't get automated.</p>
+        <p>AI isn't a gimmick I bolt on &mdash; it's built into how I work, every week: research and synthesis, copy exploration, wireframe exploration, dev support, QA, documentation, and process automation. It's there to speed up the parts of the process that should move faster, so I can spend more time on the parts that actually need judgment.</p>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <span class="about-eyebrow">How I work</span>
+      <div class="about-body">
+        <div class="process-grid">
+          <div class="process-cell">
+            <span class="process-num">01</span>
+            <h4>Research</h4>
+            <p>Notes, competitor patterns, and messy product context &mdash; synthesized into something actionable.</p>
+          </div>
+          <div class="process-cell">
+            <span class="process-num">02</span>
+            <h4>Copy + messaging</h4>
+            <p>Positioning, structure, and content direction.</p>
+          </div>
+          <div class="process-cell">
+            <span class="process-num">03</span>
+            <h4>UX + concepting</h4>
+            <p>Flows, structure, and early product directions in Figma.</p>
+          </div>
+          <div class="process-cell">
+            <span class="process-num">04</span>
+            <h4>Dev acceleration</h4>
+            <p>Prototyping, debugging, and repetitive front-end work &mdash; shipped through GitHub.</p>
+          </div>
+          <div class="process-cell">
+            <span class="process-num">05</span>
+            <h4>QA + ops</h4>
+            <p>Reviews, documentation, handoff prep, and process automation.</p>
+          </div>
+        </div>
+        <p class="process-outro">Every project is different, but the rhythm is usually the same: get clear, move fast, build properly, then tighten until it's ready for the real world.</p>
+
+        <div class="nori-note">
+          <img src="images/nori.png" alt="Nori the dog" class="nori-avatar">
+          <span class="nori-caption">(Nori approves of this message from his curled-up spot nearby)</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="about-divider">
+
+    <section class="about-section">
+      <span class="about-eyebrow">You might also<br>be interested in</span>
+      <div class="about-body">
+        <a href="https://ux-audit-sigma.vercel.app/" class="about-card" target="_blank" rel="noopener noreferrer">
+          <div class="about-card-text">
+            <h3>UX audits for SaaS startups</h3>
+            <p>A focused review of your product's experience &mdash; friction points, conversion blockers, and concrete recommendations.</p>
+          </div>
+          <span class="about-card-cta">Learn more &rarr;</span>
+        </a>
+
+        <a href="mailto:ivankisin@gmail.com?subject=Interested%20in%20mentoring" class="about-card">
+          <div class="about-card-text">
+            <h3>Mentoring for junior designers</h3>
+            <p>Portfolio feedback, breaking into the industry, and early-career questions. Free, as time allows.</p>
+          </div>
+          <span class="about-card-cta">Get in touch &rarr;</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Ivan Kisin. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "cbe772e88ba64865afaca1040e19dfc7"}'></script>
+</body>
+</html>
