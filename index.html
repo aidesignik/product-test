@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Ivan Kisin — Product Designer</title>
-  <link rel="stylesheet" href="styles.css?v=32">
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+  <link rel="stylesheet" href="styles.css?v=44">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,450,500,700&display=swap" rel="stylesheet">
 </head>
 <body class="is-loading intro-playing">
   <div class="page-loader" id="pageLoader">
@@ -17,7 +17,7 @@
   </div>
   <nav class="nav">
     <div class="nav-inner">
-      <a href="index.html?v=2" class="nav-logo"><img src="assets/logo.png" alt="Home" class="nav-logo-img"></a>
+      <a href="index.html?v=2" class="nav-logo nav-logo-text">Ivan Kisin</a>
       <div class="nav-links">
         <a href="index.html?v=2" class="nav-link active">Portfolio</a>
         <a href="about.html?v=2" class="nav-link">About</a>
@@ -44,14 +44,15 @@
 
   <main>
     <section class="hero">
-      <video class="hero-bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="assets/hero-bg-plexus-poster.jpg" aria-hidden="true" tabindex="-1">
-        <source src="assets/hero-bg-plexus.mp4" type="video/mp4">
-        <source src="assets/hero-bg-plexus.webm" type="video/webm">
-      </video>
       <div class="hero-content" data-state="idle">
-        <div class="hero-welcome" id="heroWelcome" aria-label="Welcome"></div>
-        <h1>I'm Ivan</h1>
-        <p class="hero-tagline">Product Designer @ <a href="https://prescouter.com" target="_blank" rel="noopener" class="prescouter-link">Prescouter<span class="prescouter-preview" aria-hidden="true"><img src="assets/prescouter-preview.png" alt="" loading="eager"></span></a>, simplifying complex workflows through <span style="white-space: nowrap;">AI-driven</span> UX and shipping front-end solutions.</p>
+        <div class="hero-logo" aria-hidden="true">
+          <video src="assets/logo-fill.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+        </div>
+        <h1>
+          <span class="hero-line">Product Designer Creating</span>
+          <span class="hero-line">Meaningful Digital Experiences</span>
+        </h1>
+        <p class="hero-tagline">I design digital products that turn complex problems into simple, meaningful experiences,<br>combining thoughtful design with the possibilities of AI.</p>
       </div>
       <a href="#projects" class="hero-scroll" aria-label="Scroll to projects">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -61,40 +62,13 @@
     <script>
     (function() {
       const heroContent = document.querySelector('.hero-content');
-      const welcomeEl = document.getElementById('heroWelcome');
-      let welcomeLoaded = false;
       let revealed = false;
-
-      function loadWelcome() {
-        if (welcomeLoaded) return;
-        if (typeof lottie === 'undefined') return setTimeout(loadWelcome, 50);
-        welcomeLoaded = true;
-        // Clear any prior children in case a previous attempt half-rendered.
-        welcomeEl.innerHTML = '';
-        const anim = lottie.loadAnimation({
-          container: welcomeEl,
-          renderer: 'svg',
-          loop: false,
-          autoplay: false,
-          path: '/assets/hero-welcome.json'
-        });
-        anim.setSpeed(1.6);
-        anim.addEventListener('DOMLoaded', function () {
-          // Play from start to frame 257 (the word is fully drawn there)
-          // and freeze on that frame.
-          anim.playSegments([0, 257], true);
-        });
-        anim.addEventListener('complete', function () {
-          anim.goToAndStop(257, true);
-        });
-      }
 
       function reveal() {
         if (revealed) return;
         revealed = true;
         document.body.classList.remove('intro-playing');
         heroContent.dataset.state = 'revealing';
-        loadWelcome();
       }
 
       function start() {
@@ -113,30 +87,27 @@
       start();
       setTimeout(reveal, 3000); // safety net (idempotent thanks to guard)
 
-      // Kick the hero background video on mobile Safari: iOS blocks muted
-      // autoplay in Low Power Mode / with Safari's Auto-Play preference off,
-      // so retry on every interaction until the video actually reports
-      // playing. Listeners are attached without { once: true } so that if
-      // an early play() call fails silently (buffer not ready), the next
-      // interaction still triggers a fresh attempt.
-      const bgVideo = document.querySelector('.hero-bg-video');
-      if (bgVideo) {
-        bgVideo.muted = true;
-        bgVideo.setAttribute('muted', '');
+      // Nudge the logo-fill mask video on iOS Safari, which sometimes
+      // blocks muted autoplay. Retry on early lifecycle events + first
+      // user interaction until the video reports playing.
+      const logoVideo = document.querySelector('.hero-logo video');
+      if (logoVideo) {
+        logoVideo.muted = true;
+        logoVideo.setAttribute('muted', '');
         const interactionEvents = ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown', 'keydown'];
         const tryPlay = () => {
-          if (!bgVideo.paused) return;
-          const p = bgVideo.play();
+          if (!logoVideo.paused) return;
+          const p = logoVideo.play();
           if (p && p.catch) p.catch(() => {});
         };
         const cleanup = () => {
           interactionEvents.forEach(evt => document.removeEventListener(evt, tryPlay, true));
-          bgVideo.removeEventListener('playing', cleanup);
+          logoVideo.removeEventListener('playing', cleanup);
         };
         tryPlay();
-        bgVideo.addEventListener('loadedmetadata', tryPlay);
-        bgVideo.addEventListener('canplay', tryPlay);
-        bgVideo.addEventListener('playing', cleanup);
+        logoVideo.addEventListener('loadedmetadata', tryPlay);
+        logoVideo.addEventListener('canplay', tryPlay);
+        logoVideo.addEventListener('playing', cleanup);
         interactionEvents.forEach(evt => document.addEventListener(evt, tryPlay, true));
       }
     })();

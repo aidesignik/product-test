@@ -9,9 +9,11 @@
   --color-gray-light: #f5f5f5;
   --color-gray-mid: #666;
   --color-gray-border: #e0e0e0;
-  --font-heading: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-nav: 'Julius Sans One', sans-serif;
-  --font-body: 'Quattrocento', Georgia, 'Times New Roman', serif;
+  --font-heading: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-nav: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --color-text: rgb(49, 49, 47);
+  --color-text-muted: rgb(88, 88, 87);
   --nav-height: 64px;
   --content-width: 1080px;
   --container-width: 1440px;
@@ -34,10 +36,23 @@ html {
 
 body {
   font-family: var(--font-body);
-  color: var(--color-black);
+  font-weight: 400;
+  color: var(--color-text);
   background: var(--color-white);
-  line-height: 1.6;
-  font-size: 16px;
+  line-height: 26px;
+  font-size: 17px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+}
+
+h2 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 39px;
+  line-height: 43px;
+  letter-spacing: -0.01em;
 }
 
 img {
@@ -161,9 +176,13 @@ body > *:not(.page-loader) {
   width: auto;
 }
 
-.nav-logo-img {
-  height: 24px;
-  width: auto;
+.nav-logo-text {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 19px;
+  font-weight: 450;
+  line-height: normal;
+  letter-spacing: -0.01em;
+  color: rgb(17, 17, 17);
 }
 
 .nav-links {
@@ -307,7 +326,7 @@ body > *:not(.page-loader) {
   display: block;
 }
 
-/* ---- Hero (full viewport, animated plexus video background) ---- */
+/* ---- Hero (full viewport, plain grey background) ---- */
 .hero {
   position: relative;
   width: 100%;
@@ -319,44 +338,6 @@ body > *:not(.page-loader) {
   justify-content: center;
   overflow: hidden;
   background-color: #f2f2f2;
-  background-image: url('/assets/hero-bg-plexus-poster.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.hero-bg-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* iOS Safari shows a big native "start playback" button when it blocks
-   muted autoplay (Low Power Mode, Safari's autoplay setting, etc.).
-   Hide only that specific button — hiding the whole controls chrome
-   suppresses some of the video element's event handling. */
-.hero-bg-video::-webkit-media-controls-start-playback-button {
-  display: none !important;
-  -webkit-appearance: none;
-}
-
-/* Subtle white wash over the video to lighten it behind the hero text. */
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.5);
-  z-index: 1;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-bg-video { display: none; }
 }
 
 /* Hero intro scribble — a short looping/playing video centered behind the
@@ -368,26 +349,17 @@ body > *:not(.page-loader) {
 .hero-content {
   position: relative;
   z-index: 2;
-  text-align: left;
-  padding-left: 24px;
-  max-width: 460px;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Vertical accent line — animates in after the text reveal completes. */
-.hero-content::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 1px;
-  background: var(--color-black);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1) 2.2s;
-}
-.hero-content[data-state="revealing"]::before {
-  transform: scaleY(1);
+.hero .hero-line {
+  display: block;
+  white-space: nowrap;
 }
 
 /* Framer-style reveal: fade in + slide up + blur clears, staggered. */
@@ -397,56 +369,69 @@ body > *:not(.page-loader) {
 }
 .hero-content h1,
 .hero-content .hero-tagline,
-.hero-content .hero-welcome {
+.hero-content .hero-logo {
   opacity: 0;
   transform: translateY(28px);
   filter: blur(8px);
   will-change: opacity, transform, filter;
 }
-.hero-content[data-state="revealing"] .hero-welcome {
-  animation: heroReveal 0.7s cubic-bezier(0.2, 0.6, 0.2, 1) 0s forwards;
+.hero-content[data-state="revealing"] .hero-logo {
+  animation: heroReveal 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 0s forwards;
 }
 .hero-content[data-state="revealing"] h1 {
-  animation: heroReveal 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 1.3s forwards;
+  animation: heroReveal 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 0.4s forwards;
 }
 .hero-content[data-state="revealing"] .hero-tagline {
-  animation: heroReveal 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 1.7s forwards;
+  animation: heroReveal 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 0.7s forwards;
 }
-/* "Welcome" eyebrow wordmark — sits above the h1, small and discreet. */
-.hero-welcome {
-  width: 95px;
-  max-width: 32%;
-  margin-bottom: 12px;
-  margin-left: -3px;
+/* Home logo mark — the video is masked by the logo silhouette so the
+   video only shows through the logo's opaque pixels. The mask is
+   stretched to a square box so the shape reads as more square than
+   the source PNG's native 1952x2160 aspect. */
+.hero-logo {
+  width: 106px;
+  aspect-ratio: 20 / 21;
+  margin-bottom: 28px;
+  -webkit-mask-image: url('/assets/logo.png');
+          mask-image: url('/assets/logo.png');
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  overflow: hidden;
 }
-.hero-welcome svg {
-  width: 100% !important;
-  height: auto !important;
+.hero-logo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-content::before { transition: none; }
   .hero-content h1,
   .hero-content .hero-tagline,
-  .hero-content .hero-welcome { opacity: 1; transform: none; filter: none; animation: none; }
+  .hero-content .hero-logo { opacity: 1; transform: none; filter: none; animation: none; }
 }
 
 .hero h1 {
-  font-size: clamp(32px, 4vw, 44px);
-  font-weight: 400;
+  font-size: clamp(36px, 4.5vw, 55px);
+  font-weight: 500;
   letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin-bottom: 12px;
-  color: var(--color-black);
+  line-height: 1.24;
+  margin-bottom: 24px;
+  color: rgb(49, 49, 47);
   position: relative;
 }
 
 .hero-tagline {
-  font-size: 15px;
-  color: #444;
-  line-height: 1.7;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  color: rgb(88, 88, 87);
   position: relative;
   z-index: 5;
+  max-width: none;
 }
 
 .prescouter-link {
@@ -614,29 +599,32 @@ body > *:not(.page-loader) {
 }
 
 .project-text h2 {
-  font-family: var(--font-body);
-  font-size: clamp(28px, 3.5vw, 38px);
-  font-weight: 400;
+  font-family: var(--font-heading);
+  font-size: 39px;
+  font-weight: 500;
   letter-spacing: -0.01em;
-  line-height: 1.2;
+  line-height: 43px;
   margin-bottom: 20px;
+  color: var(--color-text);
 }
 
 .project-desc {
-  font-size: 14px;
-  color: var(--color-gray-mid);
-  line-height: 1.75;
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 26px;
 }
 
 .project-btn {
   display: inline-block;
   padding: 10px 24px;
+  border-radius: 999px;
   margin-left: 24px;
   font-family: var(--font-body);
   font-size: 13px;
   color: var(--color-black);
   border: 1px solid var(--color-black);
-  border-radius: 2px;
   transition: all var(--transition);
   align-self: flex-start;
 }
@@ -1051,12 +1039,12 @@ body > *:not(.page-loader) {
 .btn {
   display: inline-block;
   padding: 14px 36px;
+  border-radius: 999px;
   background: var(--color-black);
   color: var(--color-white);
   font-size: 14px;
   font-weight: 600;
   border: none;
-  border-radius: 2px;
   cursor: pointer;
   transition: opacity var(--transition);
   text-align: center;
@@ -1244,8 +1232,13 @@ body > *:not(.page-loader) {
   }
 
   .hero-content {
-    max-width: 320px;
-    padding-left: 20px;
+    max-width: 100%;
+    padding: 0 20px;
+  }
+
+  .hero-logo {
+    width: 64px;
+    margin-bottom: 20px;
   }
 
   .project {
