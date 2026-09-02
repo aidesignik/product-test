@@ -1241,6 +1241,28 @@ body > *:not(.page-loader) {
     margin-bottom: 20px;
   }
 
+  .hero h1 {
+    font-size: clamp(24px, 7vw, 34px);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .hero .hero-line {
+    white-space: normal;
+  }
+
+  .hero-tagline {
+    font-size: 15px;
+    line-height: 22px;
+    max-width: 34ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-tagline br {
+    display: none;
+  }
+
   .project {
     grid-template-columns: 1fr;
     padding: 48px 24px;
