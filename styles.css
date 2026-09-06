@@ -660,6 +660,71 @@ body > *:not(.page-loader) {
   transform: scale(1.02);
 }
 
+.case-card-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 16px;
+  width: 100%;
+}
+
+.case-card {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 40px 0;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 5 / 4;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: transform var(--transition);
+}
+
+.case-card:hover {
+  transform: translateY(-4px);
+}
+
+.case-card--feedback {
+  background: #ECEAF5;
+}
+
+.case-card--radar {
+  background: #7A5548;
+  padding-right: 0;
+}
+
+.case-card--radar .case-card-title {
+  color: #F5EFEA;
+  padding-right: 40px;
+}
+
+.case-card--radar .case-card-image {
+  object-position: right bottom;
+  padding-left: 0;
+  transform: scale(1.35);
+  transform-origin: 100% 100%;
+}
+
+.case-card-title {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.case-card-image {
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  margin-top: 24px;
+  object-fit: contain;
+  object-position: bottom center;
+}
+
 /* ---- Coaching Page ---- */
 .page-header {
   padding: 160px var(--container-padding) 60px;
@@ -1275,6 +1340,29 @@ body > *:not(.page-loader) {
 
   .project--reverse .project-image-link {
     order: unset;
+  }
+
+  .case-card-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px 16px;
+  }
+
+  .case-card {
+    aspect-ratio: 4 / 3;
+    padding: 28px 28px 0;
+  }
+
+  .case-card--radar {
+    padding-right: 0;
+  }
+
+  .case-card--radar .case-card-title {
+    padding-right: 28px;
+  }
+
+  .case-card-title {
+    font-size: 22px;
   }
 
   .page-header {
