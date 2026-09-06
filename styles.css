@@ -609,8 +609,8 @@ body > *:not(.page-loader) {
   margin-bottom: 10px;
 }
 
-.case-card-row--article {
-  grid-template-columns: 1fr;
+.case-card-row.case-card-row--article {
+  grid-template-columns: 1fr 1fr;
   padding-top: 0;
 }
 
