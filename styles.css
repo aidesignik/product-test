@@ -633,7 +633,7 @@ body > *:not(.page-loader) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 6px;
 }
 
 .case-card-medium-logo {
