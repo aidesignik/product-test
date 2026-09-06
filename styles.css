@@ -685,7 +685,11 @@ body > *:not(.page-loader) {
 }
 
 .case-card--feedback {
-  background: #ECEAF5;
+  background: #1E90FF url('images/feedback-cover-bg.jpg') center/cover no-repeat;
+}
+
+.case-card--feedback .case-card-title {
+  color: #ffffff;
 }
 
 .case-card--radar {
