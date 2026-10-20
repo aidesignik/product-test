@@ -766,11 +766,11 @@ body > *:not(.page-loader) {
   padding: 40px;
   color: #ffffff;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: flex-start;
 }
 
-.case-card--travia .case-card-bg-image {
+.case-card--travia .case-card-bg-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -784,7 +784,7 @@ body > *:not(.page-loader) {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.0) 40%, rgba(0, 0, 0, 0.55) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.0) 45%);
   z-index: 1;
   pointer-events: none;
 }
@@ -795,20 +795,24 @@ body > *:not(.page-loader) {
   width: 100%;
 }
 
-.case-card-travia-title {
-  display: block;
-  width: auto;
-  height: 44px;
-  max-width: 70%;
-  filter: drop-shadow(0 2px 20px rgba(0, 0, 0, 0.35));
+.case-card--travia .case-card-travia-tagline {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+  color: #ffffff;
+  max-width: 85%;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7);
 }
 
 @media (max-width: 720px) {
   .case-card--travia {
     padding: 24px;
   }
-  .case-card-travia-title {
-    height: 32px;
+  .case-card-travia-tagline {
+    font-size: 20px;
   }
 }
 
