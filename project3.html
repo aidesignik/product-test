@@ -354,6 +354,144 @@
     .ds .dd-panel { transform-origin: top center; animation: ds-ddpanel 6s cubic-bezier(.2,.8,.2,1) infinite; }
     .ds .dd-hover { animation: ds-ddhover 6s infinite; }
 
+    /* ---------- DS card: shared element styles ---------- */
+    .ds .ds-field {
+      height: 42px;
+      padding: 0 14px;
+      border: 1px solid #ededed;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      color: #18181b;
+      background: #ffffff;
+      outline: none;
+      max-width: 240px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .ds select.ds-field {
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #6b6b72 50%), linear-gradient(135deg, #6b6b72 50%, transparent 50%);
+      background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+      padding-right: 32px;
+    }
+
+    .ds .dd-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 8px;
+      border: 1px solid #e4e4e7;
+      font-weight: 500;
+      font-size: 13px;
+      height: 32px;
+      padding: 0 12px;
+      color: #3f3f46;
+      background: #ffffff;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .ds .dd-trigger--lg { height: 40px; padding: 0 14px; font-size: 13.5px; }
+    .ds .dd-trigger--active { border-color: #2563eb; background: #eff4ff; color: #2563eb; }
+    .ds .dd-chevron { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .ds .dd-menu {
+      width: 224px;
+      border-radius: 12px;
+      border: 1px solid #ededed;
+      background: #ffffff;
+      padding: 4px 0;
+      box-shadow: 0 1px 2px rgba(24, 24, 27, 0.04), 0 4px 14px rgba(24, 24, 27, 0.06);
+    }
+    .ds .dd-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0 12px;
+      height: 36px;
+      line-height: 36px;
+      font-size: 13.5px;
+      color: #3f3f46;
+      background: none;
+      border: 0;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .ds .dd-item--selected { font-weight: 500; color: #18181b; }
+    .ds .dd-item--active-bg { background: #fafafa; }
+
+    .ds .kebab-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      color: #a9a9b2;
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+    .ds .kebab-menu { width: 144px; }
+    .ds .kebab-item { height: 36px; line-height: 36px; font-size: 14px; color: #3f3f46; }
+    .ds .kebab-item--destructive { color: #dc2626; }
+
+    .ds .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      border-radius: 999px;
+      height: 24px;
+      padding: 0 11px;
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1;
+      color: #27272b;
+    }
+    .ds .badge--positive { background: #c8f5b0; }
+    .ds .badge--warning  { background: #fbe3a8; }
+    .ds .badge--negative { background: #fbbec0; }
+    .ds .badge--info     { background: #c9c2f7; }
+    .ds .badge--neutral  { background: #e6e6ea; }
+
+    .ds .segmented {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      border-radius: 8px;
+      background: #f4f4f5;
+      padding: 3px;
+    }
+    .ds .segmented-option {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      border-radius: 6px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 0;
+      background: none;
+      font-family: inherit;
+      color: #71717a;
+      cursor: pointer;
+    }
+    .ds .segmented-option--active {
+      background: #ffffff;
+      color: #18181b;
+      box-shadow: 0 1px 2px rgba(24,24,27,.08), 0 0 0 1px rgba(24,24,27,.04);
+    }
+
+    .ds .ds-stack { display: flex; flex-direction: column; gap: 24px; }
+    .ds .ds-row   { display: flex; flex-direction: column; gap: 10px; }
+    .ds .ds-row-label { font-size: 12.5px; font-weight: 500; color: #6b6b72; }
+    .ds .ds-items { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+    .ds .ds-items--center { align-items: center; }
+
     /* ================================================================
        Dark feature block — "What Travia brings together"
        ================================================================ */
@@ -428,6 +566,55 @@
       .case-dark { padding: 80px 24px; margin: 72px 0 72px calc(50% - 50vw); }
       .case-dark-title { margin-bottom: 48px; font-size: 32px; }
       .case-dark-grid { grid-template-columns: 1fr; column-gap: 0; row-gap: 40px; }
+    }
+
+    /* ================================================================
+       Reflections — three-column closing section
+       ================================================================ */
+    .case-reflections {
+      margin: 128px 0 96px;
+    }
+    .case-reflections-label {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #555;
+      margin: 0 0 56px;
+    }
+    .case-reflections-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 56px;
+    }
+    .case-reflection-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .case-reflection-icon {
+      width: 44px;
+      height: 44px;
+      color: #9a9a9a;
+    }
+    .case-reflection-icon svg { width: 100%; height: 100%; display: block; }
+    .case-reflection-body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #4A4A4A;
+      margin: 0;
+    }
+    .case-reflection-body strong {
+      color: #1A1A1A;
+      font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      .case-reflections { margin: 80px 0 64px; }
+      .case-reflections-grid { grid-template-columns: 1fr; gap: 40px; }
+      .case-reflections-label { margin-bottom: 32px; }
     }
 
     /* --- Contained figure (not full-bleed) with scroll-reveal --- */
@@ -1231,8 +1418,8 @@
               </div>
               <div class="ds-hero-meta rise" style="animation-delay: .2s">
                 <div class="ds-hero-meta-text">
-                  <div>Extracted from the shipped product</div>
-                  <div>Colors · Typography · Components</div>
+                  <div>A selection from the shipped system</div>
+                  <div>Not every token or component is included</div>
                 </div>
                 <div class="ds-nav">
                   <button type="button" class="ds-nav-btn" data-ds-prev aria-label="Previous" disabled>
@@ -1269,19 +1456,34 @@
                   <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; color: #6b6b72">#18181B</div>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 8px">
-                  <div class="sw s3" style="height: 92px; border-radius: 10px; background: #6b6b72"></div>
+                  <div class="sw s3" style="height: 92px; border-radius: 10px; background: #3f3f46"></div>
+                  <div style="font-size: 13px; font-weight: 600">Ink body</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; color: #6b6b72">#3F3F46</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <div class="sw s4" style="height: 92px; border-radius: 10px; background: #6b6b72"></div>
                   <div style="font-size: 13px; font-weight: 600">Ink secondary</div>
                   <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; color: #6b6b72">#6B6B72</div>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 8px">
-                  <div class="sw s6" style="height: 92px; border-radius: 10px; background: #f6f6f4; border: 1px solid #e4e4e7; box-sizing: border-box"></div>
+                  <div class="sw s5" style="height: 92px; border-radius: 10px; background: #f6f6f4; border: 1px solid #e4e4e7; box-sizing: border-box"></div>
                   <div style="font-size: 13px; font-weight: 600">Content bg</div>
                   <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; color: #6b6b72">#F6F6F4</div>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 8px">
-                  <div class="sw s7" style="height: 92px; border-radius: 10px; background: #ffffff; border: 1px solid #e4e4e7; box-sizing: border-box"></div>
+                  <div class="sw s6" style="height: 92px; border-radius: 10px; background: #ffffff; border: 1px solid #e4e4e7; box-sizing: border-box"></div>
                   <div style="font-size: 13px; font-weight: 600">Canvas</div>
                   <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; color: #6b6b72">#FFFFFF</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <div class="sw s7" style="height: 92px; border-radius: 10px; background: #ededed; border: 1px solid #e4e4e7; box-sizing: border-box"></div>
+                  <div style="font-size: 13px; font-weight: 600">Border hairline</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; color: #6b6b72">#EDEDED</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <div class="sw" style="height: 92px; border-radius: 10px; background: #d8d8dc; border: 1px solid #e4e4e7; box-sizing: border-box; animation-delay: 3.2s"></div>
+                  <div style="font-size: 13px; font-weight: 600">Border strong</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; color: #6b6b72">#D8D8DC</div>
                 </div>
               </div>
             </article>
@@ -1345,42 +1547,142 @@
             <!-- Card 4: COMPONENTS -->
             <article class="ds-card">
               <div class="ds-card-label">COMPONENTS</div>
-              <div style="display: flex; flex-direction: column; gap: 28px">
-                <div style="display: flex; flex-direction: column; gap: 12px">
-                  <div style="font-size: 12.5px; font-weight: 500; color: #6b6b72">Buttons</div>
-                  <div style="display: flex; gap: 12px; flex-wrap: wrap">
+              <div class="ds-stack">
+                <div class="ds-row">
+                  <div class="ds-row-label">Buttons &middot; 44px &middot; radius 10</div>
+                  <div class="ds-items">
                     <button type="button" class="press" style="height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: #2563eb; color: #ffffff; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Approve</button>
                     <button type="button" style="height: 44px; padding: 0 20px; border: 1px solid #d8d8dc; border-radius: 10px; background: #ffffff; color: #3f3f46; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button>
                     <button type="button" style="height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: #dc2626; color: #ffffff; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Reject</button>
                   </div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 12px">
-                  <div style="font-size: 12.5px; font-weight: 500; color: #6b6b72">Status chips</div>
-                  <div style="display: flex; gap: 10px; flex-wrap: wrap">
-                    <span class="chip" style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px 0 10px; border-radius: 999px; background: #fbe1e4; color: #a3232f; font-size: 13px; font-weight: 600"><span style="width: 7px; height: 7px; border-radius: 999px; background: #d64553"></span>Pending</span>
-                    <span class="chip c1" style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px 0 10px; border-radius: 999px; background: #dde8fb; color: #2a46a8; font-size: 13px; font-weight: 600"><span style="width: 7px; height: 7px; border-radius: 999px; background: #3b63e0"></span>Confirmed</span>
-                    <span class="chip c2" style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px 0 10px; border-radius: 999px; background: #ddf5e6; color: #1f6b41; font-size: 13px; font-weight: 600"><span style="width: 7px; height: 7px; border-radius: 999px; background: #2f8a57"></span>Completed</span>
-                    <span class="chip c3" style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px 0 10px; border-radius: 999px; background: #eeeeec; color: #57574f; font-size: 13px; font-weight: 600"><span style="width: 7px; height: 7px; border-radius: 999px; background: #a3a39c"></span>Cancelled</span>
-                    <span class="chip c4" style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px 0 10px; border-radius: 999px; background: #ece4fb; color: #6233c9; font-size: 13px; font-weight: 600"><span style="width: 7px; height: 7px; border-radius: 999px; background: #8b5cf6"></span>Blocked</span>
+                <div class="ds-row">
+                  <div class="ds-row-label">Input &amp; Select &middot; 42px &middot; radius 10 &middot; border-hairline</div>
+                  <div class="ds-items">
+                    <input type="text" value="Mark J." placeholder="Driver name" class="ds-field" />
+                    <select class="ds-field">
+                      <option>Belgrade</option>
+                      <option>Novi Sad</option>
+                    </select>
                   </div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 12px">
-                  <div style="font-size: 12.5px; font-weight: 500; color: #6b6b72">Input</div>
-                  <input type="text" value="Mark J." placeholder="Driver name" style="height: 44px; padding: 0 14px; border: 1px solid #d8d8dc; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 500; color: #18181b; background: #ffffff; outline: none; max-width: 260px"/>
+              </div>
+            </article>
+
+            <!-- Card 5: DROPDOWNS -->
+            <article class="ds-card">
+              <div class="ds-card-label">DROPDOWNS</div>
+              <div class="ds-stack">
+                <div class="ds-row">
+                  <div class="ds-row-label">Filter &middot; default / active &middot; sm (32px) &amp; lg (40px)</div>
+                  <div class="ds-items ds-items--center">
+                    <button type="button" class="dd-trigger">Vehicle <svg class="dd-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 9l6 6 6-6"/></svg></button>
+                    <button type="button" class="dd-trigger dd-trigger--active">BG-412-TK <svg class="dd-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 9l6 6 6-6"/></svg></button>
+                    <button type="button" class="dd-trigger dd-trigger--lg">Status <svg class="dd-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 9l6 6 6-6"/></svg></button>
+                  </div>
+                </div>
+                <div class="ds-row">
+                  <div class="ds-row-label">Open menu &middot; radius 12 &middot; items 36px</div>
+                  <div class="dd-menu">
+                    <button type="button" class="dd-item">All</button>
+                    <button type="button" class="dd-item dd-item--selected dd-item--active-bg">BG-412-TK</button>
+                    <button type="button" class="dd-item">NS-118-AX</button>
+                    <button type="button" class="dd-item">BG-903-RM</button>
+                  </div>
+                </div>
+                <div class="ds-row">
+                  <div class="ds-row-label">Row actions (kebab)</div>
+                  <div class="ds-items ds-items--center">
+                    <button type="button" class="kebab-trigger" aria-label="Actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                    </button>
+                    <div class="dd-menu kebab-menu">
+                      <button type="button" class="dd-item kebab-item">Edit</button>
+                      <button type="button" class="dd-item kebab-item kebab-item--destructive">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 6: OTHER ELEMENTS -->
+            <article class="ds-card">
+              <div class="ds-card-label">OTHER ELEMENTS</div>
+              <div class="ds-stack">
+                <div class="ds-row">
+                  <div class="ds-row-label">Badge &middot; 5 tones (independent of ride statuses)</div>
+                  <div class="ds-items">
+                    <span class="badge badge--positive">Active</span>
+                    <span class="badge badge--warning">Expiring soon</span>
+                    <span class="badge badge--negative">Expired</span>
+                    <span class="badge badge--info">New</span>
+                    <span class="badge badge--neutral">Inactive</span>
+                  </div>
+                </div>
+                <div class="ds-row">
+                  <div class="ds-row-label">Segmented control &middot; 32px</div>
+                  <div class="ds-items">
+                    <div class="segmented">
+                      <button type="button" class="segmented-option segmented-option--active">One-way</button>
+                      <button type="button" class="segmented-option">Round trip</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </article>
 
           </div>
 
-          <!-- Progress + foot note (constrained again) -->
-          <div class="ds-inner ds-inner--bottom">
-            <div class="ds-progress"><span data-ds-current>01</span> / <span data-ds-total>04</span></div>
-            <p class="ds-foot">Every token and component shown here is extracted directly from the shipped product&rsquo;s source &mdash; not drafted separately and retrofitted.</p>
+        </div>
+      </div>
+
+      <section class="case-reflections">
+        <p class="case-reflections-label">09 &mdash; REFLECTIONS</p>
+        <div class="case-reflections-grid">
+
+          <div class="case-reflection-col">
+            <div class="case-reflection-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="24" cy="24" r="18"/>
+                <polygon points="24,10 30,24 24,38 18,24" fill="currentColor" fill-opacity="0.08"/>
+                <line x1="24" y1="10" x2="24" y2="4"/>
+                <line x1="24" y1="38" x2="24" y2="44"/>
+                <line x1="10" y1="24" x2="4" y2="24"/>
+                <line x1="38" y1="24" x2="44" y2="24"/>
+              </svg>
+            </div>
+            <p class="case-reflection-body"><strong>Deep understanding of business operations.</strong> To design for carrier dispatch, I had to understand how booking managers actually work &mdash; the handoffs between the calendar, the fleet, the paperwork, and the people. Trading &ldquo;what seems right&rdquo; for what fits the real workflow is what let the product feel obvious instead of imposed.</p>
+          </div>
+
+          <div class="case-reflection-col">
+            <div class="case-reflection-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="24" cy="24" r="18"/>
+                <circle cx="24" cy="24" r="11"/>
+                <circle cx="24" cy="24" r="4" fill="currentColor" fill-opacity="0.6"/>
+                <line x1="24" y1="2" x2="24" y2="8"/>
+                <line x1="24" y1="40" x2="24" y2="46"/>
+                <line x1="2" y1="24" x2="8" y2="24"/>
+                <line x1="40" y1="24" x2="46" y2="24"/>
+              </svg>
+            </div>
+            <p class="case-reflection-body"><strong>Learning the art of prioritization.</strong> Working as a solo designer and builder taught me what to leave out. I built a lean, scope-tight foundation and shipped the core booking flow end-to-end before layering in fleet, documents, and expiry tracking around it &mdash; a bloated system would never have gotten off the ground.</p>
+          </div>
+
+          <div class="case-reflection-col">
+            <div class="case-reflection-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="6" width="22" height="16" rx="3"/>
+                <rect x="12" y="16" width="22" height="16" rx="3"/>
+                <rect x="18" y="26" width="22" height="16" rx="3" fill="currentColor" fill-opacity="0.08"/>
+                <path d="M30 34 h8 m0 0 l-3 -3 m3 3 l-3 3"/>
+              </svg>
+            </div>
+            <p class="case-reflection-body"><strong>Designing to reduce cognitive load.</strong> Dispatchers used to juggle a calendar, spreadsheets, WhatsApp, email, and a paper notebook to complete a single booking. By pulling those tools into one connected workspace, I cut the context-switching load so booking managers could focus on the booking itself rather than tracking where every piece of information lived.</p>
           </div>
 
         </div>
-      </div>
+      </section>
 
       <div class="case-study-nav">
         <a href="index.html?v=2" class="case-study-back">&larr; Back to Portfolio</a>
