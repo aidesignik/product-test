@@ -2471,6 +2471,8 @@
     })();
   </script>
 
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "cbe772e88ba64865afaca1040e19dfc7"}'></script>
+  <!-- Cloudflare Web Analytics (per-device opt-out: visit ?notrack=1 to exclude this browser) -->
+  <script>(function(){try{var p=new URLSearchParams(location.search);if(p.has('notrack')){p.get('notrack')==='0'?localStorage.removeItem('cf-notrack'):localStorage.setItem('cf-notrack','1');}if(localStorage.getItem('cf-notrack')==='1')return;}catch(e){}var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token": "cbe772e88ba64865afaca1040e19dfc7"}');document.head.appendChild(s);})();</script>
+  <!-- End Cloudflare Web Analytics -->
 </body>
 </html>
