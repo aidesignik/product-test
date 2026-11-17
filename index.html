@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css?v=67">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Julius+Sans+One&family=Playfair+Display:wght@500;600;700&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,450,500,700&display=swap" rel="stylesheet">
 </head>
 <body class="is-loading intro-playing">
@@ -116,22 +116,33 @@
     <div class="projects" id="projects">
       <div class="case-card-row">
         <a href="project3.html?v=2" class="case-card case-card--travia">
-          <img src="images/travia-bus-cover.jpg" alt="" class="case-card-bg-image" aria-hidden="true" loading="lazy">
+          <img src="images/travia-cover.jpg" alt="" class="case-card-bg-image" aria-hidden="true" loading="lazy">
           <div class="case-card-travia-inner">
+            <p class="case-card-travia-eyebrow">Travia</p>
             <h2 class="case-card-travia-tagline">Transport operations simplified</h2>
           </div>
         </a>
-        <a href="project2.html?v=2" class="case-card case-card--feedback">
-          <h2 class="case-card-title">Smarter Feedback Collection</h2>
-          <img src="images/feedback-cover-v3.png" alt="Smarter Feedback Collection" class="case-card-image" loading="lazy">
+        <a href="project4.html?v=2" class="case-card case-card--sottovoce">
+          <img src="images/sottovoce/art-figaro.webp" alt="" class="case-card-bg-image" aria-hidden="true" loading="lazy">
+          <div class="case-card-sottovoce-inner">
+            <p class="case-card-sottovoce-eyebrow">Sottovoce</p>
+            <h2 class="case-card-sottovoce-tagline">Learn an opera role, all in one place</h2>
+          </div>
         </a>
       </div>
 
       <div class="case-card-row">
+        <a href="project2.html?v=2" class="case-card case-card--feedback">
+          <h2 class="case-card-title">Smarter Feedback Collection</h2>
+          <img src="images/feedback-cover-v3.png" alt="Smarter Feedback Collection" class="case-card-image" loading="lazy">
+        </a>
         <a href="project1.html?v=2" class="case-card case-card--radar">
           <h2 class="case-card-title">Adding a Browsing Experience<br>Without Rebuilding</h2>
           <img src="images/tech-radar-cover-cropped.png" alt="Technology Radar — Gallery View" class="case-card-image" loading="lazy">
         </a>
+      </div>
+
+      <div class="case-card-row">
         <a class="case-card case-card--article" href="https://medium.com/@ivankisin/enterprise-software-takes-months-to-deploy-we-used-a-calendar-invite-instead-aae647f931a4" target="_blank" rel="noopener noreferrer">
           <video class="case-card-bg-video" autoplay muted loop playsinline preload="metadata" poster="images/article-card-bg-poster.jpg" aria-hidden="true">
             <source src="images/article-card-bg.mp4" type="video/mp4">
@@ -150,6 +161,8 @@
   </footer>
 
   <script src="script.js?v=8"></script>
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "cbe772e88ba64865afaca1040e19dfc7"}'></script>
+  <!-- Cloudflare Web Analytics (per-device opt-out: visit ?notrack=1 to exclude this browser) -->
+  <script>(function(){try{var p=new URLSearchParams(location.search);if(p.has('notrack')){p.get('notrack')==='0'?localStorage.removeItem('cf-notrack'):localStorage.setItem('cf-notrack','1');}if(localStorage.getItem('cf-notrack')==='1')return;}catch(e){}var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token": "cbe772e88ba64865afaca1040e19dfc7"}');document.head.appendChild(s);})();</script>
+  <!-- End Cloudflare Web Analytics -->
 </body>
 </html>
