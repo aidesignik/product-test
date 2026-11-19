@@ -1249,11 +1249,13 @@
        image out statically so there's no giant empty scroll area. */
     @media (max-width: 768px) {
       .travia-title-reveal { height: auto; }
-      .travia-title-stage { position: relative; height: auto; padding: 56px 20px 32px; overflow: visible; }
+      .travia-title-stage { position: relative; height: auto; padding: 96px 20px 24px; overflow: visible; }
       .travia-reveal-title { position: static; transform: none; width: auto; margin: 0 auto; }
       .travia-reveal-title-inner { opacity: 1; transform: none; transition: none; }
       .travia-scroll-hint { display: none; }
       .travia-reveal-image-wrap { position: static; transform: none; margin-top: 32px; }
+      /* tighten the gap between the hero image and the first section */
+      .case-study--travia { padding-top: 32px; }
     }
   </style>
 </head>

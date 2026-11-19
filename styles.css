@@ -1561,8 +1561,11 @@ body > *:not(.page-loader) {
   .case-card-row {
     grid-template-columns: 1fr;
     gap: 16px;
-    padding: 24px 16px;
+    padding: 8px 16px;
   }
+  /* keep breathing room above the first row and below the last */
+  .projects .case-card-row:first-child { padding-top: 24px; }
+  .projects .case-card-row:last-child { padding-bottom: 24px; }
 
   .case-card {
     aspect-ratio: 4 / 3;
@@ -1573,6 +1576,17 @@ body > *:not(.page-loader) {
   .case-card--travia,
   .case-card--sottovoce {
     padding: 28px 28px 32px;
+  }
+
+  /* Travia card: show the full product shot (so the UI mockups read smaller)
+     with the label sitting on a dark strip below it, never on white. */
+  .case-card--travia {
+    aspect-ratio: 1 / 1;
+    background-color: #0e1a2b;
+  }
+  .case-card--travia .case-card-bg-image {
+    bottom: auto;
+    height: auto;
   }
 
   .case-card--radar {
