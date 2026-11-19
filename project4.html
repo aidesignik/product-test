@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Sottovoce — Ivan Kisin</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&family=Charis+SIL:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* =======================================================================
+       SOTTOVOCE CASE STUDY
+       Structure mirrors the Travia case study (title-reveal hero, numbered
+       chapters, a scattered-sources infographic, contained figures, a dark
+       feature grid, and a design-system showcase). Palette and typography
+       are Sottovoce's own: warm paper, forest green, lavender, a blush
+       accent, with a Playfair Display serif for display type.
+       ======================================================================= */
+
+    :root {
+      --sv-paper:    #FBF9F2;
+      --sv-panel:    #F5F1E6;
+      --sv-ink:      #211F1A;
+      --sv-muted:    #6E6A60;
+      --sv-green:    #1B4332;
+      --sv-green-dk: #13301F;
+      --sv-purple:   #8E7CC3;
+      --sv-purple-l: #ECE7F7;
+      --sv-purple-d: #5E4FA0;
+      --sv-blush:    #E09072;
+      --sv-line:     #E7E2D4;
+    }
+
+    .case-study,
+    .case-study p,
+    .case-study li,
+    .case-study em,
+    .case-study strong,
+    .case-study-back,
+    .case-study-next,
+    .page-header p {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    /* Case-study headings use DM Sans, consistent with the other case
+       studies. The operatic serif stays inside the product (the live
+       player and the screenshots), not the case-study chrome. */
+    .sv-reveal-title,
+    .case-chapter-heading,
+    .case-subblock-heading,
+    .case-dark-title,
+    .sv-system-title,
+    .sv-type-specimen {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .case-study { max-width: 920px; }
+    .case-study--sv { padding-top: 44px; }
+    .case-study-section { margin-bottom: 48px; }
+
+    /* ---------------------------------------------------------------
+       Chapters
+       --------------------------------------------------------------- */
+    .case-chapter { margin-bottom: 88px; }
+    .case-chapter p { margin: 0 0 18px; }
+    .case-chapter p:last-child { margin-bottom: 0; }
+
+    .case-chapter-label {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sv-green);
+      margin: 0 0 20px;
+    }
+
+    .case-chapter-heading {
+      font-size: 46px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.005em;
+      color: var(--sv-ink);
+      max-width: 760px;
+      margin: 0 0 36px;
+    }
+
+    .case-chapter--featured p:not(.case-chapter-label):not(.case-emphasize) {
+      max-width: 720px;
+      font-size: 19px;
+      line-height: 1.75;
+      color: #4A463E;
+      margin: 0 0 20px;
+    }
+
+    .case-emphasize {
+      max-width: 720px;
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 600;
+      font-size: 25px;
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+      color: var(--sv-ink);
+      margin: 44px 0 0;
+    }
+
+    @media (max-width: 720px) {
+      .case-chapter-heading { font-size: 30px; margin-bottom: 28px; }
+      .case-chapter--featured p:not(.case-chapter-label):not(.case-emphasize) { font-size: 17px; }
+      .case-emphasize { font-size: 21px; margin-top: 36px; }
+    }
+
+    /* ---------------------------------------------------------------
+       01 — The problem: the "what if" board, as a provided SVG of
+       post-it notes (scaled to fit; scrolls on small screens).
+       --------------------------------------------------------------- */
+    .prob-board {
+      width: 100vw; margin: 16px 0 44px calc(50% - 50vw); padding: 0 48px;
+      overflow-x: auto;
+    }
+    .prob-svg {
+      display: block; width: 100%; max-width: 1180px; min-width: 820px; height: auto; margin: 0 auto;
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .prob-svg.is-in { opacity: 1; transform: translateY(0); }
+    @media (max-width: 680px) { .prob-board { padding: 0 24px; } }
+
+    /* ---------------------------------------------------------------
+       Sub-block inside a chapter
+       --------------------------------------------------------------- */
+    .case-subblock { margin: 96px 0 40px; }
+    .case-subblock-heading {
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.005em;
+      color: var(--sv-ink);
+      max-width: 720px;
+      margin: 0 0 20px;
+    }
+    .case-subblock p {
+      max-width: 720px;
+      font-size: 19px;
+      line-height: 1.75;
+      color: #4A463E;
+      margin: 0 0 18px;
+    }
+    .case-subblock p:last-child { margin-bottom: 0; }
+    .case-subblock + .case-figure,
+    .case-subblock + .sv-phones { margin-top: 0; }
+    @media (max-width: 720px) {
+      .case-subblock-heading { font-size: 25px; }
+      .case-subblock p { font-size: 17px; }
+    }
+
+    /* ---------------------------------------------------------------
+       Contained figures (landscape) with scroll-reveal
+       --------------------------------------------------------------- */
+    .case-figure { margin: 40px 0 88px; }
+    .case-figure--contained {
+      width: 100%;
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .case-figure--contained .case-figure-img,
+    .case-figure--contained .case-figure-video {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(28, 22, 12, 0.14);
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .case-figure--contained.is-in .case-figure-img,
+    .case-figure--contained.is-in .case-figure-video {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .case-figure-caption {
+      margin: 16px auto 0;
+      max-width: 720px;
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--sv-muted);
+      text-align: center;
+    }
+
+    /* ---------------------------------------------------------------
+       Live "Music" view — the real Sottovoce player, copied verbatim
+       from the product: Marcellina's line lights up syllable by
+       syllable, the playhead follows the score at tempo, then Words is
+       tapped and the libretto appears. Image + JS timeline, no audio.
+       --------------------------------------------------------------- */
+    .sv-am {
+      max-width: 920px; margin: 40px auto 96px;
+      opacity: 0; transform: translateY(60px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .sv-am.is-in { opacity: 1; transform: translateY(0); }
+    .sv-am .am { border-radius: 14px; box-shadow: 0 24px 60px rgba(28, 22, 12, 0.14); }
+    .sv-am .case-figure-caption { margin-top: 20px; }
+
+    .am {
+      position: relative; aspect-ratio: 1440 / 900; overflow: hidden; background: #fbfaf7;
+      --display: 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+      --sans: 'Jost', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif;
+      --sung: 'Charis SIL', Charter, 'Iowan Old Style', Georgia, serif;
+    }
+    .am-in { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; transform-origin: 0 0; transform: scale(var(--k, .7)); }
+    .am-in > * { position: absolute; }
+    .am-frame { left: 0; top: 0; width: 1440px; height: 900px; max-width: none; }
+    .am-line { left: 0; right: 0; top: 135px; margin: 0; text-align: center; font: 400 40px/46px var(--sung); color: rgba(26,24,20,.38); white-space: nowrap; }
+    .am-line span { border-radius: 4px; transition: color .15s, background .15s; }
+    .am-line span.p { color: #1a1814; } .am-line span.n { color: #1a1814; background: rgba(31,107,69,.14); }
+    .am-line .tie { display: inline-block; width: .5em; text-align: center; font-style: normal; font-size: .62em; transform: translateY(.42em); color: rgba(26,24,20,.55); }
+    .am-cl, .am-halo { position: absolute; }
+    .am-score { left: 0; top: 0; width: 1440px; height: 900px; }
+    .am-lane { position: absolute; left: 0; width: 1440px; transition: top .6s cubic-bezier(.3,.7,.2,1); }
+    .am-lane img { display: block; width: 1440px; max-width: none; height: auto; transition: opacity .7s; }
+    .am-lane:not(.am-head):not(.you):not(.ink) img { opacity: .3; }
+    .am-lab { position: absolute; left: 28px; display: inline-flex; align-items: center; gap: 3px; height: 24px; padding: 0 7px 0 9px; border-radius: 8px; background: #fbfaf7; box-shadow: inset 0 0 0 1px rgba(26,24,20,.16); font: italic 500 15px/1 var(--display); color: #1a1814; transition: box-shadow .2s, background .2s; }
+    .am-lab svg { width: 10px; height: 10px; color: #77726a; }
+    .am-lane.you .am-lab { background: color-mix(in srgb, #1f6b45 10%, #fbfaf7); box-shadow: inset 0 0 0 1px color-mix(in srgb, #1f6b45 45%, transparent); }
+    .am-cl { top: 290px; height: 450px; width: 2px; margin-left: -1px; background: rgba(31,107,69,.42); left: 150px; z-index: 2; }
+    .am-halo { width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: rgba(31,107,69,.2); opacity: 0; transition: opacity .2s; }
+    .am-bar { left: 24px; top: 794px; font: 600 15px/15px var(--sans); color: #1a1814; }
+    .am-time { right: 24px; top: 794px; font: 400 15px/15px var(--sans); color: #77726a; }
+    .am-time b { font-weight: 600; color: #1a1814; }
+    .am-done { left: 182px; top: 800px; height: 2px; width: 0; background: #1f6b45; }
+    .am-knob { left: 175px; top: 794px; width: 14px; height: 14px; border-radius: 50%; background: #fbfaf7; box-shadow: inset 0 0 0 2px #1f6b45; }
+    .am-pp { left: 874px; top: 834px; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: rgb(23,64,44); color: #fbfaf7; opacity: 0; }
+    .am-pp svg { width: 17px; height: 17px; }
+    .am-words { left: 0; top: 0; width: 1440px; height: 772px; max-width: none; z-index: 6; opacity: 0; transition: opacity .5s; }
+    .am.words .am-words { opacity: 1; }
+    .am-cur { left: 0; top: 0; z-index: 9; width: 22px; height: 22px; opacity: 0; transition: opacity .3s; }
+    .am-cur svg { position: absolute; left: -3px; top: -2px; transition: transform .1s; }
+    .am-cur i { position: absolute; left: -17px; top: -17px; width: 34px; height: 34px; border-radius: 50%; background: rgba(26,24,20,.13); transform: scale(.4); opacity: 0; transition: transform .3s, opacity .3s; }
+    .am-cur.dn svg { transform: scale(.86); } .am-cur.dn i { transform: scale(1); opacity: 1; }
+    .am.reset .am-score, .am.reset .am-line { opacity: 0; transition: opacity .35s; }
+    .am .am-score, .am .am-line { transition: opacity .45s; }
+    /* Guard the live component's lyric line from the case-study base
+       type (styles.css .case-study p forces 15px / grey / sans). */
+    .sv-am .am-line { font: 400 40px/46px var(--sung); color: rgba(26,24,20,.38); margin: 0; }
+
+    /* ---------------------------------------------------------------
+       Animated loop — the Count's run on "giubilar": the playhead
+       sweeps bars 145–146 and repeats, showing only that part on loop.
+       Built on the clean staff image with real bar positions
+       (EDGE fractions from the product: bar 145 = 36.45%, 147 = 79.76%).
+       --------------------------------------------------------------- */
+    .sv-loop {
+      max-width: 920px; margin: 40px auto 96px;
+      opacity: 0; transform: translateY(60px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .sv-loop.is-in { opacity: 1; transform: translateY(0); }
+    .sv-loop-card {
+      background: #fff; border-radius: 16px;
+      padding: 40px 26px 16px; box-shadow: 0 24px 60px rgba(28, 22, 12, 0.14);
+    }
+    .sv-loop-stage { position: relative; }
+    .sv-loop-img { display: block; width: 100%; height: auto; }
+    .sv-loop-tint, .sv-loop-h, .sv-loop-head, .sv-loop-note { position: absolute; pointer-events: none; }
+    .sv-loop-tint { left: 36.45%; width: 43.31%; top: 8%; height: 78%; background: rgba(88, 65, 216, 0.09); border-radius: 2px; }
+    .sv-loop-h { top: 4%; height: 86%; width: 2px; background: #5841d8; }
+    .sv-loop-h--s { left: 36.45%; }
+    .sv-loop-h--e { left: 79.76%; }
+    .sv-loop-h::after { content: ""; position: absolute; left: -4px; width: 10px; height: 10px; border-radius: 50%; background: #5841d8; box-shadow: 0 0 0 2px #fff; }
+    .sv-loop-h--s::after { top: -5px; }
+    .sv-loop-h--e::after { bottom: -5px; }
+    .sv-loop-head {
+      top: 6%; height: 76%; width: 1.5px; margin-left: -0.75px; left: 36.45%;
+      background: #5841d8;
+      animation: sv-loop-run 3.16s linear infinite; animation-play-state: paused;
+    }
+    .sv-loop.is-in .sv-loop-head { animation-play-state: running; }
+    @keyframes sv-loop-run { from { left: 36.45%; } to { left: 79.76%; } }
+    .sv-loop-note {
+      left: 58%; top: -2px; transform: translate(-50%, -100%);
+      background: #fce7d4; border: 1px solid #f1cfa6; color: #9a5b2a;
+      font: 600 12.5px/1 'DM Sans', sans-serif; padding: 5px 10px; border-radius: 8px; white-space: nowrap;
+    }
+    .sv-loop-bar {
+      display: flex; align-items: center; gap: 14px; margin-top: 16px; padding-top: 14px;
+      border-top: 1px solid var(--sv-line); font: 500 14px/1 'DM Sans', sans-serif; color: var(--sv-muted);
+    }
+    .sv-loop-play { width: 34px; height: 34px; border-radius: 50%; background: var(--sv-green); color: #fff; display: grid; place-items: center; flex: none; }
+    .sv-loop-play svg { width: 13px; height: 13px; }
+    .sv-loop-lab { color: var(--sv-ink); font-weight: 600; }
+    .sv-loop-ci { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: 8px; background: #dce7df; color: var(--sv-green); font-weight: 600; }
+    .sv-loop-ci i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .55; }
+    .sv-loop-noteb { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 8px; background: #f1efe9; color: var(--sv-ink); }
+    .sv-loop-hint { margin-left: auto; color: var(--sv-muted); }
+    .sv-loop .case-figure-caption { margin-top: 20px; }
+    @media (max-width: 640px) { .sv-loop-hint { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .sv-loop-head { animation: none; left: 58%; } }
+
+    /* ---------------------------------------------------------------
+       Phone screenshots — capped width, shown in pairs
+       --------------------------------------------------------------- */
+    .sv-phones {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin: 40px auto 88px;
+      max-width: 920px;
+    }
+    .sv-phone {
+      flex: 0 1 300px;
+      max-width: 320px;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .sv-phones.is-in .sv-phone { opacity: 1; transform: translateY(0); }
+    .sv-phones.is-in .sv-phone:nth-child(2) { transition-delay: .12s; }
+    .sv-phone img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 26px;
+      box-shadow: 0 22px 54px rgba(28, 22, 12, 0.16);
+    }
+    .sv-phone-cap {
+      margin: 14px 4px 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--sv-muted);
+      text-align: center;
+    }
+
+    /* Desktop screen leading, with a mobile "hint" floating in the corner */
+    .sv-shot {
+      position: relative;
+      max-width: 920px;
+      margin: 40px auto 104px;
+      opacity: 0; transform: translateY(60px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .sv-shot.is-in { opacity: 1; transform: translateY(0); }
+    .sv-shot-frame { position: relative; }
+    .sv-shot-desk img {
+      display: block; width: 100%; height: auto; border-radius: 14px;
+      box-shadow: 0 24px 60px rgba(28, 22, 12, 0.14);
+    }
+    .sv-shot-phone {
+      position: absolute; right: -1.5%; bottom: 6%;
+      width: 16.5%; min-width: 118px; max-width: 186px;
+      opacity: 0; transform: translateY(22px);
+      transition: opacity .7s ease .2s, transform .7s cubic-bezier(.22,1,.36,1) .2s;
+    }
+    .sv-shot.is-in .sv-shot-phone { opacity: 1; transform: translateY(0); }
+    .sv-shot-phone img {
+      display: block; width: 100%; height: auto; border-radius: 22px;
+      border: 5px solid #fff; background: #fff;
+      box-shadow: 0 22px 46px rgba(28, 22, 12, 0.28);
+    }
+    .sv-shot .case-figure-caption { margin-top: 44px; }
+    @media (max-width: 720px) {
+      .sv-shot { margin-bottom: 72px; }
+      .sv-shot-phone {
+        position: static; width: 46%; min-width: 0; max-width: 220px;
+        margin: -16% auto 0; opacity: 1; transform: none;
+      }
+      .sv-shot .case-figure-caption { margin-top: 22px; }
+    }
+
+    /* ---------------------------------------------------------------
+       Dark feature block — "What Sottovoce brings together"
+       --------------------------------------------------------------- */
+    .case-dark {
+      width: 100vw;
+      margin: 96px 0 40px calc(50% - 50vw);
+      padding: 112px 48px;
+      background: var(--sv-green-dk);
+      color: #fff;
+    }
+    .case-dark-inner { max-width: 1180px; margin: 0 auto; }
+    .case-dark-title {
+      font-weight: 600; font-size: 44px; line-height: 1.15;
+      letter-spacing: -0.005em; color: #fff; margin: 0 0 72px;
+    }
+    .case-dark-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      column-gap: 120px; row-gap: 56px;
+    }
+    .case-dark-item { padding: 32px 0 0; border-top: 1px solid rgba(255,255,255,0.14); }
+    .case-dark-num {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600;
+      line-height: 1; letter-spacing: 0.12em; color: var(--sv-blush);
+      display: block; margin: 0 0 14px;
+    }
+    .case-dark-head {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 24px; font-weight: 600;
+      line-height: 1.3; letter-spacing: -0.01em; color: #fff; margin: 0 0 10px;
+    }
+    .case-dark-desc {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.6;
+      color: #B7C3B9; margin: 0;
+    }
+    @media (max-width: 768px) {
+      .case-dark { padding: 64px 24px; margin: 56px 0 56px calc(50% - 50vw); }
+      .case-dark-title { margin-bottom: 48px; font-size: 32px; }
+      .case-dark-grid { grid-template-columns: 1fr; column-gap: 0; row-gap: 40px; }
+    }
+
+    /* ---------------------------------------------------------------
+       Feature row — four character portraits
+       --------------------------------------------------------------- */
+    .case-feature-row {
+      width: 100vw; margin: 0 0 88px calc(50% - 50vw); padding: 0 24px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: none;
+      opacity: 0; transform: translateY(60px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .case-feature-row.is-in { opacity: 1; transform: translateY(0); }
+    .case-feature-card {
+      margin: 0; padding: 0; background: var(--sv-purple);
+      border-radius: 18px; box-shadow: 0 12px 36px rgba(28, 22, 12, 0.14);
+      aspect-ratio: 8 / 9; overflow: hidden; position: relative;
+    }
+    .case-feature-card img {
+      display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
+    }
+    .case-feature-cap {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 28px 16px 14px; color: #fff;
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 17px; font-weight: 600;
+      background: linear-gradient(180deg, rgba(40,28,54,0) 0%, rgba(40,28,54,0.72) 100%);
+    }
+    .case-feature-cap small { display: block; font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-weight: 400; font-size: 12.5px; opacity: .85; margin-top: 2px; }
+    @media (max-width: 980px) { .case-feature-row { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .case-feature-row { grid-template-columns: 1fr; padding: 0 16px; } }
+
+    /* ---------------------------------------------------------------
+       Sliding roles carousel (mirrors the app's role slider)
+       --------------------------------------------------------------- */
+    .sv-roles {
+      width: 100vw;
+      margin: 36px 0 92px calc(50% - 50vw);
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+    }
+    .sv-roles-track {
+      display: flex;
+      width: max-content;
+      padding: 10px 0;
+      animation: sv-roll 95s linear infinite;
+    }
+    .sv-roles:hover .sv-roles-track { animation-play-state: paused; }
+    /* Two identical halves + uniform right margin on every card means
+       translateX(-50%) lands card 23 exactly where card 1 began — a
+       seamless loop with no visible jump. */
+    @keyframes sv-roll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .sv-role { flex: 0 0 auto; width: 212px; margin: 0 20px 0 0; }
+    .sv-role-img {
+      display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover;
+      object-position: top center; border-radius: 16px; background: var(--sv-purple);
+      box-shadow: 0 14px 34px rgba(28, 22, 12, 0.14);
+    }
+    .sv-role-cap { display: flex; flex-direction: column; gap: 2px; margin: 14px 2px 0; }
+    .sv-role-name { font-family: 'DM Sans', -apple-system, sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--sv-ink); line-height: 1.2; }
+    .sv-role-meta { font-size: 13px; color: var(--sv-muted); }
+    @media (max-width: 560px) { .sv-role { width: 164px; margin-right: 14px; } .sv-role-name { font-size: 17px; } }
+    @media (prefers-reduced-motion: reduce) {
+      .sv-roles { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .sv-roles-track { animation: none; }
+    }
+
+    /* ---------------------------------------------------------------
+       Design-system / craft showcase
+       --------------------------------------------------------------- */
+    .sv-system {
+      width: 100vw; margin: 96px 0 72px calc(50% - 50vw);
+      padding: 96px 48px; background: var(--sv-panel);
+    }
+    .sv-system-inner { max-width: 1080px; margin: 0 auto; }
+    .sv-system-eyebrow {
+      font-size: 14px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--sv-green); margin: 0 0 14px;
+    }
+    .sv-system-title { font-size: 40px; font-weight: 700; line-height: 1.12; letter-spacing: -0.005em; color: var(--sv-ink); margin: 0 0 12px; }
+    .sv-system-sub { font-size: 17px; line-height: 1.6; color: var(--sv-muted); max-width: 560px; margin: 0 0 56px; }
+    .sv-system-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+    }
+    .sv-card {
+      background: var(--sv-paper); border: 1px solid var(--sv-line);
+      border-radius: 18px; padding: 28px; box-shadow: 0 10px 30px rgba(28, 22, 12, 0.05);
+    }
+    .sv-card-label {
+      font-size: 12.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--sv-muted); margin: 0 0 18px;
+    }
+    /* palette */
+    .sv-swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+    .sv-sw { flex: 1 1 0; min-width: 72px; }
+    .sv-sw-chip { height: 72px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06); }
+    .sv-sw-name { font-size: 12.5px; color: var(--sv-ink); margin: 10px 0 1px; font-weight: 600; }
+    .sv-sw-hex { font-size: 11.5px; color: var(--sv-muted); font-family: 'DM Sans', monospace; }
+    /* type */
+    .sv-type-specimen { font-size: 58px; font-style: italic; font-weight: 600; color: var(--sv-ink); line-height: 1; margin: 0 0 6px; }
+    .sv-type-meta { font-size: 13px; color: var(--sv-muted); margin: 0 0 20px; }
+    .sv-type-body { font-family: 'DM Sans', sans-serif; font-size: 15.5px; line-height: 1.6; color: #4A463E; margin: 0 0 6px; }
+    .sv-type-body-meta { font-size: 13px; color: var(--sv-muted); margin: 0; }
+    /* characters */
+    .sv-faces { display: flex; gap: 0; align-items: center; }
+    .sv-faces img {
+      width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
+      border: 3px solid var(--sv-paper); background: var(--sv-purple);
+      margin-left: -14px; box-shadow: 0 4px 12px rgba(28,22,12,0.12);
+    }
+    .sv-faces img:first-child { margin-left: 0; }
+    .sv-faces .sv-face-lead { width: 72px; height: 72px; border-color: var(--sv-green); }
+    /* controls */
+    .sv-controls { display: flex; flex-direction: column; gap: 16px; }
+    .sv-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      background: var(--sv-green); color: #fff; border-radius: 999px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px;
+      padding: 14px 24px; align-self: flex-start;
+    }
+    .sv-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sv-pill {
+      font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 500;
+      padding: 8px 15px; border-radius: 999px; background: #EFEADE; color: var(--sv-muted);
+    }
+    .sv-pill--on { background: var(--sv-green); color: #fff; }
+    .sv-pill--tip { background: #DCE7DF; color: var(--sv-green); }
+    /* real toggle switches */
+    .sv-toggles { display: flex; flex-direction: column; gap: 15px; max-width: 280px; }
+    .sv-toggle { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--sv-ink); }
+    .sv-switch { width: 40px; height: 23px; border-radius: 999px; background: #d8d4cb; position: relative; flex: none; }
+    .sv-switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 17px; height: 17px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    .sv-switch.is-on { background: var(--sv-green); }
+    .sv-switch.is-on::after { left: 20px; }
+    .sv-card--wide { grid-column: 1 / -1; }
+
+    /* ---------------------------------------------------------------
+       The characters — a dedicated section: the painted cast that
+       recurs as opera covers, role portraits and avatars.
+       --------------------------------------------------------------- */
+    .sv-chars { margin: 0; }
+    .sv-chars .sv-system-eyebrow { margin-bottom: 14px; }
+    .sv-chars .sv-system-title { margin-bottom: 16px; }
+    .sv-chars-lead { font-size: 20px; line-height: 1.6; color: #4A463E; max-width: 680px; margin: 0 0 44px; }
+    .sv-chars-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: 52px; align-items: start; }
+    .sv-chars-cover {
+      margin: 0; opacity: 0; transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .sv-chars-cover.is-in { opacity: 1; transform: translateY(0); }
+    .sv-chars-cover img { display: block; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 24px 60px rgba(28, 22, 12, 0.14); }
+    .sv-chars-cover figcaption { margin-top: 14px; font-size: 14px; line-height: 1.5; color: var(--sv-muted); }
+    .sv-chars-roles {
+      margin-top: 28px; opacity: 0; transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .sv-chars-roles.is-in { opacity: 1; transform: translateY(0); }
+    .sv-chars-roles-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .sv-chars-roles-row img {
+      display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top center;
+      border-radius: 12px; background: var(--sv-purple); box-shadow: 0 10px 26px rgba(28, 22, 12, 0.12);
+    }
+    .sv-chars-roles .sv-chars-meta { margin: 12px 0 0 !important; }
+    .sv-chars-text p { font-size: 17px; line-height: 1.72; color: #4A463E; margin: 0 0 20px; }
+    .sv-chars-text p:last-child { margin-bottom: 0; }
+    .sv-chars-text strong { color: var(--sv-ink); font-weight: 700; }
+    .sv-faces--lg { display: flex; align-items: center; margin: 2px 0 6px; }
+    .sv-faces--lg img {
+      width: 58px; height: 58px; border-radius: 50%; object-fit: cover; object-position: top center;
+      border: 3px solid var(--sv-paper); background: var(--sv-purple); margin-left: -13px; box-shadow: 0 4px 12px rgba(28, 22, 12, 0.14);
+    }
+    .sv-faces--lg img:first-child { margin-left: 0; }
+    .sv-faces--lg .sv-face-lead { width: 66px; height: 66px; border-color: var(--sv-green); }
+    .sv-chars-meta { font-size: 13.5px !important; color: var(--sv-muted) !important; margin: 0 0 26px !important; }
+    @media (max-width: 820px) {
+      .sv-chars { margin-top: 72px; }
+      .sv-chars-grid { grid-template-columns: 1fr; gap: 32px; }
+      .sv-chars-lead { font-size: 18px; }
+    }
+
+    @media (max-width: 760px) {
+      .sv-system { padding: 64px 24px; }
+      .sv-system-title { font-size: 30px; }
+      .sv-system-grid { grid-template-columns: 1fr; }
+      .sv-type-specimen { font-size: 44px; }
+    }
+
+    /* ---------------------------------------------------------------
+       Hero / cover — title, then the sliding roles carousel
+       --------------------------------------------------------------- */
+    .sv-hero { padding: 132px 0 52px; overflow: hidden; }
+    .sv-hero-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; text-align: center; }
+    .sv-hero-kicker {
+      font-size: 14px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--sv-green); margin: 0 0 18px;
+      opacity: 0; animation: sv-risein .7s cubic-bezier(.2,.8,.2,1) .05s forwards;
+    }
+    .sv-hero-title {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: clamp(30px, 4.6vw, 56px); font-weight: 700; line-height: 1.12;
+      letter-spacing: -0.025em; color: var(--sv-ink); margin: 0 auto; max-width: 920px;
+      opacity: 0; animation: sv-risein .8s cubic-bezier(.2,.8,.2,1) .12s forwards;
+    }
+    .sv-hero .sv-roles { margin: 56px 0 0; opacity: 0; animation: sv-fadein 1s ease .4s forwards; }
+    .sv-hero-hint {
+      text-align: center; margin: 30px 0 0; font-size: 14px; letter-spacing: 0.02em; color: var(--sv-muted);
+      opacity: 0; animation: sv-fadein 1s ease .85s forwards;
+    }
+    @keyframes sv-risein { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+    @keyframes sv-fadein { from { opacity: 0; } to { opacity: 1; } }
+    @media (max-width: 720px) { .sv-hero { padding: 104px 0 40px; } .sv-hero .sv-roles { margin-top: 40px; } }
+    @media (prefers-reduced-motion: reduce) {
+      .sv-hero-kicker, .sv-hero-title, .sv-hero .sv-roles, .sv-hero-hint { opacity: 1; animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="index.html?v=2" class="nav-logo nav-logo-text">Ivan Kisin</a>
+      <div class="nav-links">
+        <a href="index.html?v=2" class="nav-link">Portfolio</a>
+        <a href="about.html?v=2" class="nav-link">About</a>
+        <a href="resume.pdf" class="nav-link" target="_blank" rel="noopener">Resume</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- =============================================================
+         HERO / COVER — title, then the sliding roles carousel.
+         ============================================================= -->
+    <header class="sv-hero" aria-label="Sottovoce case study cover">
+      <div class="sv-hero-inner">
+        <p class="sv-hero-kicker">Case study</p>
+        <h1 class="sv-hero-title">Sottovoce: one place to learn an opera role</h1>
+      </div>
+      <!-- Sliding roles carousel (mirrors the app's role slider) -->
+      <section class="sv-roles" aria-label="Roles available in Sottovoce">
+        <div class="sv-roles-track">
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-figaro-susanna.webp" alt="Susanna, a soprano role in Le nozze di Figaro" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Susanna</span><span class="sv-role-meta">Soprano &middot; <em>Le nozze di Figaro</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-giovanni-dongiovanni.webp" alt="Don Giovanni, a baritone role in Don Giovanni" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Don Giovanni</span><span class="sv-role-meta">Baritone &middot; <em>Don Giovanni</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-carmen-carmen.webp" alt="Carmen, a mezzo-soprano role in Carmen" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Carmen</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Carmen</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-zauberfloete-papageno.webp" alt="Papageno, a baritone role in Die Zauberflöte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Papageno</span><span class="sv-role-meta">Baritone &middot; <em>Die Zauberflöte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-traviata-violetta.webp" alt="Violetta Valéry, a soprano role in La traviata" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Violetta Valéry</span><span class="sv-role-meta">Soprano &middot; <em>La traviata</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-barbiere-figarob.webp" alt="Figaro, a baritone role in Il barbiere di Siviglia" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Figaro</span><span class="sv-role-meta">Baritone &middot; <em>Il barbiere di Siviglia</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-butterfly-ciociosan.webp" alt="Cio-Cio-San, a soprano role in Madama Butterfly" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Cio-Cio-San</span><span class="sv-role-meta">Soprano &middot; <em>Madama Butterfly</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-cosi-fiordiligi.webp" alt="Fiordiligi, a soprano role in Così fan tutte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Fiordiligi</span><span class="sv-role-meta">Soprano &middot; <em>Così fan tutte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-figaro-cherubino.webp" alt="Cherubino, a mezzo-soprano role in Le nozze di Figaro" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Cherubino</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Le nozze di Figaro</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-carmen-jose.webp" alt="Don José, a tenor role in Carmen" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Don José</span><span class="sv-role-meta">Tenor &middot; <em>Carmen</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-zauberfloete-queen.webp" alt="The Queen of the Night, a soprano role in Die Zauberflöte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">The Queen of the Night</span><span class="sv-role-meta">Soprano &middot; <em>Die Zauberflöte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-schicchi-lauretta.webp" alt="Lauretta, a soprano role in Gianni Schicchi" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Lauretta</span><span class="sv-role-meta">Soprano &middot; <em>Gianni Schicchi</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-giovanni-leporello.webp" alt="Leporello, a bass role in Don Giovanni" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Leporello</span><span class="sv-role-meta">Bass &middot; <em>Don Giovanni</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-barbiere-rosina.webp" alt="Rosina, a mezzo-soprano role in Il barbiere di Siviglia" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Rosina</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Il barbiere di Siviglia</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-traviata-alfredo.webp" alt="Alfredo Germont, a tenor role in La traviata" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Alfredo Germont</span><span class="sv-role-meta">Tenor &middot; <em>La traviata</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-cosi-dorabella.webp" alt="Dorabella, a mezzo-soprano role in Così fan tutte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Dorabella</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Così fan tutte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-zauberfloete-tamino.webp" alt="Tamino, a tenor role in Die Zauberflöte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Tamino</span><span class="sv-role-meta">Tenor &middot; <em>Die Zauberflöte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-giovanni-zerlina.webp" alt="Zerlina, a soprano role in Don Giovanni" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Zerlina</span><span class="sv-role-meta">Soprano &middot; <em>Don Giovanni</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-butterfly-pinkerton.webp" alt="B. F. Pinkerton, a tenor role in Madama Butterfly" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">B. F. Pinkerton</span><span class="sv-role-meta">Tenor &middot; <em>Madama Butterfly</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-traviata-germont.webp" alt="Giorgio Germont, a baritone role in La traviata" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Giorgio Germont</span><span class="sv-role-meta">Baritone &middot; <em>La traviata</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-butterfly-suzuki.webp" alt="Suzuki, a mezzo-soprano role in Madama Butterfly" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Suzuki</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Madama Butterfly</em></span></figcaption>
+          </figure>
+          <figure class="sv-role">
+            <img class="sv-role-img" src="images/sottovoce/r-cosi-ferrando.webp" alt="Ferrando, a tenor role in Così fan tutte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Ferrando</span><span class="sv-role-meta">Tenor &middot; <em>Così fan tutte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-figaro-susanna.webp" alt="Susanna, a soprano role in Le nozze di Figaro" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Susanna</span><span class="sv-role-meta">Soprano &middot; <em>Le nozze di Figaro</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-giovanni-dongiovanni.webp" alt="Don Giovanni, a baritone role in Don Giovanni" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Don Giovanni</span><span class="sv-role-meta">Baritone &middot; <em>Don Giovanni</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-carmen-carmen.webp" alt="Carmen, a mezzo-soprano role in Carmen" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Carmen</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Carmen</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-zauberfloete-papageno.webp" alt="Papageno, a baritone role in Die Zauberflöte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Papageno</span><span class="sv-role-meta">Baritone &middot; <em>Die Zauberflöte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-traviata-violetta.webp" alt="Violetta Valéry, a soprano role in La traviata" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Violetta Valéry</span><span class="sv-role-meta">Soprano &middot; <em>La traviata</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-barbiere-figarob.webp" alt="Figaro, a baritone role in Il barbiere di Siviglia" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Figaro</span><span class="sv-role-meta">Baritone &middot; <em>Il barbiere di Siviglia</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-butterfly-ciociosan.webp" alt="Cio-Cio-San, a soprano role in Madama Butterfly" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Cio-Cio-San</span><span class="sv-role-meta">Soprano &middot; <em>Madama Butterfly</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-cosi-fiordiligi.webp" alt="Fiordiligi, a soprano role in Così fan tutte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Fiordiligi</span><span class="sv-role-meta">Soprano &middot; <em>Così fan tutte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-figaro-cherubino.webp" alt="Cherubino, a mezzo-soprano role in Le nozze di Figaro" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Cherubino</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Le nozze di Figaro</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-carmen-jose.webp" alt="Don José, a tenor role in Carmen" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Don José</span><span class="sv-role-meta">Tenor &middot; <em>Carmen</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-zauberfloete-queen.webp" alt="The Queen of the Night, a soprano role in Die Zauberflöte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">The Queen of the Night</span><span class="sv-role-meta">Soprano &middot; <em>Die Zauberflöte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-schicchi-lauretta.webp" alt="Lauretta, a soprano role in Gianni Schicchi" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Lauretta</span><span class="sv-role-meta">Soprano &middot; <em>Gianni Schicchi</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-giovanni-leporello.webp" alt="Leporello, a bass role in Don Giovanni" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Leporello</span><span class="sv-role-meta">Bass &middot; <em>Don Giovanni</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-barbiere-rosina.webp" alt="Rosina, a mezzo-soprano role in Il barbiere di Siviglia" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Rosina</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Il barbiere di Siviglia</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-traviata-alfredo.webp" alt="Alfredo Germont, a tenor role in La traviata" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Alfredo Germont</span><span class="sv-role-meta">Tenor &middot; <em>La traviata</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-cosi-dorabella.webp" alt="Dorabella, a mezzo-soprano role in Così fan tutte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Dorabella</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Così fan tutte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-zauberfloete-tamino.webp" alt="Tamino, a tenor role in Die Zauberflöte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Tamino</span><span class="sv-role-meta">Tenor &middot; <em>Die Zauberflöte</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-giovanni-zerlina.webp" alt="Zerlina, a soprano role in Don Giovanni" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Zerlina</span><span class="sv-role-meta">Soprano &middot; <em>Don Giovanni</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-butterfly-pinkerton.webp" alt="B. F. Pinkerton, a tenor role in Madama Butterfly" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">B. F. Pinkerton</span><span class="sv-role-meta">Tenor &middot; <em>Madama Butterfly</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-traviata-germont.webp" alt="Giorgio Germont, a baritone role in La traviata" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Giorgio Germont</span><span class="sv-role-meta">Baritone &middot; <em>La traviata</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-butterfly-suzuki.webp" alt="Suzuki, a mezzo-soprano role in Madama Butterfly" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Suzuki</span><span class="sv-role-meta">Mezzo-soprano &middot; <em>Madama Butterfly</em></span></figcaption>
+          </figure>
+          <figure class="sv-role" aria-hidden="true">
+            <img class="sv-role-img" src="images/sottovoce/r-cosi-ferrando.webp" alt="Ferrando, a tenor role in Così fan tutte" loading="lazy">
+            <figcaption class="sv-role-cap"><span class="sv-role-name">Ferrando</span><span class="sv-role-meta">Tenor &middot; <em>Così fan tutte</em></span></figcaption>
+          </figure>
+        </div>
+      </section>
+      <p class="sv-hero-hint" aria-hidden="true">Every role, in one place &mdash; scroll to begin</p>
+    </header>
+
+    <section class="case-study case-study--sv">
+
+      <!-- ==========================================================
+           01 — THE PROBLEM
+           ========================================================== -->
+      <div class="case-chapter case-chapter--featured">
+        <p class="case-chapter-label">01 &mdash; THE PROBLEM</p>
+        <h2 class="case-chapter-heading">A role lives in a dozen places at once</h2>
+        <p>Learning an opera role means pulling it together from sources that never speak to each other.</p>
+        <p>The score is one book, the translation another. Pronunciation comes from a coach, a dictionary, or guesswork. To rehearse the ensemble you need recordings of every other part &mdash; or a r&eacute;p&eacute;titeur at a piano you may not play yourself.</p>
+        <p>A singer juggles all of it at once, holding everything the page can&rsquo;t show in their head: where the stress falls, which vowel is open, how the harmony sits underneath.</p>
+        <p class="case-emphasize">Singing a role is hard enough on its own. Piecing it together from a dozen places before you can even begin shouldn&rsquo;t be.</p>
+      </div>
+
+      <!-- ==========================================================
+           THE IDEA — a board of "what ifs"
+           ========================================================== -->
+      <div class="case-chapter case-chapter--featured">
+        <p class="case-chapter-label">THE IDEA</p>
+        <h2 class="case-chapter-heading">It started with a board of &lsquo;what ifs&rsquo;</h2>
+        <p>Before designing a single screen, I filled a board with small bets &mdash; each one a guess at what bringing a whole role into one place could make possible.</p>
+      </div>
+
+      <div class="prob-board">
+        <svg class="prob-svg" data-fw-figure xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1220 250" width="100%" role="img" aria-label="A board of ‘what if’ sticky notes: what if it all lived in one place; what if you just chose a role; what if every word had a voice; what if the cast really sang; what if you could drill one bar.">
+          <defs>
+            <filter id="noteShadow" x="-20%" y="-20%" width="140%" height="150%">
+              <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#000" flood-opacity="0.38"/>
+            </filter>
+            <linearGradient id="paper-yellow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3D87B"/><stop offset="0.09" stop-color="#F6E3A0"/><stop offset="0.26" stop-color="#F3D87B"/><stop offset="1" stop-color="#F3D87B"/></linearGradient>
+            <linearGradient id="flap-yellow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E3A0"/><stop offset="1" stop-color="#D2B455"/></linearGradient>
+            <linearGradient id="paper-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#94C9EC"/><stop offset="0.09" stop-color="#B4DAF2"/><stop offset="0.26" stop-color="#94C9EC"/><stop offset="1" stop-color="#94C9EC"/></linearGradient>
+            <linearGradient id="flap-blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B4DAF2"/><stop offset="1" stop-color="#6FA9D0"/></linearGradient>
+            <linearGradient id="paper-salmon" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EBA997"/><stop offset="0.09" stop-color="#F1BFB1"/><stop offset="0.26" stop-color="#EBA997"/><stop offset="1" stop-color="#EBA997"/></linearGradient>
+            <linearGradient id="flap-salmon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1BFB1"/><stop offset="1" stop-color="#C98572"/></linearGradient>
+            <linearGradient id="paper-lavender" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B8BDD6"/><stop offset="0.09" stop-color="#CDD1E3"/><stop offset="0.26" stop-color="#B8BDD6"/><stop offset="1" stop-color="#B8BDD6"/></linearGradient>
+            <linearGradient id="flap-lavender" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#CDD1E3"/><stop offset="1" stop-color="#9499B6"/></linearGradient>
+            <linearGradient id="paper-green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A4D6A8"/><stop offset="0.09" stop-color="#BEE3C0"/><stop offset="0.26" stop-color="#A4D6A8"/><stop offset="1" stop-color="#A4D6A8"/></linearGradient>
+            <linearGradient id="flap-green" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#BEE3C0"/><stop offset="1" stop-color="#7FB684"/></linearGradient>
+          </defs>
+          <g transform="translate(25 18) rotate(-1.6 105 99)">
+            <path d="M0 0H210V180L186 198H0Z" fill="url(#paper-yellow)" filter="url(#noteShadow)"/>
+            <path d="M186 198L210 180L188 182Z" fill="url(#flap-yellow)"/>
+            <text font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif" fill="#1B1B1F">
+              <tspan x="16" y="33" font-size="13.5" fill="#2A2A30">What if…</tspan>
+              <tspan x="16" y="54" font-size="16.5" font-weight="700">it all lived in</tspan>
+              <tspan x="16" y="74" font-size="16.5" font-weight="700">one place?</tspan>
+              <tspan x="16" y="101" font-size="14.5" fill="#2F2F36">The score, the words and</tspan>
+              <tspan x="16" y="121" font-size="14.5" fill="#2F2F36">the whole cast, around</tspan>
+              <tspan x="16" y="141" font-size="14.5" fill="#2F2F36">one role.</tspan>
+            </text>
+          </g>
+          <g transform="translate(265 18) rotate(1.0 105 99)">
+            <path d="M0 0H210V198H0Z" fill="url(#paper-blue)" filter="url(#noteShadow)"/>
+            <text font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif" fill="#1B1B1F">
+              <tspan x="16" y="33" font-size="13.5" fill="#2A2A30">What if…</tspan>
+              <tspan x="16" y="54" font-size="16.5" font-weight="700">you just chose a</tspan>
+              <tspan x="16" y="74" font-size="16.5" font-weight="700">role?</tspan>
+              <tspan x="16" y="101" font-size="14.5" fill="#2F2F36">And everything it sings</tspan>
+              <tspan x="16" y="121" font-size="14.5" fill="#2F2F36">was already laid out,</tspan>
+              <tspan x="16" y="141" font-size="14.5" fill="#2F2F36">act by act.</tspan>
+            </text>
+          </g>
+          <g transform="translate(505 18) rotate(-0.8 105 99)">
+            <path d="M0 0H210V198H28L0 179Z" fill="url(#paper-salmon)" filter="url(#noteShadow)"/>
+            <path d="M28 198L0 179L27 181Z" fill="url(#flap-salmon)"/>
+            <text font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif" fill="#1B1B1F">
+              <tspan x="16" y="33" font-size="13.5" fill="#2A2A30">What if…</tspan>
+              <tspan x="16" y="54" font-size="16.5" font-weight="700">every word had</tspan>
+              <tspan x="16" y="74" font-size="16.5" font-weight="700">a voice?</tspan>
+              <tspan x="16" y="101" font-size="14.5" fill="#2F2F36">Its meaning, its IPA,</tspan>
+              <tspan x="16" y="121" font-size="14.5" fill="#2F2F36">and how to say it.</tspan>
+            </text>
+          </g>
+          <g transform="translate(745 18) rotate(1.3 105 99)">
+            <path d="M0 0H210V180L186 198H0Z" fill="url(#paper-lavender)" filter="url(#noteShadow)"/>
+            <path d="M186 198L210 180L188 182Z" fill="url(#flap-lavender)"/>
+            <text font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif" fill="#1B1B1F">
+              <tspan x="16" y="33" font-size="13.5" fill="#2A2A30">What if…</tspan>
+              <tspan x="16" y="54" font-size="16.5" font-weight="700">the cast really</tspan>
+              <tspan x="16" y="74" font-size="16.5" font-weight="700">sang?</tspan>
+              <tspan x="16" y="101" font-size="14.5" fill="#2F2F36">Real voices over a real</tspan>
+              <tspan x="16" y="121" font-size="14.5" fill="#2F2F36">piano, not a click track.</tspan>
+            </text>
+          </g>
+          <g transform="translate(985 18) rotate(-1.0 105 99)">
+            <path d="M0 0H210V198H16L0 186Z" fill="url(#paper-green)" filter="url(#noteShadow)"/>
+            <path d="M16 198L0 186L15 188Z" fill="url(#flap-green)"/>
+            <text font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif" fill="#1B1B1F">
+              <tspan x="16" y="33" font-size="13.5" fill="#2A2A30">What if…</tspan>
+              <tspan x="16" y="54" font-size="16.5" font-weight="700">you could drill</tspan>
+              <tspan x="16" y="74" font-size="16.5" font-weight="700">one bar?</tspan>
+              <tspan x="16" y="101" font-size="14.5" fill="#2F2F36">Loop it, slow it down,</tspan>
+              <tspan x="16" y="121" font-size="14.5" fill="#2F2F36">and pencil a reminder.</tspan>
+            </text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- ==========================================================
+           02 — THE SOLUTION
+           ========================================================== -->
+      <div class="case-chapter case-chapter--featured">
+        <p class="case-chapter-label">02 &mdash; THE SOLUTION</p>
+        <h2 class="case-chapter-heading">Your whole role, in one place</h2>
+        <p>Sottovoce brings the score, the words, the pronunciation, the practice tools, and the other voices into a single app, organised around the role you&rsquo;re preparing.</p>
+        <p>You pick your voice type and your character in any opera, and everything they sing is laid out act by act, piece by piece, ready to learn: the notes, the words and how to say them, the story, and the rest of the cast singing with you.</p>
+        <p>Instead of assembling a role from a shelf of scores and a folder of recordings, a singer opens one screen and starts &mdash; the first line a minute away.</p>
+        <p class="case-emphasize">Pick a role. Everything it asks of you is already there.</p>
+      </div>
+
+      <figure class="sv-am" data-fw-figure>
+        <div class="am" id="am" role="img" aria-label="Marcellina’s sextet playing in the app: her line lights up syllable by syllable while the score follows; then Words is tapped and the libretto appears, every line with the singer’s face and its translation, and Music brings the score back."><div class="am-in" aria-hidden="true">
+          <img class="am-frame" src="images/sottovoce/m1-frame.webp" width="1440" height="900" alt="">
+          <p class="am-line" lang="it"></p>
+          <div class="am-score"><div class="am-lane am-head" style="top:270.5px"><img src="images/sottovoce/m1-head.webp" width="1440" height="42.5" alt=""></div><div class="am-lane" data-k="susanna" data-h="64"><img src="images/sottovoce/m1-susanna.webp" width="1440" height="64" alt=""><span class="am-lab" style="top:7px">S.<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="am-lane you" data-k="marcellina" data-h="71"><img src="images/sottovoce/m1-marcellina.webp" width="1440" height="71" alt=""><span class="am-lab" style="top:12.5px">M.<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="am-lane" data-k="curzio" data-h="78.5"><img src="images/sottovoce/m1-curzio.webp" width="1440" height="78.5" alt=""><span class="am-lab" style="top:12.5px">Curz.<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="am-lane" data-k="count" data-h="66.5"><img src="images/sottovoce/m1-count.webp" width="1440" height="66.5" alt=""><span class="am-lab" style="top:13px">Gf.<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="am-lane" data-k="figaro" data-h="74"><img src="images/sottovoce/m1-figaro.webp" width="1440" height="74" alt=""><span class="am-lab" style="top:15.5px">F.<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="am-lane" data-k="bartolo" data-h="63.5"><img src="images/sottovoce/m1-bartolo.webp" width="1440" height="63.5" alt=""><span class="am-lab" style="top:13px">Brt.<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><span class="am-cl"></span><span class="am-halo"></span></div>
+          <b class="am-bar">Bar 1</b><span class="am-time"><b>0:00</b> / 4:40</span><span class="am-done"></span><span class="am-knob"></span>
+          <span class="am-pp"><svg viewBox="0 0 20 20"><path d="M5 3.5h3.5v13H5zM11.5 3.5H15v13h-3.5z" fill="currentColor"/></svg></span>
+          <img class="am-words" src="images/sottovoce/m1-words.webp" width="1440" height="772" alt="">
+          <span class="am-cur"><i></i><svg viewBox="0 0 22 22" width="22" height="22"><path d="M3 2l14 9.2-6.4 1.3 3.7 7-2.6 1.3-3.6-7.1L3 18z" fill="#1a1814" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
+        </div></div>
+        <figcaption class="case-figure-caption">The real app, playing: Marcellina’s line lights up syllable by syllable as the playhead follows the score in time &mdash; then a tap on Words brings up the whole libretto, every line beside its translation.</figcaption>
+      </figure>
+
+      <div class="case-subblock">
+        <h3 class="case-subblock-heading">Start with your voice, then your role</h3>
+        <p>Everything begins with the singer. Choose a voice type &mdash; soprano, mezzo, tenor, baritone or bass &mdash; then the role you&rsquo;re preparing, in any opera from Mozart to Puccini.</p>
+        <p>From there the app knows what matters to you: the pieces your character sings, the cast around them, and the story you&rsquo;re stepping into. Each piece sits in order, act by act, with what you&rsquo;ve learned ticked off as you go.</p>
+      </div>
+
+      <figure class="case-figure case-figure--contained" data-fw-figure>
+        <img src="images/sottovoce/d-role.webp" alt="Sottovoce on desktop — a roles sidebar on the left and the chosen role, Figaro, with every piece listed act by act and progress ticked off" class="case-figure-img">
+        <figcaption class="case-figure-caption">Choosing a role &mdash; a roles sidebar, the character&rsquo;s story, and every piece they sing laid out act by act.</figcaption>
+      </figure>
+
+      <div class="case-subblock">
+        <h3 class="case-subblock-heading">Every word, said right</h3>
+        <p>The words are treated as carefully as the notes. Every line sits beside its translation, with the face of whoever sings it, and every word carries its meaning, its IPA, and a spoken voice in the language it&rsquo;s sung in.</p>
+        <p>Tips explain the things a score leaves out &mdash; where the stress falls, which vowels are open, how long a double consonant holds &mdash; so a singer can get the diction right without a coach in the room.</p>
+      </div>
+
+      <figure class="case-figure case-figure--contained" data-fw-figure>
+        <img src="images/sottovoce/d-words.webp" alt="Sottovoce Words view on desktop — every line beside its translation with the singer's face, and IPA, English and Tips toggles above" class="case-figure-img">
+        <figcaption class="case-figure-caption">The libretto &mdash; each line beside its translation, with IPA, English and diction tips a toggle away. Tap any word for its meaning, its sound, and how to say it.</figcaption>
+      </figure>
+
+      <div class="case-subblock">
+        <h3 class="case-subblock-heading">Loop it, slow it, mark it</h3>
+        <p>The hard parts have their own tools. Drag across the bars to choose them, loop them with a count-in, and slow the passage right down to learn it &mdash; then bring the tempo back up, one metronome mark at a time.</p>
+        <p>You can pencil a reminder over any bar, too, so a note to yourself &mdash; <em>don&rsquo;t rush</em> &mdash; stays with the music.</p>
+      </div>
+
+      <figure class="sv-loop" data-fw-figure>
+        <div class="sv-loop-card">
+          <div class="sv-loop-stage">
+            <span class="sv-loop-note">&darr; Don&rsquo;t rush</span>
+            <img class="sv-loop-img" src="images/sottovoce/hg3-clean.webp" alt="The Count's run on 'giubilar' from Vedrò mentr'io sospiro, bars 143 to 147, with bars 145 and 146 looping" draggable="false">
+            <span class="sv-loop-tint" aria-hidden="true"></span>
+            <span class="sv-loop-h sv-loop-h--s" aria-hidden="true"></span>
+            <span class="sv-loop-h sv-loop-h--e" aria-hidden="true"></span>
+            <span class="sv-loop-head" aria-hidden="true"></span>
+          </div>
+          <div class="sv-loop-bar">
+            <span class="sv-loop-play" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 3.5h3.5v13H5zM11.5 3.5H15v13h-3.5z" fill="currentColor"/></svg></span>
+            <b class="sv-loop-lab">Bars 145&ndash;146</b>
+            <span class="sv-loop-ci"><i></i><i></i><i></i><i></i> Count-in</span>
+            <span class="sv-loop-noteb">&#9998;&nbsp; Note</span>
+            <span class="sv-loop-hint">Drag across the bars to choose them.</span>
+          </div>
+        </div>
+        <figcaption class="case-figure-caption">Looping a run &mdash; pick the bars (here the Count&rsquo;s run on <em>giubilar</em>) and the playhead repeats just that stretch, with a count-in; slow it down, and pencil a reminder like &ldquo;Don&rsquo;t rush&rdquo; over any bar.</figcaption>
+      </figure>
+
+      <div class="case-subblock">
+        <h3 class="case-subblock-heading">Arrange the ensemble around you</h3>
+        <p>You decide who you&rsquo;re singing with. Every voice gets its own controls: show it or hide it, fade it into the background or bring it into full ink, set how loud it is, and choose whether it&rsquo;s sung or played on the piano.</p>
+        <p>Then reorder the staves however helps &mdash; your own line pinned to the top, or left as it sits in the score.</p>
+      </div>
+
+      <figure class="case-figure case-figure--contained" data-fw-figure>
+        <img src="images/sottovoce/f-arrange.webp" alt="The Arrange panel in Sottovoce — each voice with its own sound, visibility, volume and instrument, and controls to reorder the staves with your line on top" class="case-figure-img">
+        <figcaption class="case-figure-caption">Arrange &mdash; every line with its own sound, visibility, volume, instrument and order, your part kept on top.</figcaption>
+      </figure>
+
+      <!-- Dark feature grid -->
+      <section class="case-dark" aria-label="What Sottovoce brings together">
+        <div class="case-dark-inner">
+          <h2 class="case-dark-title">What Sottovoce brings together</h2>
+          <div class="case-dark-grid">
+            <article class="case-dark-item">
+              <span class="case-dark-num">01</span>
+              <h3 class="case-dark-head">The whole role, in order</h3>
+              <p class="case-dark-desc">Every piece your character sings, act by act, ready to tick off as you learn it.</p>
+            </article>
+            <article class="case-dark-item">
+              <span class="case-dark-num">02</span>
+              <h3 class="case-dark-head">Every word, said right</h3>
+              <p class="case-dark-desc">Meaning, IPA and a spoken voice for every line, in the language it&rsquo;s sung in.</p>
+            </article>
+            <article class="case-dark-item">
+              <span class="case-dark-num">03</span>
+              <h3 class="case-dark-head">The hard parts, on loop</h3>
+              <p class="case-dark-desc">Hear your line, slow it down, and loop a tricky run with a count-in until it sits.</p>
+            </article>
+            <article class="case-dark-item">
+              <span class="case-dark-num">04</span>
+              <h3 class="case-dark-head">The cast, actually singing</h3>
+              <p class="case-dark-desc">Every other part sung over a real concert grand &mdash; or taken by you, part by part.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           03 — THE CRAFT / DESIGN SYSTEM
+           ========================================================== -->
+      <div class="case-chapter case-chapter--featured">
+        <p class="case-chapter-label">03 &mdash; THE CRAFT</p>
+        <h2 class="case-chapter-heading">Designed to feel like one instrument</h2>
+        <p>I approached Sottovoce as a single instrument for learning a role, not a stack of separate features. The score, the words, the practice tools and the cast all share one layout, one set of controls, and one visual language, so moving between them never feels like switching apps.</p>
+        <p>The interface stays out of the music&rsquo;s way: a warm paper ground, a single forest green for anything you act on, lavender for the world of the opera, and a cast of hand-painted characters that give every role a face.</p>
+        <p>To keep it coherent across operas, voices and devices, I built a small, consistent system &mdash; the type pairing, the colour, the portraits, and a handful of reusable controls that behave the same everywhere.</p>
+      </div>
+
+      <section class="sv-system" aria-label="The characters">
+        <div class="sv-system-inner">
+      <!-- ==========================================================
+           The characters — the heart of the system
+           ========================================================== -->
+      <section class="sv-chars" aria-label="The characters">
+        <p class="sv-system-eyebrow">The characters</p>
+        <h2 class="sv-system-title">A face for every role</h2>
+        <p class="sv-chars-lead">A small cast of characters, hand-painted for Sottovoce, runs through the whole app &mdash; one face for every role.</p>
+
+        <div class="sv-chars-grid">
+          <div class="sv-chars-left">
+            <figure class="sv-chars-cover" data-fw-figure>
+              <img src="images/sottovoce/art-figaro.webp" alt="The painted cover illustration for Le nozze di Figaro — three characters and a mask on a lavender ground">
+              <figcaption>The painted cover of each opera &mdash; here, <em>Le nozze di Figaro</em>.</figcaption>
+            </figure>
+            <div class="sv-chars-roles" data-fw-figure>
+              <div class="sv-chars-roles-row">
+                <img src="images/sottovoce/r-figaro-susanna.webp" alt="Susanna, a full-length role portrait">
+                <img src="images/sottovoce/r-carmen-carmen.webp" alt="Carmen, a full-length role portrait">
+                <img src="images/sottovoce/r-traviata-violetta.webp" alt="Violetta Valéry, a full-length role portrait">
+              </div>
+              <p class="sv-chars-meta">And each role as its own full-length portrait &mdash; the ones you choose from at the start.</p>
+            </div>
+          </div>
+
+          <div class="sv-chars-text">
+            <p>That face follows the role wherever it goes. It&rsquo;s the full-length portrait you choose from at the very start of this case study; it&rsquo;s the cover of the opera the role lives in; and it shrinks to the little avatar beside every line you sing, in the cast bar, and on your own profile. Choose Susanna, and it&rsquo;s Susanna who meets you each time you open the app.</p>
+            <div class="sv-faces sv-faces--lg" aria-hidden="true">
+              <img class="sv-face-lead" src="images/sottovoce/face-susanna.webp" alt="">
+              <img src="images/sottovoce/face-marcellina.webp" alt="">
+              <img src="images/sottovoce/face-figaro.webp" alt="">
+              <img src="images/sottovoce/face-count.webp" alt="">
+              <img src="images/sottovoce/face-countess.webp" alt="">
+              <img src="images/sottovoce/face-bartolo.webp" alt="">
+            </div>
+            <p class="sv-chars-meta">The same painted face, shrunk to the avatar you see beside every line.</p>
+            <p><strong>Why it matters.</strong> It&rsquo;s the part people remember. A score is abstract &mdash; staves, rests, a language you may not speak yet. Giving each role a face turns learning the notes into stepping in beside someone, and makes a practice tool feel warm, personal, and worth coming back to.</p>
+          </div>
+        </div>
+      </section>
+        </div>
+      </section>
+
+      <div class="case-study-nav">
+        <a href="index.html?v=2" class="case-study-back">&larr; Back to Portfolio</a>
+        <a href="project2.html?v=2" class="case-study-next">Smarter Feedback Collection &rarr;</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Ivan Kisin. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <script>
+    (function() {
+      // ---- Hero: title rises in, image lifts from below on scroll ----
+      var section = document.getElementById('svTitleReveal');
+      if (!section) return;
+      var title   = document.getElementById('svRevealTitle');
+      var img      = document.getElementById('svRevealImage');
+      var imgWrap  = document.getElementById('svRevealImageWrap');
+      var hint     = document.getElementById('svScrollHint');
+      if (!title || !img || !imgWrap) return;
+
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var TITLE_IN_MS = 800;
+      var titleInner = document.createElement('span');
+      titleInner.className = 'sv-reveal-title-inner';
+      titleInner.setAttribute('aria-hidden', 'true');
+      titleInner.textContent = title.textContent;
+      title.textContent = '';
+      title.appendChild(titleInner);
+
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() { titleInner.classList.add('is-in'); });
+      });
+
+      if (hint) {
+        var showAfter = reduceMotion ? 0 : (TITLE_IN_MS + 150);
+        setTimeout(function() { hint.classList.add('is-shown'); }, showAfter);
+      }
+
+      function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+      function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+      var TITLE_LIFT_VH = 34;
+      var IMAGE_LIFT_VH = 74;
+
+      var ticking = false;
+      function update() {
+        ticking = false;
+        var rect = section.getBoundingClientRect();
+        var total = section.offsetHeight - window.innerHeight;
+        if (total <= 0) return;
+        var scrolled = Math.min(Math.max(-rect.top, 0), total);
+        var progress = scrolled / total;
+
+        if (!reduceMotion) {
+          var eased = easeOutCubic(progress);
+          title.style.transform =
+            'translate(-50%, -50%) translateY(' + (-TITLE_LIFT_VH * eased).toFixed(2) + 'vh)';
+          imgWrap.style.transform =
+            'translateY(' + (-IMAGE_LIFT_VH * eased).toFixed(2) + 'vh)';
+        }
+
+        if (hint) {
+          var fade = 1 - clamp01(progress / 0.35);
+          if (fade < 1) { hint.style.opacity = fade.toFixed(3); } else { hint.style.opacity = ''; }
+        }
+      }
+      function onScroll() {
+        if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+      }
+      update();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+    })();
+
+
+    // ---- Scroll-reveal for figures (images, phone pairs, feature row) ----
+    (function() {
+      var figs = document.querySelectorAll('[data-fw-figure]');
+      if (!figs.length) return;
+      if (!('IntersectionObserver' in window)) {
+        figs.forEach(function(f) { f.classList.add('is-in'); });
+        return;
+      }
+      var io2 = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            io2.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+      figs.forEach(function(f) { io2.observe(f); });
+    })();
+  </script>
+
+  <script>
+  /* Live "Music" view — lifted verbatim from the Sottovoce product. */
+  (function () {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const io = (el, fn, threshold = 0.15) => {
+    if (!("IntersectionObserver" in window)) { fn(true); return; }
+    new IntersectionObserver((es) => es.forEach((e) => fn(e.isIntersecting)), { threshold, rootMargin: "0px 0px -6% 0px" }).observe(el);
+  };
+  const am = document.getElementById("am");
+  if (am) {
+    const $ = (s) => am.querySelector(s), $$ = (s) => [...am.querySelectorAll(s)];
+    const inner = $(".am-in");
+    new ResizeObserver(() => inner.style.setProperty("--k", am.clientWidth / 1440)).observe(am);
+    // her line, one span per sung syllable, as the notes divide it
+    const SYL = [["Ri", "co", "no", "sci‿in"], ["que", "sto‿am", "ples", "so"], ["u", "na"], ["ma", "dre,‿a", "ma", "to"], ["fi", "glio!"]];
+    const line = $(".am-line"); const sy = [];
+    SYL.forEach((w, i) => { w.forEach((p) => { const e = document.createElement("span"); e.innerHTML = p.replace("‿", '<i class="tie">‿</i>'); line.appendChild(e); sy.push(e); }); if (i < SYL.length - 1) line.appendChild(document.createTextNode(" ")); });
+    // when each syllable starts (seconds at crotchet 120) and where its note sits
+    const ON = [1, 1.5, 2, 2.5, 3, 3.75, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.75, 8, 8.5], END = 9;
+    const NX = [194, 217, 243, 267, 311, 348, 387, 406, 430, 451, 482, 516, 552, 576, 599, 625];
+    const PATH = [[0, 150], ...ON.map((t, i) => [t, NX[i]]), [10, 693], [12, 793], [14, 899], [16, 1005]];
+    const xAt = (t) => { for (let i = 1; i < PATH.length; i++) if (t <= PATH[i][0]) { const [t0, x0] = PATH[i - 1], [t1, x1] = PATH[i]; return x0 + ((t - t0) / (t1 - t0)) * (x1 - x0); } return PATH.at(-1)[1]; };
+    const lanes = $$(".am-lane[data-k]"), byK = Object.fromEntries(lanes.map((l) => [l.dataset.k, l]));
+    const START = ["susanna", "marcellina", "curzio", "count", "figaro", "bartolo"];
+    let order = START.slice();
+    const layout = () => { let y = 313; order.forEach((k) => { byK[k].style.top = y + "px"; y += +byK[k].dataset.h; }); };
+    const cl = $(".am-cl"), halo = $(".am-halo"), bar = $(".am-bar"), tm = $(".am-time b"), done = $(".am-done"), knob = $(".am-knob"), pp = $(".am-pp");
+    const cur = $(".am-cur");
+    const pt = (el) => { let x = el.offsetWidth / 2, y = el.offsetHeight / 2, e = el; while (e && e !== inner) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return [x, y]; };
+    const reset = () => { order = START.slice(); layout(); am.classList.remove("words"); cur.style.opacity = 0; };
+    // the gestures, in seconds of the loop; each one glides the cursor to a point, then presses
+    const LEAD = 0.6, LOOP = 14.4;
+    const steps = [
+      [4.4, () => [1100, 330], "show"],
+      [5.2, () => [1361, 36]],
+      [5.4, null, "tap", () => am.classList.add("words")],
+      [9.3, () => [1258, 36]],
+      [9.5, null, "tap", () => am.classList.remove("words")],
+      [10.6, () => [1080, 420], "hide"],
+    ];
+    let cx = 1010, cy = 640, fromX = cx, fromY = cy, fromT = 0, toX = cx, toY = cy, toT = 0, si = 0;
+    const ease = (u) => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
+    let t = 0, last = 0, raf = 0, on = false;
+    const frame = (now) => {
+      if (!on) return;
+      t += Math.min(0.05, (now - last) / 1000); last = now;
+      if (t >= LOOP) { t = 0; si = 0; am.classList.remove("reset"); reset(); }
+      const mt = Math.max(0, t - LEAD);
+      // the gestures due by now
+      while (si < steps.length && t >= steps[si][0] - (steps[si][1] ? 0.75 : 0)) {
+        const [at, where, kind, fx] = steps[si];
+        if (where) { if (t < at - 0.75) break; const [x, y] = where(); fromX = cx; fromY = cy; toX = x; toY = y; fromT = at - 0.75; toT = at; if (kind === "show") { cx = fromX = toX = x; cy = fromY = toY = y; cur.style.opacity = 1; } if (kind === "hide") cur.style.opacity = 0; }
+        if (kind === "tap") { if (t < at) break; cur.classList.add("dn"); setTimeout(() => cur.classList.remove("dn"), 170); fx && fx(); }
+        else if (kind === "hover") { if (t < at) break; fx && fx(); }
+        si++;
+      }
+      if (toT > fromT) { const u = Math.min(1, Math.max(0, (t - fromT) / (toT - fromT))); cx = fromX + (toX - fromX) * ease(u); cy = fromY + (toY - fromY) * ease(u); }
+      cur.style.transform = `translate(${cx}px, ${cy}px)`;
+      // the music
+      const playing = t >= LEAD && t < LOOP - 0.9;
+      pp.style.opacity = playing ? 1 : 0;
+      cl.style.left = xAt(mt) + "px";
+      let k = -1; ON.forEach((o, i) => { if (mt >= o) k = i; }); const singing = k >= 0 && mt < END;
+      sy.forEach((e, i) => { e.className = mt >= END || i < k ? "p" : i === k ? "n" : ""; });
+      halo.style.opacity = singing ? 1 : 0;
+      if (k >= 0) { halo.style.left = NX[k] + "px"; halo.style.top = byK.marcellina.offsetTop + 24 + "px"; }
+      bar.textContent = "Bar " + (Math.floor(mt / 2) + 1);
+      tm.textContent = "0:" + String(Math.floor(mt)).padStart(2, "0");
+      const w = (mt / 280) * 1134; done.style.width = w + "px"; knob.style.left = 175 + w + "px";
+      if (t >= LOOP - 0.7) am.classList.add("reset");
+      raf = requestAnimationFrame(frame);
+    };
+    reset();
+    if (reduce) { const mt = 3.2; cl.style.left = xAt(mt) + "px"; sy.forEach((e, i) => { e.className = i < 5 ? "p" : i === 5 ? "n" : ""; }); }
+    else io(am, (v) => { if (v && !on) { on = true; last = performance.now(); raf = requestAnimationFrame(frame); } else if (!v && on) { on = false; cancelAnimationFrame(raf); } }, 0.35);
+  }
+  })();
+  </script>
+
+  <!-- Cloudflare Web Analytics (per-device opt-out: visit ?notrack=1 to exclude this browser) -->
+  <script>(function(){try{var p=new URLSearchParams(location.search);if(p.has('notrack')){p.get('notrack')==='0'?localStorage.removeItem('cf-notrack'):localStorage.setItem('cf-notrack','1');}if(localStorage.getItem('cf-notrack')==='1')return;}catch(e){}var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token": "cbe772e88ba64865afaca1040e19dfc7"}');document.head.appendChild(s);})();</script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

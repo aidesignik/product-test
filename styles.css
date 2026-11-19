@@ -796,6 +796,17 @@ body > *:not(.page-loader) {
   width: 100%;
 }
 
+.case-card--travia .case-card-travia-eyebrow {
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
 .case-card--travia .case-card-travia-tagline {
   font-family: var(--font-heading);
   font-size: 26px;
@@ -815,6 +826,72 @@ body > *:not(.page-loader) {
   .case-card-travia-tagline {
     font-size: 20px;
   }
+}
+
+.case-card--sottovoce {
+  position: relative;
+  overflow: hidden;
+  background: #8E7CC3;
+  padding: 40px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.case-card--sottovoce .case-card-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.case-card--sottovoce::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(31, 24, 46, 0.0) 48%, rgba(31, 24, 46, 0.72) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.case-card-sottovoce-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.case-card--sottovoce .case-card-sottovoce-eyebrow {
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+.case-card--sottovoce .case-card-sottovoce-tagline {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+  color: #ffffff;
+  max-width: 88%;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 720px) {
+  .case-card--sottovoce { padding: 24px; }
+  .case-card--sottovoce .case-card-sottovoce-tagline { font-size: 21px; }
 }
 
 .case-card--feedback {
