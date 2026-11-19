@@ -950,32 +950,13 @@
 
     .fw.is-playing .fw-banner { opacity: 1; transform: translateY(0); transition-delay: 2.10s; }
 
-    /* ---- Mobile: stack assets vertically with the dispatcher first ---- */
+    /* ---- Mobile: keep the composed scene, just scaled down (like
+       desktop). Labels get a touch smaller so they still fit. ---- */
     @media (max-width: 820px) {
-      .fw-stage {
-        aspect-ratio: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-      }
-      .fw-arrows, .fw-label { display: none; }
-      .fw-asset {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: min(80%, 360px);
-      }
-      .fw-dispatcher {
-        position: relative;
-        left: auto;
-        top: auto;
-        transform: none;
-        width: min(90%, 420px);
-        max-width: none;
-        margin-bottom: 8px;
-      }
-      .fw-dispatcher-ring { display: none; }
+      .fw-label { font-size: 9px; }
+    }
+    @media (max-width: 480px) {
+      .fw-label { display: none; }
     }
 
     /* ---- Reduced motion: show everything, no animations ---- */
@@ -1262,6 +1243,17 @@
       .travia-reveal-title-inner { opacity: 1; transform: none; transition: none; }
       .travia-scroll-hint { position: static; opacity: 1; transform: none; animation: none; margin-top: 48px; }
       .travia-reveal-image-wrap { position: static; transform: none; margin-top: 72px; }
+    }
+
+    /* Mobile: no room for the pinned scroll-reveal — lay the title and
+       image out statically so there's no giant empty scroll area. */
+    @media (max-width: 768px) {
+      .travia-title-reveal { height: auto; }
+      .travia-title-stage { position: relative; height: auto; padding: 56px 20px 32px; overflow: visible; }
+      .travia-reveal-title { position: static; transform: none; width: auto; margin: 0 auto; }
+      .travia-reveal-title-inner { opacity: 1; transform: none; transition: none; }
+      .travia-scroll-hint { display: none; }
+      .travia-reveal-image-wrap { position: static; transform: none; margin-top: 32px; }
     }
   </style>
 </head>
@@ -2039,7 +2031,8 @@
       var hint    = document.getElementById('traviaScrollHint');
       if (!title || !img || !imgWrap) return;
 
-      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        || window.matchMedia('(max-width: 768px)').matches;
 
       // Wrap the title text in an inner span so the entrance (fade + rise)
       // can run independently of the title's scroll-driven transform.
@@ -2294,7 +2287,7 @@
       border-radius: 14px;
       overflow: hidden;
       cursor: pointer;
-      background: transparent;
+      background: #efeee9;       /* opaque fallback so content never shows through */
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.18);
       z-index: 90;
       border: none;
@@ -2390,7 +2383,7 @@
   </style>
 
   <button class="story-pip" id="storyPip" type="button" aria-label="Play Travia story video with sound">
-    <video id="storyPipVideo" muted loop playsinline preload="metadata" aria-hidden="true">
+    <video id="storyPipVideo" autoplay muted loop playsinline preload="metadata" poster="images/travia-story-poster.jpg" aria-hidden="true">
       <source src="images/travia-story.mp4" type="video/mp4">
     </video>
     <span class="story-pip__play" aria-hidden="true">

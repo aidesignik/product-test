@@ -25,6 +25,7 @@
       --sv-panel:    #F5F1E6;
       --sv-ink:      #211F1A;
       --sv-muted:    #6E6A60;
+      --sv-text:     #4A463E;
       --sv-green:    #1B4332;
       --sv-green-dk: #13301F;
       --sv-purple:   #8E7CC3;
@@ -93,7 +94,7 @@
       max-width: 720px;
       font-size: 19px;
       line-height: 1.75;
-      color: #4A463E;
+      color: var(--sv-text);
       margin: 0 0 20px;
     }
 
@@ -147,7 +148,7 @@
       max-width: 720px;
       font-size: 19px;
       line-height: 1.75;
-      color: #4A463E;
+      color: var(--sv-text);
       margin: 0 0 18px;
     }
     .case-subblock p:last-child { margin-bottom: 0; }
@@ -512,7 +513,7 @@
     /* type */
     .sv-type-specimen { font-size: 58px; font-style: italic; font-weight: 600; color: var(--sv-ink); line-height: 1; margin: 0 0 6px; }
     .sv-type-meta { font-size: 13px; color: var(--sv-muted); margin: 0 0 20px; }
-    .sv-type-body { font-family: 'DM Sans', sans-serif; font-size: 15.5px; line-height: 1.6; color: #4A463E; margin: 0 0 6px; }
+    .sv-type-body { font-family: 'DM Sans', sans-serif; font-size: 15.5px; line-height: 1.6; color: var(--sv-text); margin: 0 0 6px; }
     .sv-type-body-meta { font-size: 13px; color: var(--sv-muted); margin: 0; }
     /* characters */
     .sv-faces { display: flex; gap: 0; align-items: center; }
@@ -554,7 +555,7 @@
     .sv-chars { margin: 0; }
     .sv-chars .sv-system-eyebrow { margin-bottom: 14px; }
     .sv-chars .sv-system-title { margin-bottom: 16px; }
-    .sv-chars-lead { font-size: 20px; line-height: 1.6; color: #4A463E; max-width: 680px; margin: 0 0 44px; }
+    .sv-chars-lead { font-size: 20px; line-height: 1.6; color: var(--sv-text); max-width: 680px; margin: 0 0 44px; }
     .sv-chars-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: 52px; align-items: start; }
     .sv-chars-cover {
       margin: 0; opacity: 0; transform: translateY(40px);
@@ -574,7 +575,7 @@
       border-radius: 12px; background: var(--sv-purple); box-shadow: 0 10px 26px rgba(28, 22, 12, 0.12);
     }
     .sv-chars-roles .sv-chars-meta { margin: 12px 0 0 !important; }
-    .sv-chars-text p { font-size: 17px; line-height: 1.72; color: #4A463E; margin: 0 0 20px; }
+    .sv-chars-text p { font-size: 17px; line-height: 1.72; color: var(--sv-text); margin: 0 0 20px; }
     .sv-chars-text p:last-child { margin-bottom: 0; }
     .sv-chars-text strong { color: var(--sv-ink); font-weight: 700; }
     .sv-faces--lg { display: flex; align-items: center; margin: 2px 0 6px; }

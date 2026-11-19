@@ -32,6 +32,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 body {
@@ -41,6 +42,7 @@ body {
   background: var(--color-white);
   line-height: 26px;
   font-size: 17px;
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1565,6 +1567,12 @@ body > *:not(.page-loader) {
   .case-card {
     aspect-ratio: 4 / 3;
     padding: 28px 28px 0;
+  }
+
+  /* Overlay-title cards (title sits at the bottom) need bottom padding */
+  .case-card--travia,
+  .case-card--sottovoce {
+    padding: 28px 28px 32px;
   }
 
   .case-card--radar {
